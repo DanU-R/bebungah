@@ -2,30 +2,36 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Theme;
 
 class ThemeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        \App\Models\Theme::create([
-            'name' => 'Rustic Gold Premium',
-            'slug' => 'rustic-gold',
-            'view_path' => 'themes.rustic-gold.index', // Pastikan folder ini nanti kita buat
-            'thumbnail' => 'rustic-thumb.jpg',
+        Theme::create([
+            'name' => 'Rustic Green',
+            'slug' => 'rustic-green',
+            'thumbnail' => 'rustic-green.png', 
             'is_active' => true,
+            'view_path' => 'themes.rustic-green.index', 
+        ]);
+
+        Theme::create([
+            'name' => 'Floral Pastel',
+            'slug' => 'floral-pastel',
+            'thumbnail' => 'floral-pastel.png',
+            'is_active' => true,
+            'view_path' => 'themes.floral-pastel.index',
         ]);
         
-        \App\Models\Theme::create([
-            'name' => 'Minimalist Black',
-            'slug' => 'minimal-black',
-            'view_path' => 'themes.minimal-black.index',
-            'thumbnail' => 'minimal-thumb.jpg',
+        Theme::create([
+            'name' => 'Royal Glass',
+            'slug' => 'royal-glass',
+            'thumbnail' => 'royal-glass.png',
             'is_active' => true,
+            'view_path' => 'themes.royal-glass.index',
         ]);
+        
     }
 }

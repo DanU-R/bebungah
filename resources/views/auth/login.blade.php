@@ -3,7 +3,7 @@
         {{-- Logo / Brand --}}
         <div class="mb-10 text-center">
             <div class="mx-auto w-fit px-6 py-3 bg-indigo-600 text-white rounded-2xl font-extrabold text-2xl shadow-lg shadow-indigo-200 tracking-tight">
-                Bebungah<span class="opacity-80">.</span>
+                Temanten<span class="opacity-80">.</span>
             </div>
             <p class="text-sm text-gray-500 mt-4">
                 Silakan masuk untuk mengelola undangan

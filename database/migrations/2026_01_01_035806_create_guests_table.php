@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug'); // Kode unik per tamu
             $table->string('category')->default('Regular'); // Bisa untuk grouping tamu
             $table->string('phone_number')->nullable(); // Jika mau kirim WA Blast
-            $table->enum('rsvp_status', ['pending', 'hadir', 'tidak_hadir'])->default('pending');
+            $table->enum('rsvp_status', ['pending', 'hadir', 'tidak_hadir', 'ragu'])->default('pending');
             $table->text('comment')->nullable(); // Ucapan tamu
             
             $table->timestamps();

@@ -1,151 +1,501 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buat Undangan Digital - Premium</title>
+    <title>Buat Undangan - TEMANTEN</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22><rect width=%2248%22 height=%2248%22 rx=%2212%22 fill=%22%234F46E5%22/><path d=%22M15 13h18v6h-6v17h-6v-17h-6v-6z%22 fill=%22white%22/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+        }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+        
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        .animate-fadeInUp { animation: fadeInUp 0.6s ease-out; }
+        .animate-scaleIn { animation: scaleIn 0.5s ease-out; }
+        
+        /* Loading shimmer effect */
+        .shimmer {
+            background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        /* Step indicator */
+        .step-line {
+            position: relative;
+        }
+        
+        .step-line::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+        
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Input focus glow */
+        .input-glow:focus {
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        /* Card hover effect */
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gradient-to-br from-gray-50 via-white to-indigo-50/30 min-h-screen">
 
-    <div class="max-w-4xl mx-auto py-10 px-4">
+    <!-- Header Navigation -->
+    <nav class="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 group-hover:rotate-12 transition-all duration-300">
+                    <rect width="48" height="48" rx="12" fill="url(#logoGradient)" />
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0" y1="0" x2="48" y2="48">
+                            <stop offset="0%" stop-color="#667eea"/>
+                            <stop offset="100%" stop-color="#764ba2"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M15 13h18v6h-6v17h-6v-17h-6v-6z" fill="white" /> 
+                </svg>
+                <div class="flex flex-col">
+                    <span class="font-extrabold text-lg text-gray-900 leading-none">TEMANTEN</span>
+                    <span class="text-[9px] text-indigo-600 font-semibold tracking-wider uppercase">Digital Invitation</span>
+                </div>
+            </a>
+            
+            <a href="{{ route('home') }}" class="text-sm font-semibold text-gray-600 hover:text-indigo-600 transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Kembali
+            </a>
+        </div>
+    </nav>
+
+    <div class="max-w-5xl mx-auto py-12 px-4 md:px-6 lg:px-8">
         
-        <div class="text-center mb-10">
-            <h1 class="text-4xl font-bold text-gray-900 mb-2">Buat Undangan Digital</h1>
-            <p class="text-gray-500">Lengkapi data di bawah untuk memulai pesanan Anda.</p>
+        <!-- Hero Header -->
+        <div class="text-center mb-12 animate-fadeInUp">
+            <div class="inline-flex items-center gap-2 bg-indigo-50 border border-indigo-100 px-4 py-2 rounded-full text-indigo-700 text-sm font-semibold mb-6">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                <span>Proses Mudah & Cepat</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+                Langkah Terakhir Menuju <br class="hidden md:block"/>
+                <span class="font-serif italic gradient-text">Undangan Impianmu</span>
+            </h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Isi data pemesan untuk membuat pesanan. Akun akan dibuatkan otomatis dan langsung bisa diakses.
+            </p>
         </div>
 
-        <form action="{{ route('order.store') }}" method="POST" enctype="multipart/form-data" class="bg-white shadow-xl rounded-2xl overflow-hidden">
+        <!-- Progress Steps -->
+        <div class="mb-12 animate-scaleIn">
+            <div class="step-line relative flex justify-between items-center max-w-3xl mx-auto">
+                <div class="flex flex-col items-center z-10 relative">
+                    <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-200 mb-3">
+                        1
+                    </div>
+                    <span class="text-xs md:text-sm font-semibold text-gray-900">Pilih Tema</span>
+                </div>
+                <div class="flex flex-col items-center z-10 relative">
+                    <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-200 mb-3">
+                        2
+                    </div>
+                    <span class="text-xs md:text-sm font-semibold text-gray-900">Data Diri</span>
+                </div>
+                <div class="flex flex-col items-center z-10 relative">
+                    <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-200 mb-3">
+                        3
+                    </div>
+                    <span class="text-xs md:text-sm font-semibold text-gray-900">Info Acara</span>
+                </div>
+                <div class="flex flex-col items-center z-10 relative">
+                    <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold mb-3">
+                        4
+                    </div>
+                    <span class="text-xs md:text-sm font-medium text-gray-500">Pembayaran</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Messages -->
+        @if ($errors->any())
+        <div class="bg-red-50 border-l-4 border-red-500 rounded-xl p-6 mb-8 shadow-sm animate-fadeInUp">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0">
+                    <svg class="w-6 h-6 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-red-800 text-lg mb-2">Oops! Ada kesalahan input</h3>
+                    <ul class="list-disc pl-5 text-sm text-red-700 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <!-- Main Form -->
+        <form action="{{ route('order.store') }}" method="POST" class="space-y-6 animate-fadeInUp" onsubmit="return showLoading(this);">
             @csrf
 
-            <div class="p-8 border-b border-gray-100">
-                <h2 class="text-2xl font-semibold mb-6 text-gray-800">1. Pilih Tema Eksklusif</h2>
+            <!-- Section 1: Theme Selection -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 card-hover">
+                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 md:p-8 border-b border-gray-100">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold shadow-lg">
+                            1
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Pilih Tema Undangan</h2>
+                            <p class="text-sm text-gray-600 mt-1">Pilih desain yang paling sesuai dengan kepribadian Anda</p>
+                        </div>
+                    </div>
+                </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    @foreach($themes as $theme)
-                    <div class="relative group">
-                        <input type="radio" name="theme_id" id="theme_{{ $theme->id }}" value="{{ $theme->id }}" class="peer hidden" required>
-                        <label for="theme_{{ $theme->id }}" class="block border-2 border-gray-200 rounded-xl cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50 p-4 transition-all hover:border-indigo-300">
-                            <div class="flex justify-between items-center mb-2">
-                                <h3 class="font-bold text-lg">{{ $theme->name }}</h3>
-                                <a href="{{ url('/preview/'.$theme->slug) }}" target="_blank" class="text-xs text-indigo-600 font-semibold underline hover:text-indigo-800 z-10">
-                                    Lihat Preview &nearr;
-                                </a>
+                @php $selectedThemeSlug = request('theme'); @endphp
+
+                <div class="p-6 md:p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-2">
+                        @foreach($themes as $theme)
+                        <div class="relative group">
+                            <input type="radio" name="theme_id" id="theme_{{ $theme->id }}" value="{{ $theme->id }}" 
+                                   class="peer hidden" 
+                                   {{ (old('theme_id') == $theme->id || $selectedThemeSlug == $theme->slug) ? 'checked' : '' }} 
+                                   required>
+                            
+                            <label for="theme_{{ $theme->id }}" class="flex items-center gap-4 border-2 border-gray-200 rounded-xl cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50/50 peer-checked:ring-4 peer-checked:ring-indigo-100 p-4 transition-all hover:border-indigo-300 hover:shadow-lg group-hover:scale-[1.02]">
+                                <div class="h-20 w-20 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0 shadow-md">
+                                    @if($theme->thumbnail)
+                                        <img src="{{ asset('assets/thumbnail/' . $theme->thumbnail) }}" 
+                                            alt="{{ $theme->name }}" 
+                                            class="h-full w-full object-cover">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 text-xs text-gray-500 font-semibold">
+                                            No Image
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="font-bold text-gray-900 text-lg">{{ $theme->name }}</h3>
+                                    <p class="text-sm text-gray-500 mt-0.5">Premium Theme</p>
+                                    <p class="text-base text-indigo-600 font-bold mt-1">Rp {{ number_format(99000, 0, ',', '.') }}</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="w-8 h-8 rounded-full border-2 border-gray-300 peer-checked:border-indigo-600 peer-checked:bg-indigo-600 flex items-center justify-center transition-all">
+                                        <svg class="w-5 h-5 text-white opacity-0 peer-checked:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: Customer Data -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 card-hover">
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 p-6 md:p-8 border-b border-gray-100">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold shadow-lg">
+                            2
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Data Pemesan & Akun</h2>
+                            <p class="text-sm text-gray-600 mt-1">Informasi kontak dan link undangan yang Anda inginkan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="p-6 md:p-8">
+                    <div class="space-y-6">
+                        <!-- WhatsApp Number -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                                Nomor WhatsApp (Aktif)
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <span class="text-gray-500">+62</span>
+                                </div>
+                                <input type="number" name="client_whatsapp" value="{{ old('client_whatsapp') }}" class="w-full pl-14 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 input-glow transition-all text-lg" placeholder="8123456789" required>
                             </div>
-                            <div class="h-32 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
-                                @if($theme->thumbnail)
-                                    <img src="{{ asset('storage/'.$theme->thumbnail) }}" class="h-full w-full object-cover rounded-lg">
-                                @else
-                                    <span>Thumbnail Tema</span>
-                                @endif
+                            <p class="text-xs text-gray-500 mt-2 flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                                Digunakan untuk notifikasi dan akses dashboard
+                            </p>
+                        </div>
+
+                        <!-- Invitation Link -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                Link Undangan yang Diinginkan
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <div class="flex rounded-xl overflow-hidden border-2 border-gray-200 focus-within:border-indigo-500 focus-within:ring-4 focus-within:ring-indigo-100 transition-all">
+                                <span class="inline-flex items-center px-4 bg-gray-50 text-gray-600 text-sm font-semibold border-r border-gray-200">
+                                    undangan.com/
+                                </span>
+                                <input type="text" name="slug" value="{{ old('slug') }}" class="flex-1 px-4 py-3.5 focus:outline-none lowercase text-lg" placeholder="romeo-juliet" required pattern="[a-z0-9-]+" title="Gunakan huruf kecil, angka, dan tanda strip (-)">
                             </div>
-                        </label>
-                        <div class="absolute top-4 right-4 hidden peer-checked:block text-indigo-600">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                            <div class="mt-2 flex items-start gap-2">
+                                <svg class="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                                <div class="text-xs text-gray-600 space-y-1">
+                                    <p class="font-semibold">Aturan penulisan link:</p>
+                                    <ul class="list-disc pl-4 space-y-0.5">
+                                        <li>Gunakan huruf kecil, angka, dan tanda strip (-)</li>
+                                        <li>Contoh: <span class="font-mono bg-gray-100 px-2 py-0.5 rounded">rudi-siti</span> atau <span class="font-mono bg-gray-100 px-2 py-0.5 rounded">wedding2025</span></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    @endforeach
-                </div>
-                @error('theme_id') <p class="text-red-500 text-sm mt-2">{{ $message }}</p> @enderror
-            </div>
-
-            <div class="p-8 border-b border-gray-100 bg-gray-50/50">
-                <h2 class="text-2xl font-semibold mb-6 text-gray-800">2. Data Akun & Link</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp (Aktif)</label>
-                        <input type="number" name="client_whatsapp" value="{{ old('client_whatsapp') }}" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="08123456789" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Link Undangan (Slug)</label>
-                        <div class="flex">
-                            <span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-100 text-gray-500 text-sm">
-                                undangan.com/
-                            </span>
-                            <input type="text" name="slug" value="{{ old('slug') }}" class="flex-1 px-4 py-2 border rounded-r-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="romeo-juliet" required>
-                        </div>
-                        @error('slug') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>
             </div>
 
-            <div class="p-8 border-b border-gray-100">
-                <h2 class="text-2xl font-semibold mb-6 text-gray-800">3. Detail Mempelai</h2>
+            <!-- Section 3: Event Information -->
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 card-hover">
+                <div class="bg-gradient-to-r from-pink-50 to-rose-50 p-6 md:p-8 border-b border-gray-100">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold shadow-lg">
+                            3
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">Informasi Acara</h2>
+                            <p class="text-sm text-gray-600 mt-1">Data dasar untuk judul undangan Anda</p>
+                        </div>
+                    </div>
+                </div>
                 
-                <div class="mb-8">
-                    <h3 class="text-lg font-medium text-indigo-600 mb-3 border-b pb-2">Mempelai Pria</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="md:col-span-2">
-                            <input type="text" name="groom_name" value="{{ old('groom_name') }}" placeholder="Nama Lengkap Pria" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+                <div class="p-6 md:p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Groom Name -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                                Nama Panggilan Pria
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="groom_name" value="{{ old('groom_name') }}" class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 input-glow transition-all text-lg" placeholder="Contoh: Romeo" required>
+                            <input type="hidden" name="groom_father" value="-">
+                            <input type="hidden" name="groom_mother" value="-">
                         </div>
-                        <input type="text" name="groom_father" value="{{ old('groom_father') }}" placeholder="Nama Ayah Pria" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500" required>
-                        <input type="text" name="groom_mother" value="{{ old('groom_mother') }}" placeholder="Nama Ibu Pria" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500" required>
-                    </div>
-                </div>
 
-                <div>
-                    <h3 class="text-lg font-medium text-pink-600 mb-3 border-b pb-2">Mempelai Wanita</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="md:col-span-2">
-                            <input type="text" name="bride_name" value="{{ old('bride_name') }}" placeholder="Nama Lengkap Wanita" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500" required>
+                        <!-- Bride Name -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-pink-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                                Nama Panggilan Wanita
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="bride_name" value="{{ old('bride_name') }}" class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 input-glow transition-all text-lg" placeholder="Contoh: Juliet" required>
+                            <input type="hidden" name="bride_father" value="-">
+                            <input type="hidden" name="bride_mother" value="-">
                         </div>
-                        <input type="text" name="bride_father" value="{{ old('bride_father') }}" placeholder="Nama Ayah Wanita" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500" required>
-                        <input type="text" name="bride_mother" value="{{ old('bride_mother') }}" placeholder="Nama Ibu Wanita" class="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-pink-500" required>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-8 border-b border-gray-100 bg-gray-50/50">
-                <h2 class="text-2xl font-semibold mb-6 text-gray-800">Cerita Perjalanan Cinta (Opsional)</h2>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Tuliskan kisah singkat pertemuan hingga pelaminan</label>
-                    <textarea name="story" rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500" placeholder="Contoh: Kami bertemu tahun 2020 di kampus...">{{ old('story') }}</textarea>
-                    <p class="text-xs text-gray-400 mt-1">Biarkan kosong jika tidak ingin ditampilkan.</p>
-                </div>
-            </div>
-
-            <div class="p-8 border-b border-gray-100 bg-gray-50/50">
-                <h2 class="text-2xl font-semibold mb-6 text-gray-800">4. Acara & Media</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Acara</label>
-                        <input type="date" name="event_date" value="{{ old('event_date') }}" class="w-full px-4 py-2 border rounded-lg" required>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Lokasi / Alamat</label>
-                        <textarea name="location_address" class="w-full px-4 py-2 border rounded-lg" rows="1" required>{{ old('location_address') }}</textarea>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Foto Cover (Utama)</label>
-                        <input type="file" name="cover_photo" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                        <p class="text-xs text-gray-400 mt-1">Format: JPG/PNG. Max 2MB.</p>
+                        
+                        <!-- Event Date -->
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                Tanggal Acara
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <input type="date" name="event_date" value="{{ old('event_date') }}" class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 input-glow transition-all text-lg" required>
+                            <input type="hidden" name="location_address" value="Alamat belum diisi">
+                        </div>
                     </div>
                     
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Galeri Foto (Banyak)</label>
-                        <input type="file" name="gallery_photos[]" accept="image/*" multiple class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100">
-                        <p class="text-xs text-gray-400 mt-1">Bisa pilih lebih dari 1 foto.</p>
+                    <!-- Info Note -->
+                    <div class="mt-8 p-6 bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-200 rounded-xl">
+                        <div class="flex gap-4 items-start">
+                            <div class="flex-shrink-0">
+                                <svg class="w-8 h-8 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-bold text-amber-900 text-lg mb-2">Informasi Penting</h4>
+                                <p class="text-amber-800 text-sm leading-relaxed">
+                                    Tenang saja! Data lengkap seperti <strong>Foto Pasangan, Galeri, Cerita Cinta, Lokasi Detail, Rekening Bank</strong>, dan informasi lainnya dapat Anda lengkapi nanti di <strong>Dashboard Client</strong> setelah pendaftaran berhasil. Anda akan memiliki akses penuh untuk mengedit semua konten undangan.
+                                </p>
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    <span class="inline-flex items-center gap-1 bg-white px-3 py-1 rounded-full text-xs font-semibold text-amber-700 border border-amber-200">
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                        Upload Foto
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 bg-white px-3 py-1 rounded-full text-xs font-semibold text-amber-700 border border-amber-200">
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                        Tambah Galeri
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 bg-white px-3 py-1 rounded-full text-xs font-semibold text-amber-700 border border-amber-200">
+                                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                        Edit Data Lengkap
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="p-8 text-right bg-gray-100">
-                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all transform hover:scale-105">
-                    Buat Undangan Sekarang &rarr;
-                </button>
+            <!-- Submit Button -->
+            <div class="sticky bottom-0 z-40 bg-gradient-to-t from-white via-white to-transparent pt-8 pb-6">
+                <div class="bg-white rounded-2xl shadow-2xl border-2 border-gray-100 p-6 md:p-8">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div class="text-center md:text-left">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">Siap Membuat Undangan?</h3>
+                            <p class="text-gray-600">Total pembayaran: <span class="text-2xl font-extrabold text-indigo-600">Rp 99.000</span></p>
+                            <p class="text-sm text-gray-500 mt-1">Akses mudah • Unlimited tamu • Edit kapan saja</p>
+                        </div>
+                        <button id="btnSubmit" type="submit" class="group relative bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-5 px-10 rounded-xl shadow-2xl shadow-indigo-300 transition-all transform hover:scale-105 active:scale-95 w-full md:w-auto text-lg flex items-center justify-center gap-3 overflow-hidden">
+                            <span class="relative z-10 flex items-center gap-3">
+                                Buat Pesanan & Lanjut Pembayaran
+                                <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                            </span>
+                            <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </form>
     </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-gray-900/95 backdrop-blur-sm z-50 flex items-center justify-center">
+        <div class="text-center space-y-6 max-w-md px-6">
+            <div class="relative">
+                <div class="w-24 h-24 mx-auto">
+                    <svg class="animate-spin" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" class="text-indigo-600"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" class="text-white"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <h3 class="text-2xl font-bold text-white">Memproses Pesanan Anda...</h3>
+                <p class="text-gray-300">Mohon tunggu sebentar, jangan tutup halaman ini.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLoading(form) {
+            // Validate form first
+            if (!form.checkValidity()) {
+                return true; // Let browser show validation messages
+            }
+
+            const btn = document.getElementById('btnSubmit'); 
+            const overlay = document.getElementById('loadingOverlay');
+            
+            if(btn) {
+                // Disable button
+                btn.innerHTML = `
+                    <svg class="animate-spin h-6 w-6 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span class="ml-3">Memproses...</span>
+                `;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+                btn.disabled = true;
+            }
+
+            // Show overlay
+            if(overlay) {
+                overlay.classList.remove('hidden');
+            }
+
+            return true; // Continue with form submission
+        }
+
+        // Auto-format WhatsApp input
+        const waInput = document.querySelector('input[name="client_whatsapp"]');
+        if(waInput) {
+            waInput.addEventListener('input', function(e) {
+                // Remove leading 0 if exists
+                if(e.target.value.startsWith('0')) {
+                    e.target.value = e.target.value.substring(1);
+                }
+            });
+        }
+
+        // Auto-format slug input
+        const slugInput = document.querySelector('input[name="slug"]');
+        if(slugInput) {
+            slugInput.addEventListener('input', function(e) {
+                // Convert to lowercase and replace invalid characters
+                e.target.value = e.target.value
+                    .toLowerCase()
+                    .replace(/[^a-z0-9-]/g, '-')
+                    .replace(/-+/g, '-')
+                    .replace(/^-|-$/g, '');
+            });
+        }
+
+        // Smooth scroll to errors
+        window.addEventListener('load', function() {
+            const errorElement = document.querySelector('.bg-red-50');
+            if(errorElement) {
+                errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        });
+    </script>
 
 </body>
 </html>

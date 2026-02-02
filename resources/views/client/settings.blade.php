@@ -1,273 +1,344 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Undangan</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 font-sans pb-20">
-
-    <nav class="bg-white shadow-sm border-b border-gray-200 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-        <div class="font-bold text-xl text-indigo-600">Undangan Digital</div>
-        <div class="flex gap-4">
-            <a href="{{ route('client.dashboard') }}" class="text-gray-500 hover:text-indigo-600 font-medium">Dashboard</a>
-            <span class="text-gray-300">|</span>
-            <span class="text-indigo-600 font-bold">Edit Undangan</span>
-        </div>
-    </nav>
-
-    <div class="max-w-4xl mx-auto p-6 md:p-10">
-        
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Edit Data Undangan</h1>
-            <a href="{{ url('undangan/' . $invitation->slug) }}" target="_blank" class="text-indigo-600 hover:underline text-sm font-bold flex items-center gap-1">
-                Lihat Hasil 
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex justify-between items-center max-w-7xl mx-auto">
+            <h2 class="font-bold text-2xl text-gray-800 dark:text-white leading-tight">
+                {{ __('Edit Data Undangan') }}
+            </h2>
+            <a href="{{ route('invitation.show', $invitation->slug) }}" target="_blank" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-full text-sm font-semibold shadow-lg transition-transform hover:-translate-y-0.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                Lihat Website
             </a>
         </div>
+    </x-slot>
 
-        @if(session('success'))
-            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded shadow-sm flex justify-between items-center">
-                <span>{{ session('success') }}</span>
-                <span class="text-xl">&times;</span>
+    <div class="py-10 bg-gray-100 dark:bg-gray-950 min-h-screen pb-40">
+        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-12">
+
+            @if(session('success'))
+            <div x-data="{ show: true }" x-show="show" class="bg-green-500 text-white p-4 rounded-xl shadow-lg flex justify-between items-center animate-bounce-in">
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <span class="font-bold">Data Berhasil Disimpan!</span>
+                </div>
+                <button @click="show = false" class="text-white hover:text-gray-200 font-bold">&times;</button>
             </div>
-        @endif
+            @endif
 
-        @if ($errors->any())
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-sm">
-                <ul class="list-disc pl-5">
+            @if ($errors->any())
+            <div class="bg-red-500 text-white p-4 rounded-xl shadow-lg">
+                <p class="font-bold mb-1">Periksa inputan Anda:</p>
+                <ul class="list-disc pl-5 text-sm">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
-        @endif
+            @endif
 
-        <form action="{{ route('client.updateSettings') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
-            @csrf
-            @method('PUT')
+            <form action="{{ route('client.updateSettings') }}" method="POST" enctype="multipart/form-data" class="space-y-16">
+                @csrf
+                @method('PUT')
 
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
-                <h2 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Data Mempelai</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="space-y-4 border p-4 rounded-lg bg-gray-50">
-                        <h3 class="font-bold text-indigo-600 border-b pb-2">Mempelai Pria</h3>
-                        
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="w-20 h-20 bg-gray-200 rounded-full overflow-hidden border-2 border-indigo-200 relative group shadow-sm">
-                                <img id="preview-groom" 
-                                     src="{{ isset($invitation->content['mempelai']['pria']['foto']) ? asset('storage/'.$invitation->content['mempelai']['pria']['foto']) : 'https://via.placeholder.com/150?text=Pria' }}" 
-                                     class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-1">
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Foto Pria</label>
-                                <input type="file" name="groom_photo" onchange="previewImage(this, 'preview-groom')" class="text-xs w-full text-gray-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Lengkap</label>
-                            <input type="text" name="groom_name" value="{{ $invitation->content['mempelai']['pria']['nama'] }}" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-200 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Ayah</label>
-                            <input type="text" name="groom_father" value="{{ $invitation->content['mempelai']['pria']['ayah'] }}" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-200 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Ibu</label>
-                            <input type="text" name="groom_mother" value="{{ $invitation->content['mempelai']['pria']['ibu'] }}" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-200 outline-none">
-                        </div>
-                    </div>
-
-                    <div class="space-y-4 border p-4 rounded-lg bg-gray-50">
-                        <h3 class="font-bold text-pink-600 border-b pb-2">Mempelai Wanita</h3>
-                        
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="w-20 h-20 bg-gray-200 rounded-full overflow-hidden border-2 border-pink-200 relative shadow-sm">
-                                <img id="preview-bride" 
-                                     src="{{ isset($invitation->content['mempelai']['wanita']['foto']) ? asset('storage/'.$invitation->content['mempelai']['wanita']['foto']) : 'https://via.placeholder.com/150?text=Wanita' }}" 
-                                     class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-1">
-                                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Foto Wanita</label>
-                                <input type="file" name="bride_photo" onchange="previewImage(this, 'preview-bride')" class="text-xs w-full text-gray-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100 cursor-pointer">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Lengkap</label>
-                            <input type="text" name="bride_name" value="{{ $invitation->content['mempelai']['wanita']['nama'] }}" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-pink-200 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Ayah</label>
-                            <input type="text" name="bride_father" value="{{ $invitation->content['mempelai']['wanita']['ayah'] }}" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-pink-200 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Ibu</label>
-                            <input type="text" name="bride_mother" value="{{ $invitation->content['mempelai']['wanita']['ibu'] }}" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-pink-200 outline-none">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
-                <h2 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Detail Acara & Media</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tanggal Acara</label>
-                        <input type="date" name="event_date" value="{{ $invitation->event_date->format('Y-m-d') }}" class="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-indigo-100">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 border-b border-gray-300 dark:border-gray-700 pb-2">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white uppercase tracking-wider">1. Profile Mempelai</h3>
                     </div>
                     
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">ID Video Youtube</label>
-                        <input type="text" name="video_link" value="{{ $invitation->content['media']['video_link'] ?? '' }}" placeholder="Contoh: dQw4w9WgXcQ" class="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-indigo-100">
-                        <p class="text-[10px] text-gray-400 mt-1">Hanya masukkan Kode ID (bukan link lengkap).</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <h4 class="text-indigo-600 dark:text-indigo-400 font-bold mb-2">Mempelai Pria</h4>
+                            
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-16 h-16 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden border-2 border-indigo-500">
+                                    <img id="prev-groom" src="{{ isset($invitation->content['mempelai']['pria']['foto']) ? asset($invitation->content['mempelai']['pria']['foto']) : 'https://via.placeholder.com/150' }}" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-gray-500 dark:text-gray-400 mb-1">Foto Pria</label>
+                                    <input type="file" name="groom_photo" onchange="previewImage(this, 'prev-groom')" class="text-xs text-gray-500 dark:text-gray-400">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="form-label">Nama Lengkap</label>
+                                <input type="text" name="groom_name" value="{{ $invitation->content['mempelai']['pria']['nama'] ?? '' }}" class="form-input" placeholder="Nama Lengkap Pria">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="form-label">Panggilan</label>
+                                    <input type="text" name="groom_nickname" value="{{ $invitation->content['mempelai']['pria']['panggilan'] ?? '' }}" class="form-input" placeholder="Romeo">
+                                </div>
+                                <div>
+                                    <label class="form-label">Instagram</label>
+                                    <input type="text" name="groom_instagram" value="{{ $invitation->content['mempelai']['pria']['instagram'] ?? '' }}" class="form-input" placeholder="romeo_ig">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label">Nama Ayah</label>
+                                <input type="text" name="groom_father" value="{{ $invitation->content['mempelai']['pria']['ayah'] ?? '' }}" class="form-input" placeholder="Bpk...">
+                            </div>
+                            <div>
+                                <label class="form-label">Nama Ibu</label>
+                                <input type="text" name="groom_mother" value="{{ $invitation->content['mempelai']['pria']['ibu'] ?? '' }}" class="form-input" placeholder="Ibu...">
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h4 class="text-pink-600 dark:text-pink-400 font-bold mb-2">Mempelai Wanita</h4>
+                            
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-16 h-16 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden border-2 border-pink-500">
+                                    <img id="prev-bride" src="{{ isset($invitation->content['mempelai']['wanita']['foto']) ? asset($invitation->content['mempelai']['wanita']['foto']) : 'https://via.placeholder.com/150' }}" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-gray-500 dark:text-gray-400 mb-1">Foto Wanita</label>
+                                    <input type="file" name="bride_photo" onchange="previewImage(this, 'prev-bride')" class="text-xs text-gray-500 dark:text-gray-400">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="form-label">Nama Lengkap</label>
+                                <input type="text" name="bride_name" value="{{ $invitation->content['mempelai']['wanita']['nama'] ?? '' }}" class="form-input" placeholder="Nama Lengkap Wanita">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="form-label">Panggilan</label>
+                                    <input type="text" name="bride_nickname" value="{{ $invitation->content['mempelai']['wanita']['panggilan'] ?? '' }}" class="form-input" placeholder="Juliet">
+                                </div>
+                                <div>
+                                    <label class="form-label">Instagram</label>
+                                    <input type="text" name="bride_instagram" value="{{ $invitation->content['mempelai']['wanita']['instagram'] ?? '' }}" class="form-input" placeholder="juliet_ig">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label">Nama Ayah</label>
+                                <input type="text" name="bride_father" value="{{ $invitation->content['mempelai']['wanita']['ayah'] ?? '' }}" class="form-input" placeholder="Bpk...">
+                            </div>
+                            <div>
+                                <label class="form-label">Nama Ibu</label>
+                                <input type="text" name="bride_mother" value="{{ $invitation->content['mempelai']['wanita']['ibu'] ?? '' }}" class="form-input" placeholder="Ibu...">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <label class="form-label">Quote Undangan</label>
+                        <textarea name="quote" rows="2" class="form-input" placeholder="Tulis kata-kata mutiara...">{{ $invitation->content['quote'] ?? '' }}</textarea>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 border-b border-gray-300 dark:border-gray-700 pb-2">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white uppercase tracking-wider">2. Rangkaian Acara</h3>
                     </div>
 
-                    <div class="md:col-span-2 border p-4 rounded-lg bg-green-50/50 border-green-100">
-                        <label class="block text-xs font-bold text-green-700 uppercase mb-2">Musik Latar (MP3)</label>
-                        <div class="flex items-center gap-4">
-                            <div class="flex-1">
-                                <input type="file" name="music_file" accept=".mp3" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-100 file:text-green-700 hover:file:bg-green-200 cursor-pointer">
-                                <p class="text-[10px] text-gray-400 mt-1">Maksimal ukuran file: 20MB.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-gray-700 dark:text-gray-300 border-l-4 border-indigo-500 pl-3">Acara 1 (Akad)</h4>
+                            <div>
+                                <label class="form-label">Judul Acara</label>
+                                <input type="text" name="akad_title" value="{{ $invitation->content['acara']['akad']['judul'] ?? '' }}" class="form-input" placeholder="Akad Nikah">
                             </div>
-                            @if(isset($invitation->content['media']['music']))
-                                <div class="text-xs bg-white px-3 py-1 rounded border border-green-200 text-green-700 flex items-center gap-1 shadow-sm">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    <span>Sudah terupload</span>
-                                </div>
+                            <div>
+                                <label class="form-label">Waktu</label>
+                                <input type="datetime-local" name="akad_datetime" value="{{ isset($invitation->content['acara']['akad']['waktu']) ? \Carbon\Carbon::parse($invitation->content['acara']['akad']['waktu'])->format('Y-m-d\TH:i') : '' }}" class="form-input">
+                            </div>
+                            <div>
+                                <label class="form-label">Lokasi (Gedung/Rumah)</label>
+                                <input type="text" name="akad_location" value="{{ $invitation->content['acara']['akad']['tempat'] ?? '' }}" class="form-input" placeholder="Masjid Agung">
+                            </div>
+                            <div>
+                                <label class="form-label">Alamat Lengkap</label>
+                                <textarea name="akad_address" rows="2" class="form-input">{{ $invitation->content['acara']['akad']['alamat'] ?? '' }}</textarea>
+                            </div>
+                            <div>
+                                <label class="form-label">Link Maps</label>
+                                <input type="text" name="akad_map_link" value="{{ $invitation->content['acara']['akad']['maps'] ?? '' }}" class="form-input" placeholder="https://maps...">
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-gray-700 dark:text-gray-300 border-l-4 border-pink-500 pl-3">Acara 2 (Resepsi)</h4>
+                            <div>
+                                <label class="form-label">Judul Acara</label>
+                                <input type="text" name="resepsi_title" value="{{ $invitation->content['acara']['resepsi']['judul'] ?? '' }}" class="form-input" placeholder="Resepsi">
+                            </div>
+                            <div>
+                                <label class="form-label">Waktu</label>
+                                <input type="datetime-local" name="resepsi_datetime" value="{{ isset($invitation->content['acara']['resepsi']['waktu']) ? \Carbon\Carbon::parse($invitation->content['acara']['resepsi']['waktu'])->format('Y-m-d\TH:i') : '' }}" class="form-input">
+                            </div>
+                            <div>
+                                <label class="form-label">Lokasi</label>
+                                <input type="text" name="resepsi_location" value="{{ $invitation->content['acara']['resepsi']['tempat'] ?? '' }}" class="form-input" placeholder="Hotel...">
+                            </div>
+                            <div>
+                                <label class="form-label">Alamat Lengkap</label>
+                                <textarea name="resepsi_address" rows="2" class="form-input">{{ $invitation->content['acara']['resepsi']['alamat'] ?? '' }}</textarea>
+                            </div>
+                            <div>
+                                <label class="form-label">Link Maps</label>
+                                <input type="text" name="resepsi_map_link" value="{{ $invitation->content['acara']['resepsi']['maps'] ?? '' }}" class="form-input" placeholder="https://maps...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 border-b border-gray-300 dark:border-gray-700 pb-2">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white uppercase tracking-wider">3. Media & Galeri</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="form-label mb-2">Foto Cover</label>
+                            <input type="file" name="cover_image" class="form-input bg-white dark:bg-gray-800 pt-2">
+                            @if(isset($invitation->content['media']['cover']))
+                                <p class="text-xs text-green-600 mt-1">Cover sudah ada.</p>
                             @endif
                         </div>
+                        <div>
+                            <label class="form-label mb-2">Musik (.mp3)</label>
+                            <input type="file" name="music_file" accept=".mp3" class="form-input bg-white dark:bg-gray-800 pt-2">
+                        </div>
+                        <div>
+                            <label class="form-label">Link Youtube Embed</label>
+                            <input type="text" name="video_link" value="{{ $invitation->content['media']['video_link'] ?? '' }}" class="form-input" placeholder="https://www.youtube.com/embed/...">
+                        </div>
+                        <div>
+                            <label class="form-label mb-2">Galeri Foto (Banyak)</label>
+                            <input type="file" name="gallery_photos[]" multiple class="form-input bg-white dark:bg-gray-800 pt-2">
+                        </div>
                     </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Link Google Maps</label>
-                        <input type="text" name="google_maps_link" value="{{ $invitation->content['acara']['maps_link'] }}" class="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-indigo-100">
-                    </div>
-
-                    <div class="md:col-span-2">
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Alamat Lengkap</label>
-                        <textarea name="location_address" rows="2" class="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-indigo-100">{{ $invitation->content['acara']['alamat'] }}</textarea>
-                    </div>
+                    
+                    @if(isset($invitation->content['media']['gallery']) && count($invitation->content['media']['gallery']) > 0)
+                        <div class="grid grid-cols-4 md:grid-cols-6 gap-2 mt-4">
+                            @foreach($invitation->content['media']['gallery'] as $photo)
+                                <img src="{{ asset($photo) }}" class="h-20 w-full object-cover rounded-lg border border-gray-300 dark:border-gray-700">
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
-            </div>
 
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-yellow-200 bg-yellow-50/30">
-                <div class="flex items-center gap-2 mb-6 border-b border-yellow-200 pb-2">
-                    <h2 class="text-xl font-bold text-gray-800">Amplop Digital</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Bank / E-Wallet</label>
-                        <input type="text" name="bank_name" value="{{ $invitation->content['amplop']['bank_name'] ?? '' }}" class="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-yellow-200">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 border-b border-gray-300 dark:border-gray-700 pb-2">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white uppercase tracking-wider">4. Love Story</h3>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">No. Rekening</label>
-                        <input type="number" name="account_number" value="{{ $invitation->content['amplop']['account_number'] ?? '' }}" class="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-yellow-200">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Atas Nama</label>
-                        <input type="text" name="account_holder" value="{{ $invitation->content['amplop']['account_holder'] ?? '' }}" class="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-yellow-200">
-                    </div>
-                </div>
-            </div>
 
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
-                <h2 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Foto Cover Utama</h2>
-                <div class="flex items-center gap-6">
-                    <div class="w-24 h-24 bg-gray-100 rounded-lg overflow-hidden border shadow-sm">
-                        <img id="preview-cover" 
-                             src="{{ isset($invitation->content['media']['cover']) ? asset('storage/'.$invitation->content['media']['cover']) : 'https://via.placeholder.com/150?text=Cover' }}" 
-                             class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex-1">
-                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Upload Foto Baru</label>
-                        <input type="file" name="cover_photo" onchange="previewImage(this, 'preview-cover')" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200 cursor-pointer">
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
-                <h2 class="text-xl font-bold text-gray-800 mb-6 border-b pb-2">Kisah Cinta (Love Story)</h2>
-                <p class="text-sm text-gray-500 mb-6">Ceritakan perjalanan cinta kalian. Kosongkan jika tidak ingin ditampilkan.</p>
-                
-                <div class="space-y-8">
-                    @php
-                        // Ambil data stories yang ada, atau array kosong jika belum ada
-                        $stories = $invitation->content['love_stories'] ?? [];
-                        // Kita sediakan 3 slot default
-                        $slots = [0, 1, 2];
+                    @php 
+                        $stories = $invitation->content['love_stories'] ?? []; 
+                        for($i=count($stories); $i<3; $i++) {
+                            $stories[] = ['year' => '', 'title' => '', 'story' => '', 'image' => null];
+                        }
                     @endphp
 
-                    @foreach($slots as $index)
-                        @php 
-                            $story = $stories[$index] ?? null; 
-                        @endphp
-                        
-                        <div class="border border-indigo-100 bg-indigo-50/30 p-6 rounded-xl relative">
-                            <span class="absolute top-0 left-0 bg-indigo-100 text-indigo-800 px-3 py-1 rounded-br-lg text-xs font-bold">
-                                Cerita #{{ $index + 1 }}
-                            </span>
-
-                            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 mt-4">
-                                <div class="md:col-span-4">
-                                    <div class="w-full h-32 bg-gray-200 rounded-lg overflow-hidden border mb-2">
-                                        <img id="preview-story-{{ $index }}" 
-                                             src="{{ isset($story['image']) ? asset('storage/'.$story['image']) : 'https://via.placeholder.com/300x200?text=Foto+Momen' }}" 
-                                             class="w-full h-full object-cover">
-                                    </div>
-                                    <input type="file" name="stories[{{ $index }}][image]" onchange="previewImage(this, 'preview-story-{{ $index }}')" class="w-full text-xs text-gray-500">
-                                    <input type="hidden" name="stories[{{ $index }}][old_image]" value="{{ $story['image'] ?? '' }}">
-                                </div>
-
-                                <div class="md:col-span-8 space-y-3">
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Judul Momen</label>
-                                            <input type="text" name="stories[{{ $index }}][title]" value="{{ $story['title'] ?? '' }}" placeholder="Contoh: Pertama Bertemu" class="w-full border rounded p-2 text-sm">
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Tahun / Tanggal</label>
-                                            <input type="text" name="stories[{{ $index }}][year]" value="{{ $story['year'] ?? '' }}" placeholder="Contoh: 2020" class="w-full border rounded p-2 text-sm">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Cerita Singkat</label>
-                                        <textarea name="stories[{{ $index }}][content]" rows="3" class="w-full border rounded p-2 text-sm" placeholder="Ceritakan sedikit tentang momen ini...">{{ $story['content'] ?? '' }}</textarea>
-                                    </div>
-                                </div>
-                            </div>
+                    @foreach ($stories as $index => $story)
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div class="md:col-span-2">
+                            <label class="form-label">Tahun</label>
+                            <input type="text" name="love_stories[{{ $index }}][year]" value="{{ $story['year'] ?? '' }}" class="form-input" placeholder="2020">
                         </div>
+                        <div class="md:col-span-4">
+                            <label class="form-label">Judul</label>
+                            <input type="text" name="love_stories[{{ $index }}][title]" value="{{ $story['title'] ?? '' }}" class="form-input" placeholder="Pertama Bertemu">
+                        </div>
+                        <div class="md:col-span-6">
+                            <label class="form-label">Cerita</label>
+                            <textarea name="love_stories[{{ $index }}][story]" rows="1" class="form-input" placeholder="Cerita singkat...">{{ $story['story'] ?? '' }}</textarea>
+                        </div>
+                    </div>
                     @endforeach
                 </div>
-            </div>
 
-            <div class="sticky bottom-4 z-40 text-right">
-                <button type="submit" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg hover:bg-indigo-700 transition-all transform hover:scale-105 active:scale-95 border-2 border-transparent hover:border-indigo-400">
-                    💾 Simpan Perubahan
-                </button>
-            </div>
-        </form>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3 border-b border-gray-300 dark:border-gray-700 pb-2">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white uppercase tracking-wider">5. Amplop Digital</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="form-label">Bank / E-Wallet</label>
+                            <input type="text" name="bank_name" value="{{ $invitation->content['amplop']['bank_name'] ?? '' }}" class="form-input" placeholder="BCA">
+                        </div>
+                        <div>
+                            <label class="form-label">No Rekening</label>
+                            <input type="text" name="bank_number" value="{{ $invitation->content['amplop']['account_number'] ?? '' }}" class="form-input" placeholder="123456">
+                        </div>
+                        <div>
+                            <label class="form-label">Atas Nama</label>
+                            <input type="text" name="bank_holder" value="{{ $invitation->content['amplop']['account_holder'] ?? '' }}" class="form-input" placeholder="Nama Pemilik">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="form-label">Alamat Kirim Kado</label>
+                            <textarea name="gift_address" rows="2" class="form-input" placeholder="Jalan...">{{ $invitation->content['amplop']['alamat_kado'] ?? '' }}</textarea>
+                        </div>
+                        <div>
+                            <label class="form-label">Link Maps</label>
+                            <input type="text" name="gift_map_link" value="{{ $invitation->content['amplop']['maps_kado'] ?? '' }}" class="form-input" placeholder="https://maps...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 p-4 z-50">
+                    <div class="max-w-5xl mx-auto flex justify-end">
+                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-10 rounded-full shadow-lg transition-transform transform hover:-translate-y-1 w-full md:w-auto">
+                            Simpan Data
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
     </div>
+
+    <style>
+        /* Paksa warna label agar terlihat di dark/light mode */
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            color: #4b5563; /* Gray-600 */
+        }
+        .dark .form-label {
+            color: #d1d5db !important; /* Gray-300 (Visible in Dark Mode) */
+        }
+
+        /* Paksa Input Style agar kontras */
+        .form-input {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db; /* Gray-300 */
+            background-color: #ffffff !important; /* White BG */
+            color: #111827 !important; /* Black Text */
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        /* Dark Mode Override untuk Input */
+        .dark .form-input {
+            background-color: #1f2937 !important; /* Gray-800 */
+            border-color: #374151 !important; /* Gray-700 */
+            color: #ffffff !important; /* White Text (PASTI TERLIHAT) */
+        }
+
+        .dark .form-input::placeholder {
+            color: #9ca3af !important; /* Gray-400 */
+        }
+    </style>
 
     <script>
         function previewImage(input, previewId) {
             const preview = document.getElementById(previewId);
             const file = input.files[0];
-
             if (file) {
                 const reader = new FileReader();
-
-                reader.onload = function(e) {
-                    preview.src = e.target.result; // Update source gambar
+                reader.onload = function(e) { 
+                    preview.src = e.target.result; 
                 }
-
-                reader.readAsDataURL(file); // Baca file sebagai URL data
+                reader.readAsDataURL(file);
             }
         }
     </script>
-
-</body>
-</html>
+</x-app-layout>

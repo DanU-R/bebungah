@@ -11,101 +11,102 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    // 1. Halaman Dashboard Admin (List Orderan Masuk)
+    // 1. Halaman Dashboard Admin
     public function index()
     {
-        // 1. Ambil data yang statusnya PENDING (Untuk di-ACC)
         $pendingOrders = Invitation::where('status', 'pending')->latest()->get();
-
-        // 2. Ambil data yang statusnya ACTIVE (Untuk Reset Password)
-        // Kita load relasi 'user' agar bisa ambil ID user untuk reset password
+        // Load user agar tidak N+1 Problem saat looping di view
         $activeOrders = Invitation::where('status', 'active')->with('user')->latest()->get();
         
-        // Kirim dua variabel ke view
         return view('admin.dashboard', compact('pendingOrders', 'activeOrders'));
     }
 
-    // 2. Logic ACC / Approve Order
-   
+    // 2. Logic Approve Order
     public function approve($id)
-{
-    $invitation = Invitation::findOrFail($id);
+    {
+        $invitation = Invitation::findOrFail($id);
 
-    $credentials = [];
-
-    DB::transaction(function () use ($invitation, &$credentials) {
-
-        // Ambil nama mempelai dari data undangan
-        $namaPria = $invitation->content['mempelai']['pria']['nama'];
-        $namaWanita = $invitation->content['mempelai']['wanita']['nama'];
-
-        $namaAkun = $namaPria . ' & ' . $namaWanita;
-
-        // Ambil nama depan saja
-        $pria = explode(' ', trim($namaPria))[0];
-        $wanita = explode(' ', trim($namaWanita))[0];
-
-        // Bersihkan (lowercase + alfanumerik)
-        $pria = strtolower(preg_replace('/[^a-z0-9]/i', '', $pria));
-        $wanita = strtolower(preg_replace('/[^a-z0-9]/i', '', $wanita));
-
-        // Generate email unik
-        $baseEmail = "{$pria}&{$wanita}";
-        $email = $baseEmail . '@bebungah.com';
-
-        $counter = 1;
-        while (User::where('email', $email)->exists()) {
-            $email = $baseEmail . $counter . '@bebungah.com';
-            $counter++;
+        // [SAFETY] Cek jika sudah aktif, jangan diproses lagi
+        if ($invitation->status === 'active') {
+            return redirect()->back()->with('error', 'Pesanan ini sudah aktif sebelumnya!');
         }
 
-        // Generate password
-        $rawPassword = Str::random(8);
+        $credentials = [];
 
-        // Buat user
-        $user = User::create([
-            'name' => $namaAkun,
-            'email' => $email,
-            'password' => Hash::make($rawPassword),
-            'role' => 'client',
-        ]);
+        try {
+            DB::transaction(function () use ($invitation, &$credentials) {
+                
+                // Ambil Content dengan null coalescing operator (??) untuk jaga-jaga
+                $content = $invitation->content;
+                $namaPria = $content['mempelai']['pria']['nama'] ?? 'Mempelai Pria';
+                $namaWanita = $content['mempelai']['wanita']['nama'] ?? 'Mempelai Wanita';
 
-        // Update invitation
-        $invitation->update([
-            'status' => 'active',
-            'user_id' => $user->id
-        ]);
+                $namaAkun = $namaPria . ' & ' . $namaWanita;
 
-        // Simpan kredensial untuk ditampilkan
-        $credentials = [
-            'name' => $namaAkun,
-            'email' => $email,
-            'password' => $rawPassword
-        ];
-    });
+                // Proses generate username clean
+                $pria = explode(' ', trim($namaPria))[0];
+                $wanita = explode(' ', trim($namaWanita))[0];
 
-    return redirect()->back()->with('new_account', $credentials);
-}
+                $pria = strtolower(preg_replace('/[^a-z0-9]/i', '', $pria));
+                $wanita = strtolower(preg_replace('/[^a-z0-9]/i', '', $wanita));
 
+                // Generate Email
+                $baseEmail = "{$pria}.{$wanita}"; // Saya sarankan pakai titik (.) lebih aman dari &
+                $email = $baseEmail . '@temanten.inv';
 
-    // FITUR BARU: Reset Password
+                $counter = 1;
+                while (User::where('email', $email)->exists()) {
+                    $email = $baseEmail . $counter . '@temanten.inv';
+                    $counter++;
+                }
+
+                // Password
+                $rawPassword = Str::random(8);
+
+                // Create User
+                $user = User::create([
+                    'name' => $namaAkun,
+                    'email' => $email,
+                    'password' => Hash::make($rawPassword),
+                    'role' => 'client',
+                ]);
+
+                // Update Invitation
+                $invitation->update([
+                    'status' => 'active',
+                    'user_id' => $user->id
+                ]);
+
+                $credentials = [
+                    'name' => $namaAkun,
+                    'email' => $email,
+                    'password' => $rawPassword
+                ];
+            });
+
+            return redirect()->back()->with('new_account', $credentials);
+
+        } catch (\Exception $e) {
+            // Jika ada error lain (misal koneksi db putus)
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    // 3. Reset Password
     public function resetPassword($user_id)
     {
         $user = User::findOrFail($user_id);
         
-        // 1. Generate Password Baru (Acak)
-        $newPassword = Str::random(8); // Contoh: x7Z9Lm2P
+        $newPassword = Str::random(8);
 
-        // 2. Update ke Database (Versi Enkripsi)
         $user->update([
             'password' => Hash::make($newPassword)
         ]);
 
-        // 3. Kembalikan ke Dashboard dengan data Password Mentah (agar bisa dicopy)
         return redirect()->back()->with('reset_success', [
             'name' => $user->name,
             'email' => $user->email,
-            'password' => $newPassword // Password asli untuk dilihat admin
+            'password' => $newPassword
         ]);
     }
 }

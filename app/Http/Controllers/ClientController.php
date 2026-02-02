@@ -2,163 +2,273 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guest;
 use App\Models\Invitation;
+use App\Models\Guest;
 use Illuminate\Http\Request;
-use App\Imports\GuestsImport;
-use Intervention\Image\Laravel\Facades\Image; // Pastikan ini benar
-use App\Exports\GuestTemplateExport;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\ToArray;
 
 class ClientController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-        $invitation = Invitation::where('user_id', $user->id)->firstOrFail();
+        $invitation = Invitation::where('user_id', $user->id)->first();
 
-        $totalGuests = $invitation->guests()->count();
-        $hadir = $invitation->guests()->where('rsvp_status', 'hadir')->count();
-        $tidakHadir = $invitation->guests()->where('rsvp_status', 'tidak_hadir')->count();
-        $pending = $invitation->guests()->where('rsvp_status', 'pending')->count();
-        $guests = $invitation->guests()->latest()->get();
+        $guests = [];
+        $totalGuests = 0;
+        $hadir = 0;
+        $tidakHadir = 0;
+        $pending = 0;
 
-        return view('client.dashboard', compact('invitation', 'guests', 'totalGuests', 'hadir', 'tidakHadir', 'pending'));
-    }
+        if ($invitation) {
+            $guests = $invitation->guests()->orderBy('created_at', 'desc')->get();
+            $totalGuests = $guests->count();
+            $hadir = $guests->where('rsvp_status', 'hadir')->count();
+            $tidakHadir = $guests->where('rsvp_status', 'tidak_hadir')->count();
+            $pending = $guests->whereIn('rsvp_status', ['pending', null])->count();
+        }
 
-    public function importGuests(Request $request)
-    {
-        $request->validate([
-            'file_excel' => 'required|mimes:xlsx,xls,csv'
-        ]);
-
-        $user = Auth::user();
-        $invitation = Invitation::where('user_id', $user->id)->firstOrFail();
-
-        Excel::import(new GuestsImport($invitation->id), $request->file('file_excel'));
-
-        return redirect()->back()->with('success', 'Data tamu berhasil diimport!');
-    }
-
-    public function downloadTemplate()
-    {
-        return Excel::download(new GuestTemplateExport, 'template_tamu.xlsx');
+        return view('client.dashboard', compact(
+            'invitation',
+            'guests',
+            'totalGuests',
+            'hadir',
+            'tidakHadir',
+            'pending'
+        ));
     }
 
     public function settings()
     {
         $user = Auth::user();
         $invitation = Invitation::where('user_id', $user->id)->firstOrFail();
+
         return view('client.settings', compact('invitation'));
     }
 
     public function updateSettings(Request $request)
     {
-        $user = Auth::user();
-        $invitation = Invitation::where('user_id', $user->id)->firstOrFail();
+        $user = auth()->user();
+        $invitation = $user->invitations()->firstOrFail();
 
-        // 1. Validasi
-        $request->validate([
-            'groom_name' => 'required',
-            'bride_name' => 'required',
-            'event_date' => 'required|date',
-            'cover_photo' => 'nullable|image|max:10240',
-            // Validasi Array Love Story
-            'stories.*.title' => 'nullable|string',
-            'stories.*.year' => 'nullable|string',
-            'stories.*.content' => 'nullable|string',
-            'stories.*.image' => 'nullable|image|max:10240',
-        ]);
+        $content = $invitation->content ?? [];
+        $folderName = $invitation->id;
 
-        $content = $invitation->content;
-
-        // A. Update Data Teks
-        $content['mempelai']['pria']['nama']   = $request->groom_name;
-        $content['mempelai']['pria']['ayah']   = $request->groom_father;
-        $content['mempelai']['pria']['ibu']    = $request->groom_mother;
-        $content['mempelai']['wanita']['nama'] = $request->bride_name;
-        $content['mempelai']['wanita']['ayah'] = $request->bride_father;
-        $content['mempelai']['wanita']['ibu']  = $request->bride_mother;
-        $content['acara']['alamat']    = $request->location_address;
-        $content['acara']['maps_link'] = $request->google_maps_link;
-        $content['amplop'] = [
-            'bank_name' => $request->bank_name,
-            'account_number' => $request->account_number,
-            'account_holder' => $request->account_holder,
-        ];
-        $content['media']['video_link'] = $request->video_link;
-
-        // B. PROSES UPLOAD FILE (HD Quality)
-        $uploadPath = "invitations/{$invitation->uuid}";
-
-        // Helper Function Image Processing
-        $processImage = function($file, $width, $prefix, $quality = 85) use ($uploadPath) {
-            $filename = uniqid() . "_{$prefix}.webp";
-            $path = $uploadPath . '/' . $filename;
-            
-            // 1. Baca Image
-            $image = Image::read($file);
-            
-            // 2. Resize hanya jika gambar asli lebih besar dari target
-            if ($image->width() > $width) {
-                $image->scale(width: $width);
+        $uploadFile = function ($inputName, $subFolder) use ($request, $folderName) {
+            if ($request->hasFile($inputName)) {
+                $file = $request->file($inputName);
+                $filename = uniqid() . '_' . $inputName . '.' . $file->getClientOriginalExtension();
+                $path = $file->storeAs("public/invitations/{$folderName}", $filename);
+                return str_replace('public/', 'storage/', $path);
             }
-            
-            // 3. Encode ke WebP
-            $encoded = $image->toWebp(quality: $quality);
-            
-            // 4. SIMPAN (PENTING: Gunakan (string) atau toString())
-            // Error sebelumnya terjadi di sini karena $encoded masih berupa Object
-            Storage::disk('public')->put($path, (string) $encoded);
-            
-            return $path;
+            return null;
         };
 
-        // 1. Cover (1920px, Quality 95%)
-        if ($request->hasFile('cover_photo')) {
-            $content['media']['cover'] = $processImage($request->file('cover_photo'), 1920, 'cover', 95);
+        $content['mempelai']['pria']['nama'] = $request->groom_name;
+        $content['mempelai']['pria']['panggilan'] = $request->groom_nickname;
+        $content['mempelai']['pria']['ayah'] = $request->groom_father;
+        $content['mempelai']['pria']['ibu'] = $request->groom_mother;
+        $content['mempelai']['pria']['instagram'] = $request->groom_instagram;
+
+        $content['mempelai']['wanita']['nama'] = $request->bride_name;
+        $content['mempelai']['wanita']['panggilan'] = $request->bride_nickname;
+        $content['mempelai']['wanita']['ayah'] = $request->bride_father;
+        $content['mempelai']['wanita']['ibu'] = $request->bride_mother;
+        $content['mempelai']['wanita']['instagram'] = $request->bride_instagram;
+
+        $content['quote'] = $request->quote;
+
+        $content['acara']['akad']['judul'] = $request->akad_title;
+        $content['acara']['akad']['waktu'] = $request->akad_datetime;
+        $content['acara']['akad']['tempat'] = $request->akad_location;
+        $content['acara']['akad']['alamat'] = $request->akad_address;
+        $content['acara']['akad']['maps'] = $request->akad_map_link;
+
+        $content['acara']['resepsi']['judul'] = $request->resepsi_title;
+        $content['acara']['resepsi']['waktu'] = $request->resepsi_datetime;
+        $content['acara']['resepsi']['tempat'] = $request->resepsi_location;
+        $content['acara']['resepsi']['alamat'] = $request->resepsi_address;
+        $content['acara']['resepsi']['maps'] = $request->resepsi_map_link;
+
+        $content['amplop']['bank_name'] = $request->bank_name;
+        $content['amplop']['account_number'] = $request->bank_number;
+        $content['amplop']['account_holder'] = $request->bank_holder;
+        $content['amplop']['alamat_kado'] = $request->gift_address;
+        $content['amplop']['maps_kado'] = $request->gift_map_link;
+
+        if ($path = $uploadFile('groom_photo', $folderName)) {
+            $content['mempelai']['pria']['foto'] = $path;
+        }
+        if ($path = $uploadFile('bride_photo', $folderName)) {
+            $content['mempelai']['wanita']['foto'] = $path;
+        }
+        if ($path = $uploadFile('cover_image', $folderName)) {
+            $content['media']['cover'] = $path;
+        }
+        if ($path = $uploadFile('music_file', $folderName)) {
+            $content['media']['music'] = $path;
         }
 
-        // 2. Foto Pria (800px, Quality 90%)
-        if ($request->hasFile('groom_photo')) {
-            $content['mempelai']['pria']['foto'] = $processImage($request->file('groom_photo'), 800, 'groom', 90);
-        }
-
-        // 3. Foto Wanita (800px, Quality 90%)
-        if ($request->hasFile('bride_photo')) {
-            $content['mempelai']['wanita']['foto'] = $processImage($request->file('bride_photo'), 800, 'bride', 90);
-        }
-
-        // 4. Musik
-        if ($request->hasFile('music_file')) {
-            $content['media']['music'] = $request->file('music_file')->store($uploadPath, 'public');
-        }
-
-        // 5. PROSES LOVE STORY
-        $newStories = $request->input('stories', []);
-        
-        foreach ($newStories as $key => $storyData) {
-            // Cek apakah user upload foto baru untuk story ini
-            if ($request->hasFile("stories.{$key}.image")) {
-                // Upload foto baru (1200px, Quality 90%)
-                $newStories[$key]['image'] = $processImage($request->file("stories.{$key}.image"), 1200, "story_{$key}", 90);
-            } else {
-                // Jika tidak upload, gunakan foto lama dari hidden input
-                $newStories[$key]['image'] = $request->input("stories.{$key}.old_image");
+        if ($request->hasFile('gallery_photos')) {
+            $galleryPaths = $content['media']['gallery'] ?? [];
+            foreach ($request->file('gallery_photos') as $photo) {
+                $filename = uniqid() . '_gallery.' . $photo->getClientOriginalExtension();
+                $path = $photo->storeAs("public/invitations/{$folderName}", $filename);
+                $galleryPaths[] = str_replace('public/', 'storage/', $path);
             }
+            $content['media']['gallery'] = $galleryPaths;
         }
-        
-        // Simpan array stories ke content
-        $content['love_stories'] = array_values($newStories);
 
-        // Update Database
-        $invitation->update([
-            'event_date' => $request->event_date,
-            'content' => $content,
+        $content['media']['video_link'] = $request->video_link;
+
+        if ($request->has('love_stories')) {
+            $stories = $request->love_stories;
+            foreach ($stories as $key => $story) {
+                if ($request->hasFile("love_stories.{$key}.image")) {
+                    $file = $request->file("love_stories.{$key}.image");
+                    $filename = uniqid() . '_story.' . $file->getClientOriginalExtension();
+                    $path = $file->storeAs("public/invitations/{$folderName}", $filename);
+                    $stories[$key]['image'] = str_replace('public/', 'storage/', $path);
+                } elseif (isset($content['love_stories'][$key]['image'])) {
+                    $stories[$key]['image'] = $content['love_stories'][$key]['image'];
+                }
+            }
+            $content['love_stories'] = $stories;
+        }
+
+        if (isset($content['acara']['resepsi']['waktu'])) {
+            $invitation->event_date = Carbon::parse($content['acara']['resepsi']['waktu']);
+        } elseif (isset($content['acara']['akad']['waktu'])) {
+            $invitation->event_date = Carbon::parse($content['acara']['akad']['waktu']);
+        }
+
+        $invitation->content = $content;
+        $invitation->save();
+
+        return back()->with('success', 'Data undangan berhasil diperbarui!');
+    }
+
+    public function downloadTemplate()
+    {
+        $headers = [
+            "Content-type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=template_tamu.csv",
+            "Pragma" => "no-cache",
+            "Cache-Control" => "must-revalidate, post-check=0, pre-check=0",
+            "Expires" => "0"
+        ];
+
+        $columns = ['Nama Tamu', 'Nomor WA', 'Kategori', 'Alamat'];
+
+        $callback = function () use ($columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+            fputcsv($file, ['Budi Santoso', '081234567890', 'Teman Kerja', 'Jakarta']);
+            fputcsv($file, ['Siti Aminah', '089876543210', 'Keluarga', 'Bandung']);
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function importGuests(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:csv,txt,xlsx,xls|max:2048'
         ]);
 
-        return redirect()->back()->with('success', 'Data undangan berhasil disimpan!');
+        $user = auth()->user();
+        $invitation = $user->invitations()->firstOrFail();
+
+        $file = $request->file('file');
+        $extension = strtolower($file->getClientOriginalExtension());
+        $rows = [];
+
+        if (in_array($extension, ['csv', 'txt'])) {
+            $handle = fopen($file->getPathname(), 'r');
+            fgetcsv($handle);
+            while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+                if (array_filter($data)) {
+                    $rows[] = $data;
+                }
+            }
+            fclose($handle);
+        } else {
+            try {
+                $import = new class implements ToArray {
+                    public function array(array $array)
+                    {
+                        return $array;
+                    }
+                };
+
+                $data = Excel::toArray($import, $file);
+
+                if (count($data) > 0) {
+                    $sheet1 = $data[0];
+                    array_shift($sheet1);
+                    $rows = $sheet1;
+                }
+            } catch (\Exception $e) {
+                return back()->withErrors([
+                    'file' => 'Gagal membaca Excel: ' . $e->getMessage()
+                ]);
+            }
+        }
+
+        $count = 0;
+
+        foreach ($rows as $row) {
+            $name = $row[0] ?? null;
+
+            if ($name && trim($name) !== '') {
+                $slug = Str::slug($name) . '-' . Str::random(4);
+
+                $invitation->guests()->create([
+                    'name' => $name,
+                    'whatsapp' => $row[1] ?? null,
+                    'category' => $row[2] ?? 'Umum',
+                    'address' => $row[3] ?? null,
+                    'slug' => $slug,
+                    'rsvp_status' => 'pending'
+                ]);
+
+                $count++;
+            }
+        }
+
+        return back()->with('success', "Berhasil mengimpor {$count} data tamu!");
     }
+
+    public function storeGuest(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'whatsapp' => 'nullable|string|max:20',
+            'category' => 'nullable|string',
+            'address' => 'nullable|string',
+        ]);
+
+        $user = auth()->user();
+        $invitation = $user->invitations()->firstOrFail();
+
+        $slug = \Illuminate\Support\Str::slug($request->name) . '-' . \Illuminate\Support\Str::random(4);
+
+        $invitation->guests()->create([
+            'name' => $request->name,
+            'whatsapp' => $request->whatsapp,
+            'category' => $request->category ?? 'Umum',
+            'address' => $request->address,
+            'slug' => $slug,
+            'rsvp_status' => 'pending'
+        ]);
+
+        return back()->with('success', 'Berhasil menambahkan tamu: ' . $request->name);
+    }
+
 }
