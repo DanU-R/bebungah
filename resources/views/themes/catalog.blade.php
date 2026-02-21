@@ -690,6 +690,7 @@
             <button class="filter-tab" data-filter="rustic">Rustic <span id="cnt-rustic" class="ml-1 text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full font-bold"></span></button>
             <button class="filter-tab" data-filter="boho terracotta">Boho <span id="cnt-boho-terracotta" class="ml-1 text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full font-bold"></span></button>
             <button class="filter-tab" data-filter="dark" style="color:#9333ea;">🌙 Dark <span id="cnt-dark" class="ml-1 text-xs bg-purple-100 text-purple-600 px-1.5 py-0.5 rounded-full font-bold"></span></button>
+            <button class="filter-tab" data-filter="traditional" style="color:#92400e;">🏛️ Jawa <span id="cnt-traditional" class="ml-1 text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-bold"></span></button>
         </div>
         <div style="display:flex; gap:0.75rem; align-items:center;">
             <div class="filter-search">
@@ -720,6 +721,7 @@
                     'ocean-breeze' => 'Tema segar dengan nuansa laut dan ombak yang menenangkan. Cocok untuk pernikahan outdoor atau pantai.',
                     'watercolor-flow' => 'Tema artistik dengan sentuhan cat air yang lembut dan mengalir indah.',
                     'midnight-garden' => 'Tema mewah bertema malam dengan aksen emas berkilau. Nuansa gelap, elegan, dan penuh bintang.',
+                    'jawa-keraton' => 'Tema sakral tradisional Jawa. Nuansa sogan, emas, dan batik kawung dengan animasi gunungan wayang yang megah.',
                 ];
                 $description = $descriptions[$theme->slug] ?? 'Tema undangan digital dengan desain eksklusif dan responsif.';
 
@@ -733,6 +735,7 @@
                     'ocean-breeze' => 'Modern',
                     'watercolor-flow' => 'Modern',
                     'midnight-garden' => 'Dark',
+                    'jawa-keraton' => 'Traditional',
                 ];
                 $category = $categories[$theme->slug] ?? 'Wedding';
 
@@ -745,6 +748,7 @@
                     'ocean-breeze' => ['popular', '🌊 Popular'],
                     'watercolor-flow' => ['new', '🎨 New'],
                     'midnight-garden' => ['new', '🌙 New'],
+                    'jawa-keraton' => ['new', '🏛️ New'],
                 ];
                 $badge = $badges[$theme->slug] ?? null;
 
@@ -758,6 +762,7 @@
                     'ocean-breeze' => ['Ocean Vibes', 'Gallery', 'RSVP', 'Music'],
                     'watercolor-flow' => ['Artistic', 'Gallery', 'RSVP', 'Music'],
                     'midnight-garden' => ['Dark Luxury', 'Stars BG', 'RSVP', 'Music'],
+                    'jawa-keraton' => ['Gunungan Gate', 'Batik Motif', 'RSVP', 'Music'],
                 ];
                 $featureList = $features[$theme->slug] ?? ['Responsive', 'Gallery', 'RSVP'];
             @endphp
