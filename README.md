@@ -1,59 +1,202 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<h1 align="center">
+  🌸 Temanten — Digital Wedding Invitation Platform
+</h1>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  Platform undangan pernikahan digital berbasis web yang elegan, responsif, dan mudah dikustomisasi.
+  <br>
+  Dibangun dengan <strong>Laravel 11</strong>, <strong>Tailwind CSS</strong>, dan <strong>Blade Templating</strong>.
 </p>
 
-## About Laravel
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-11-red?style=flat-square&logo=laravel" alt="Laravel">
+  <img src="https://img.shields.io/badge/PHP-8.2+-blue?style=flat-square&logo=php" alt="PHP">
+  <img src="https://img.shields.io/badge/TailwindCSS-3.x-38BDF8?style=flat-square&logo=tailwindcss" alt="Tailwind">
+  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
+</p>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🎨 Tema Undangan (9 Tema)
+| Tema | Konsep | Musik |
+|---|---|---|
+| **Floral Pastel** | Romantis bunga pastel lembut | ✅ |
+| **Rustic Green** | Natural kayu & dedaunan | ✅ |
+| **Royal Glass** | Glassmorphism mewah modern | ✅ |
+| **Emerald Garden** | Hijau emerald & emas elegan | ✅ |
+| **Ocean Breeze** | Nuansa laut & ombak segar | ✅ |
+| **Watercolor Flow** | Artistik cat air mengalir | ✅ |
+| **Boho Terracotta** | Bohemian hangat & artistik | ✅ |
+| **Barakah Love** | Islami sage green & gold | ✅ |
+| **Midnight Garden** 🆕 | Malam gelap mewah, aksen emas, bintang | ✅ |
 
-## Learning Laravel
+### 👥 Dashboard Client
+- 📊 **Statistik RSVP real-time** — Total, Hadir, Tidak Hadir, Pending + progress bar
+- ⏳ **Countdown hari H** — Hitung mundur otomatis ke tanggal pernikahan
+- 💍 **Info undangan** — Preview nama mempelai, lokasi resepsi, dan status undangan
+- 🔍 **Search & Filter tamu** — Cari nama atau filter berdasarkan status RSVP (client-side, tanpa reload)
+- ✏️ **Tambah tamu manual** — Form input nama, WA, kategori, kota
+- 📂 **Import Excel/CSV** — Upload file `.xlsx`, `.xls`, `.csv` secara massal
+- ⬇️ **Download template** — Template Excel siap pakai untuk input tamu
+- 🗑️ **Hapus tamu** — Delete individual tamu dengan konfirmasi dialog
+- 📱 **Kolom WhatsApp** — Tampil di tabel dengan link langsung ke chat WA
+- 🔗 **Salin & bagikan link** — Copy link undangan per tamu ke clipboard
+- 💬 **Kirim WA blast** — Link WA dengan pesan otomatis + URL undangan (URL-encoded)
+- 🔔 **Toast notifikasi** — Feedback sukses/gagal yang auto-hide
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 🔐 Authentikasi & Role
+- Login, Register, Verifikasi Email, Reset Password (Laravel Breeze)
+- Role: **Admin** dan **Client**
+- Admin dashboard: approve undangan, reset password user
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🌐 Landing Page
+- Dynamic hero mockup — tampilkan tema pertama dari database
+- Katalog tema dinamis dari database
+- CTA order undangan langsung
 
-## Laravel Sponsors
+### 🛡️ Keamanan
+- Rate limiting pada endpoint ucapan & RSVP (10 request/menit)
+- Ownership check sebelum hapus/edit data
+- Activity logging untuk semua perubahan penting
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🚀 Instalasi & Setup
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Prasyarat
+- PHP >= 8.2
+- Composer
+- Node.js & NPM
+- MySQL / MariaDB
 
-## Contributing
+### Langkah Instalasi
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+# 1. Clone repo
+git clone https://github.com/username/bebungah.git
+cd bebungah
 
-## Code of Conduct
+# 2. Install dependencies PHP
+composer install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 3. Install dependencies JS
+npm install
 
-## Security Vulnerabilities
+# 4. Salin file environment
+cp .env.example .env
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# 5. Generate app key
+php artisan key:generate
 
-## License
+# 6. Konfigurasi database di .env
+# DB_DATABASE=bebungah
+# DB_USERNAME=root
+# DB_PASSWORD=
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 7. Jalankan migrasi + seeder
+php artisan migrate --seed
+
+# 8. Buat symbolic link storage
+php artisan storage:link
+
+# 9. Build assets
+npm run dev
+
+# 10. Jalankan server
+php artisan serve
+```
+
+Buka di browser: **http://localhost:8000**
+
+---
+
+## 📁 Struktur Proyek
+
+```
+bebungah/
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── ClientController.php     # Dashboard, guest CRUD, import
+│   │   ├── AdminController.php      # Admin panel
+│   │   ├── InvitationController.php # Tampil & RSVP undangan
+│   │   ├── OrderController.php      # Alur pemesanan
+│   │   └── ThemeController.php      # Katalog tema
+│   └── Models/
+│       ├── Invitation.php
+│       ├── Guest.php
+│       ├── Theme.php
+│       └── ActivityLog.php
+├── public/assets/
+│   ├── music/           # Musik per tema (slug.mp3)
+│   └── thumbnail/       # Thumbnail kartu tema (slug.png)
+├── resources/views/
+│   ├── client/
+│   │   ├── dashboard.blade.php
+│   │   └── settings.blade.php
+│   ├── themes/
+│   │   ├── catalog.blade.php
+│   │   ├── floral-pastel/
+│   │   ├── ocean-breeze/
+│   │   ├── midnight-garden/  🆕
+│   │   └── ...
+│   ├── landing.blade.php
+│   └── auth/
+└── routes/web.php
+```
+
+---
+
+## 🗺️ Routes Utama
+
+| Method | URI | Keterangan |
+|---|---|---|
+| `GET` | `/` | Landing page |
+| `GET` | `/themes` | Katalog tema |
+| `GET` | `/demo/{theme}` | Demo undangan |
+| `GET` | `/undangan/{slug}` | Undangan publik |
+| `POST` | `/rsvp/{id}` | Submit RSVP |
+| `POST` | `/kirim-ucapan` | Kirim ucapan |
+| `GET` | `/client/dashboard` | Dashboard client |
+| `POST` | `/client/store-guest` | Tambah tamu manual |
+| `DELETE` | `/client/delete-guest/{guest}` | Hapus tamu |
+| `POST` | `/client/import-guests` | Import Excel/CSV |
+| `GET` | `/client/download-template` | Download template |
+| `GET` | `/client/settings` | Edit undangan |
+| `PUT` | `/client/settings` | Update undangan |
+| `GET` | `/admin/dashboard` | Admin panel |
+
+---
+
+## 🎵 Konvensi Aset
+
+| Tipe | Path | Format |
+|---|---|---|
+| Musik tema | `public/assets/music/{slug}.mp3` | MP3 |
+| Thumbnail kartu | `public/assets/thumbnail/{slug}.png` | PNG |
+| Upload klien | `storage/app/public/invitations/{id}/` | Any |
+
+---
+
+## 🧑‍💻 Tech Stack
+
+- **Backend**: Laravel 11, PHP 8.2+
+- **Frontend**: Blade, Tailwind CSS, Vite, Vanilla JS
+- **Database**: MySQL/MariaDB (Eloquent ORM)
+- **Auth**: Laravel Breeze
+- **Excel**: Maatwebsite/Laravel-Excel
+- **Icons**: Phosphor Icons
+- **Fonts**: Google Fonts (Cormorant Garamond, Jost, Pinyon Script, dll)
+
+---
+
+## 📄 License
+
+Proyek ini menggunakan lisensi [MIT](https://opensource.org/licenses/MIT).
+
+---
+
+<p align="center">
+  Dibuat dengan ❤️ menggunakan Laravel
+</p>
