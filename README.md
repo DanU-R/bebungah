@@ -196,7 +196,3 @@ bebungah/
 Proyek ini menggunakan lisensi [MIT](https://opensource.org/licenses/MIT).
 
 ---
-
-<p align="center">
-  Dibuat dengan ❤️ menggunakan Laravel
-</p>
