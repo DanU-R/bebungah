@@ -238,7 +238,7 @@
                     <div class="space-y-3">
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-gray-600">ID Pesanan</span>
-                            <span class="font-mono font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg">#INV-{{ rand(1000,9999) }}</span>
+                            <span class="font-mono font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg">#INV-{{ $invitation->id }}</span>
                         </div>
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-gray-600">Paket</span>
@@ -259,7 +259,7 @@
                     <!-- Total -->
                     <div class="flex justify-between items-center bg-indigo-50 rounded-xl p-4">
                         <span class="text-gray-700 font-bold text-base">Total Pembayaran</span>
-                        <span class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Rp 99.000</span>
+                        <span class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">{{ $invitation->theme->formatted_price }}</span>
                     </div>
                 </div>
 
@@ -274,7 +274,7 @@
                         <div class="flex-1 space-y-2">
                             <h4 class="font-bold text-blue-900 text-sm">Langkah Selanjutnya:</h4>
                             <ol class="text-blue-800 text-sm space-y-1.5 leading-relaxed list-decimal list-inside">
-                                <li>Transfer sesuai <strong>nominal exact</strong> (Rp 99.000)</li>
+                                <li>Transfer sesuai <strong>nominal exact</strong> ({{ $invitation->theme->formatted_price }})</li>
                                 <li><strong>Wajib kirim bukti transfer</strong> ke WhatsApp Admin</li>
                                 <li>Akun Anda akan <strong>aktif otomatis</strong> setelah verifikasi</li>
                             </ol>
@@ -294,7 +294,8 @@
                     $adminWa = '6282220312195'; 
                     
                     // WhatsApp Message Template
-                    $pesan = "Halo Admin Bebungah,%0A%0ASaya sudah order undangan dan melakukan pembayaran.%0AEmail Login: $email%0ATotal: Rp 99.000%0A%0AMohon segera diproses dan kirimkan password akun saya. Terima kasih!";
+                    $totalHarga = $invitation->theme->formatted_price;
+                    $pesan = "Halo Admin Bebungah,%0A%0ASaya sudah order undangan dan melakukan pembayaran.%0AEmail Login: $email%0ATotal: $totalHarga%0A%0AMohon segera diproses dan kirimkan password akun saya. Terima kasih!";
                 @endphp
 
                 <!-- WhatsApp Confirmation Button -->

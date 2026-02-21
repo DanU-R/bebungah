@@ -136,4 +136,64 @@ class AdminController extends Controller
             'password' => $newPassword,
         ]);
     }
+
+    // ─── THEME MANAGEMENT ────────────────────────────────────────────────────
+
+    public function themes()
+    {
+        $themes      = \App\Models\Theme::orderBy('name')->get();
+        $defaultPrice = config('app.default_price', 99000);
+        return view('admin.themes', compact('themes', 'defaultPrice'));
+    }
+
+    public function updateThemePrice(Request $request, $id)
+    {
+        $request->validate([
+            'price' => 'nullable|integer|min:0|max:99999999',
+        ]);
+
+        $theme = \App\Models\Theme::findOrFail($id);
+        // null = pakai harga default global
+        $theme->price = $request->filled('price') ? (int)$request->price : null;
+        $theme->save();
+
+        ActivityLog::record('admin_action', 'theme.price_updated', $theme, [
+            'theme_slug'   => $theme->slug,
+            'new_price'    => $theme->price,
+            'updated_by'   => auth()->user()->email,
+        ]);
+
+        return redirect()->back()->with('success', "Harga tema \"{$theme->name}\" berhasil diperbarui.");
+    }
+
+    public function updateDefaultPrice(Request $request)
+    {
+        $request->validate([
+            'default_price' => 'required|integer|min:0|max:99999999',
+        ]);
+
+        $newPrice = (int)$request->default_price;
+
+        // Update nilai APP_DEFAULT_PRICE di .env
+        $envPath = base_path('.env');
+        $envContent = file_get_contents($envPath);
+
+        if (str_contains($envContent, 'APP_DEFAULT_PRICE=')) {
+            $envContent = preg_replace('/APP_DEFAULT_PRICE=\d+/', "APP_DEFAULT_PRICE={$newPrice}", $envContent);
+        } else {
+            $envContent .= "\nAPP_DEFAULT_PRICE={$newPrice}";
+        }
+
+        file_put_contents($envPath, $envContent);
+
+        // Refresh cache config agar langsung berlaku
+        \Illuminate\Support\Facades\Artisan::call('config:clear');
+
+        ActivityLog::record('admin_action', 'theme.default_price_updated', null, [
+            'new_default_price' => $newPrice,
+            'updated_by'        => auth()->user()->email,
+        ]);
+
+        return redirect()->back()->with('success', 'Harga default berhasil diperbarui menjadi Rp ' . number_format($newPrice, 0, ',', '.'));
+    }
 }

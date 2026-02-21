@@ -44,18 +44,29 @@
             inset: 0;
             z-index: 9999;
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
-            background-size: cover;
-            background-position: center;
+            background: radial-gradient(circle at center, #1a1a3a 0%, #0d0d18 100%);
             transition: transform 1.2s cubic-bezier(0.77,0,0.18,1);
-            padding-bottom: 60px;
         }
+        /* Silk Texture & Glitter Overlay */
         .gate::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(13,13,24,0.3) 0%, rgba(13,13,24,0.75) 60%, rgba(13,13,24,0.97) 100%);
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n' %3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"),
+                radial-gradient(circle at 20% 30%, rgba(201,168,76,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(201,168,76,0.05) 0%, transparent 50%);
+            opacity: 0.6;
+        }
+        .glitter {
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Ccircle cx='10' cy='10' r='0.5' fill='%23e8c96e' opacity='0.4'/%3E%3Ccircle cx='50' cy='30' r='0.8' fill='%23e8c96e' opacity='0.6'/%3E%3Ccircle cx='80' cy='20' r='0.4' fill='%23e8c96e' opacity='0.3'/%3E%3Ccircle cx='20' cy='80' r='0.6' fill='%23e8c96e' opacity='0.5'/%3E%3Ccircle cx='70' cy='60' r='0.5' fill='%23e8c96e' opacity='0.4'/%3E%3C/svg%3E");
+            background-size: 150px 150px;
+            opacity: 0.5;
+            pointer-events: none;
         }
         .gate.open { transform: translateY(-100%); }
         .gate-content {
@@ -65,60 +76,75 @@
             padding: 0 30px;
         }
         .gate-eyebrow {
-            font-size: 10px;
+            font-size: 11px;
             letter-spacing: 5px;
             text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 16px;
-            opacity: 0.9;
+            color: var(--gold-light);
+            margin-bottom: 30px;
+            font-weight: 500;
         }
         .gate-names {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 3.5rem;
-            font-weight: 300;
+            font-size: 4rem;
+            font-weight: 400;
             font-style: italic;
-            line-height: 1.15;
+            line-height: 1.1;
             color: #fff;
-            text-shadow: 0 0 40px rgba(201,168,76,0.4);
-            margin-bottom: 8px;
+            text-shadow: 0 0 25px rgba(255,255,255,0.25), 0 0 50px rgba(201,168,76,0.15);
+            margin-bottom: 20px;
         }
         .gate-amp {
-            color: var(--gold);
+            color: var(--gold-light);
             font-style: normal;
-            font-size: 2.5rem;
+            font-size: 3.5rem;
+            display: block;
+            margin: 5px 0;
+            filter: drop-shadow(0 0 10px rgba(201,168,76,0.4));
+        }
+        .gate-divider-gold {
+            width: 120px;
+            height: 1.5px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            margin: 25px auto;
         }
         .gate-date {
-            font-size: 11px;
-            letter-spacing: 3px;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 24px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: var(--gold-light);
+            margin-bottom: 40px;
+            font-weight: 400;
         }
         .gate-guest-box {
-            background: rgba(201,168,76,0.1);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px 24px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(201,168,76,0.25);
+            border-radius: 50px;
+            padding: 12px 40px;
             display: inline-block;
-            margin-bottom: 32px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        .gate-guest-label { font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
-        .gate-guest-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: #fff; font-style: italic; }
+        .gate-guest-label { font-size: 9px; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+        .gate-guest-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: #fff; font-style: italic; }
         .btn-open {
-            background: linear-gradient(135deg, var(--gold), var(--gold-light));
-            color: #0d0d18;
+            background: linear-gradient(135deg, #B8860B, #E4C366, #B8860B);
+            color: #1a1a3a;
             border: none;
-            padding: 14px 40px;
+            padding: 16px 50px;
             border-radius: 50px;
             font-family: 'Jost', sans-serif;
-            font-weight: 600;
-            font-size: 11px;
-            letter-spacing: 3px;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 0 30px rgba(201,168,76,0.3);
+            transition: 0.4s;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3), inset 0 2px 5px rgba(255,255,255,0.3);
+            display: block;
+            margin: 0 auto;
         }
-        .btn-open:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(201,168,76,0.5); }
+        .btn-open:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 50px rgba(201,168,76,0.4); filter: brightness(1.1); }
 
         /* ───── FLOATING ELEMENTS ───── */
         .music-btn {
@@ -546,23 +572,28 @@
     </div>
 
     <!-- Gate / Cover -->
-    <div class="gate" id="gate" style="background-image: url('{{ mgImgUrl($invitation->content['media']['cover'] ?? 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&fit=crop&q=80') }}')">
-        <div class="gate-content">
-            <p class="gate-eyebrow">✦ The Wedding Of ✦</p>
+    <div class="gate" id="gate">
+        <div class="glitter"></div>
+        <div class="gate-content" id="gateContent">
+            <p class="gate-eyebrow">THE WEDDING OF</p>
             <h1 class="gate-names">
-                {{ $pria['panggilan'] ?? 'Raka' }}<br>
-                <span class="gate-amp">&</span><br>
-                {{ $wanita['panggilan'] ?? 'Nadia' }}
+                {{ $pria['panggilan'] ?? 'Romeo' }}
+                <span class="gate-amp">&amp;</span>
+                {{ $wanita['panggilan'] ?? 'Juliet' }}
             </h1>
-            <p class="gate-date">{{ $targetDate->translatedFormat('d · F · Y') }}</p>
+            
+            <div class="gate-divider-gold"></div>
+
+            <p class="gate-date">{{ $targetDate->translatedFormat('d F Y') }}</p>
+
+            @if(isset($guest))
             <div class="gate-guest-box">
-                <div class="gate-guest-label">Kepada Yth.</div>
-                <div class="gate-guest-name">{{ isset($guest) ? $guest->name : 'Tamu Undangan' }}</div>
-            </div>
-            <br>
-            <button class="btn-open" onclick="openInvitation()">
-                <i class="ph-bold ph-envelope-open" style="margin-right:6px;"></i> Buka Undangan
-            </button>
+                <div class="gate-guest-label">Nama Tamu</div>
+                <div class="gate-guest-name">{{ $guest->name }}</div>
+            </div><br>
+            @endif
+
+            <button class="btn-open" onclick="openInvitation()">Buka Undangan</button>
         </div>
     </div>
 

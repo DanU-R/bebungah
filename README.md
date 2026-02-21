@@ -19,32 +19,31 @@
 
 ## ✨ Fitur Utama
 
-### 🎨 Tema Undangan (9 Tema)
-| Tema | Konsep | Musik |
+### 🎨 Tema Undangan Unggulan (Premium Polish)
+| Tema | Konsep | Eksklusivitas |
 |---|---|---|
-| **Floral Pastel** | Romantis bunga pastel lembut | ✅ |
-| **Rustic Green** | Natural kayu & dedaunan | ✅ |
+| **Jawa Keraton** 🆕 | Regal Sogan, Gunungan Emas, Sakral & Mewah | ⭐ Premium |
+| **Sunda Asih** 🆕 | Megamendung, Rumah Panggung, Elegan & Bersih | ⭐ Premium |
+| **Sekar Jagad** 🆕 | Batik Floral, Rose & Navy, Modern Tradisional | ⭐ Premium |
+| **Midnight Garden** 🆕 | Silk Texture, Glitter, Golden Glow & Metallic Aura | ⭐ Premium |
 | **Royal Glass** | Glassmorphism mewah modern | ✅ |
 | **Emerald Garden** | Hijau emerald & emas elegan | ✅ |
-| **Ocean Breeze** | Nuansa laut & ombak segar | ✅ |
-| **Watercolor Flow** | Artistik cat air mengalir | ✅ |
+| **Floral Pastel** | Romantis bunga pastel lembut | ✅ |
+| **Rustic Green** | Natural kayu & dedaunan | ✅ |
 | **Boho Terracotta** | Bohemian hangat & artistik | ✅ |
-| **Barakah Love** | Islami sage green & gold | ✅ |
-| **Midnight Garden** 🆕 | Malam gelap mewah, aksen emas, bintang | ✅ |
+
+### 🛠️ Fitur Admin & Monetisasi
+- 💰 **Manajemen Harga Per-Tema** — Admin dapat mengatur harga yang berbeda untuk setiap tema melalui dashboard.
+- 📉 **Diskon & Harga Promo** — Mendukung tampilan harga coret (Rp 150.000 -> Rp 99.000) di seluruh sistem.
+- 🏗️ **Katalog Dinamis & Filter Harga** — Katalog tema dilengkapi filter harga kustom dan dropdown premium untuk memudahkan navigasi.
+- 🔐 **Persetujuan Undangan** — Kontrol penuh admin untuk mengaktifkan atau menonaktifkan undangan user.
 
 ### 👥 Dashboard Client
-- 📊 **Statistik RSVP real-time** — Total, Hadir, Tidak Hadir, Pending + progress bar
-- ⏳ **Countdown hari H** — Hitung mundur otomatis ke tanggal pernikahan
-- 💍 **Info undangan** — Preview nama mempelai, lokasi resepsi, dan status undangan
-- 🔍 **Search & Filter tamu** — Cari nama atau filter berdasarkan status RSVP (client-side, tanpa reload)
-- ✏️ **Tambah tamu manual** — Form input nama, WA, kategori, kota
-- 📂 **Import Excel/CSV** — Upload file `.xlsx`, `.xls`, `.csv` secara massal
-- ⬇️ **Download template** — Template Excel siap pakai untuk input tamu
-- 🗑️ **Hapus tamu** — Delete individual tamu dengan konfirmasi dialog
-- 📱 **Kolom WhatsApp** — Tampil di tabel dengan link langsung ke chat WA
-- 🔗 **Salin & bagikan link** — Copy link undangan per tamu ke clipboard
-- 💬 **Kirim WA blast** — Link WA dengan pesan otomatis + URL undangan (URL-encoded)
-- 🔔 **Toast notifikasi** — Feedback sukses/gagal yang auto-hide
+- 📊 **Statistik RSVP real-time** — Total, Hadir, Tidak Hadir, Pending + progress bar.
+- 💍 **Kustomisasi Konten & Musik** — Diedit langsung melalui dashboard settings.
+- 🔍 **Manajemen Tamu (CRM)** — Search, filter status, import Excel/CSV, dan template siap pakai.
+- 💬 **WhatsApp Blast & Link Generator** — Kirim undangan personal otomatis via WA dengan URL-encoded message.
+- 🔔 **Toast Notification System** — Notifikasi real-time untuk interaksi sukses/gagal.
 
 ### 🔐 Authentikasi & Role
 - Login, Register, Verifikasi Email, Reset Password (Laravel Breeze)

@@ -211,32 +211,42 @@
                 <div class="p-6 md:p-8">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto custom-scrollbar pr-2">
                         @foreach($themes as $theme)
-                        <div class="relative group">
-                            <input type="radio" name="theme_id" id="theme_{{ $theme->id }}" value="{{ $theme->id }}" 
-                                   class="peer hidden" 
-                                   {{ (old('theme_id') == $theme->id || $selectedThemeSlug == $theme->slug) ? 'checked' : '' }} 
+                        <div class="relative">
+                            <input type="radio" name="theme_id" id="theme_{{ $theme->id }}" value="{{ $theme->id }}"
+                                   class="sr-only theme-radio"
+                                   {{ (old('theme_id') == $theme->id || $selectedThemeSlug == $theme->slug) ? 'checked' : '' }}
                                    required>
-                            
-                            <label for="theme_{{ $theme->id }}" class="flex items-center gap-4 border-2 border-gray-200 rounded-xl cursor-pointer peer-checked:border-indigo-600 peer-checked:bg-indigo-50/50 peer-checked:ring-4 peer-checked:ring-indigo-100 p-4 transition-all hover:border-indigo-300 hover:shadow-lg group-hover:scale-[1.02]">
+
+                            <label for="theme_{{ $theme->id }}"
+                                   class="theme-card-label flex items-center gap-4 border-2 border-gray-200 rounded-xl cursor-pointer p-4 transition-all hover:border-indigo-300 hover:shadow-md">
+                                {{-- Thumbnail --}}
                                 <div class="h-20 w-20 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0 shadow-md">
-                                    @if($theme->thumbnail)
-                                        <img src="{{ asset('assets/thumbnail/' . $theme->thumbnail) }}" 
-                                            alt="{{ $theme->name }}" 
-                                            class="h-full w-full object-cover">
+                                    @php
+                                        $thumbFile = $theme->thumbnail ?: ($theme->slug . '.png');
+                                        $thumbExists = file_exists(public_path('assets/thumbnail/' . $thumbFile));
+                                    @endphp
+                                    @if($thumbExists)
+                                        <img src="{{ asset('assets/thumbnail/' . $thumbFile) }}"
+                                             alt="{{ $theme->name }}"
+                                             class="h-full w-full object-cover">
                                     @else
-                                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 text-xs text-gray-500 font-semibold">
-                                            No Image
+                                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100 text-xs text-indigo-500 font-semibold text-center px-1">
+                                            {{ $theme->name }}
                                         </div>
                                     @endif
                                 </div>
-                                <div class="flex-1">
-                                    <h3 class="font-bold text-gray-900 text-lg">{{ $theme->name }}</h3>
-                                    <p class="text-sm text-gray-500 mt-0.5">Premium Theme</p>
-                                    <p class="text-base text-indigo-600 font-bold mt-1">Rp {{ number_format(99000, 0, ',', '.') }}</p>
+                                {{-- Info --}}
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-bold text-gray-900 text-base">{{ $theme->name }}</h3>
+                                    <p class="text-xs text-gray-500 mt-0.5">Premium Theme</p>
+                                    <p class="text-base text-indigo-600 font-extrabold mt-1">{{ $theme->formatted_price }}</p>
                                 </div>
+                                {{-- Radio indicator --}}
                                 <div class="flex-shrink-0">
-                                    <div class="w-8 h-8 rounded-full border-2 border-gray-300 peer-checked:border-indigo-600 peer-checked:bg-indigo-600 flex items-center justify-center transition-all">
-                                        <svg class="w-5 h-5 text-white opacity-0 peer-checked:opacity-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    <div class="radio-indicator w-7 h-7 rounded-full border-2 border-gray-300 flex items-center justify-center transition-all duration-200">
+                                        <svg class="radio-check w-4 h-4 text-white hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                                        </svg>
                                     </div>
                                 </div>
                             </label>
@@ -398,7 +408,7 @@
                     <div class="flex flex-col md:flex-row items-center justify-between gap-6">
                         <div class="text-center md:text-left">
                             <h3 class="text-2xl font-bold text-gray-900 mb-2">Siap Membuat Undangan?</h3>
-                            <p class="text-gray-600">Total pembayaran: <span class="text-2xl font-extrabold text-indigo-600">Rp 99.000</span></p>
+                            <p class="text-gray-600">Total pembayaran: <span class="text-2xl font-extrabold text-indigo-600" id="totalHarga">Rp {{ number_format(config('app.default_price'), 0, ',', '.') }}</span></p>
                             <p class="text-sm text-gray-500 mt-1">Akses mudah • Unlimited tamu • Edit kapan saja</p>
                         </div>
                         <button id="btnSubmit" type="submit" class="group relative bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-5 px-10 rounded-xl shadow-2xl shadow-indigo-300 transition-all transform hover:scale-105 active:scale-95 w-full md:w-auto text-lg flex items-center justify-center gap-3 overflow-hidden">
@@ -495,6 +505,58 @@
                 errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         });
+
+        // ── Theme card selection & price update ─────────────────────────────
+        const themePrices = {
+            @foreach($themes as $theme)
+            {{ $theme->id }}: {{ $theme->effective_price }},
+            @endforeach
+        };
+
+        function formatRupiah(n) {
+            return 'Rp\u00a0' + n.toLocaleString('id-ID');
+        }
+
+        function selectTheme(radio) {
+            // Reset semua kartu
+            document.querySelectorAll('.theme-card-label').forEach(function(lbl) {
+                lbl.classList.remove('border-indigo-600', 'bg-indigo-50', 'ring-4', 'ring-indigo-100');
+                lbl.classList.add('border-gray-200');
+                const ind = lbl.querySelector('.radio-indicator');
+                const chk = lbl.querySelector('.radio-check');
+                if (ind) { ind.classList.remove('bg-indigo-600', 'border-indigo-600'); ind.classList.add('border-gray-300'); }
+                if (chk) { chk.classList.add('hidden'); }
+            });
+            // Aktifkan kartu yang dipilih
+            const label = document.querySelector('label[for="' + radio.id + '"]');
+            if (label) {
+                label.classList.add('border-indigo-600', 'bg-indigo-50', 'ring-4', 'ring-indigo-100');
+                label.classList.remove('border-gray-200');
+                const ind = label.querySelector('.radio-indicator');
+                const chk = label.querySelector('.radio-check');
+                if (ind) { ind.classList.add('bg-indigo-600', 'border-indigo-600'); ind.classList.remove('border-gray-300'); }
+                if (chk) { chk.classList.remove('hidden'); }
+            }
+            // Update total harga
+            const el = document.getElementById('totalHarga');
+            const price = themePrices[radio.value];
+            if (el && price) {
+                el.textContent = formatRupiah(price);
+                el.classList.add('scale-110');
+                setTimeout(() => el.classList.remove('scale-110'), 300);
+            }
+        }
+
+        document.querySelectorAll('.theme-radio').forEach(function(radio) {
+            radio.addEventListener('change', function() { selectTheme(this); });
+        });
+
+        // Trigger on load untuk radio yang sudah checked
+        document.addEventListener('DOMContentLoaded', function() {
+            const checked = document.querySelector('.theme-radio:checked');
+            if (checked) selectTheme(checked);
+        });
+
     </script>
 
 </body>

@@ -209,18 +209,110 @@
             align-items: center;
             gap: 0.75rem;
             background: white;
-            padding: 0.625rem 1rem;
+            padding: 0.625rem 1.25rem;
             border-radius: 50px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .filter-search:focus-within {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
         }
 
         .filter-search input {
             border: none;
             outline: none;
             font-size: 0.875rem;
-            width: 200px;
+            width: 180px;
             font-family: inherit;
             color: var(--gray-700);
+            background: transparent;
+        }
+
+        .filter-search input::placeholder { color: var(--gray-400); }
+
+        /* Custom Dropdown Styles */
+        .custom-dropdown {
+            position: relative;
+            min-width: 170px;
+            font-family: inherit;
+        }
+
+        .dropdown-trigger {
+            width: 100%;
+            padding: 0.625rem 1.25rem;
+            background: white;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dropdown-trigger:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+            color: var(--primary);
+        }
+
+        .dropdown-trigger.active {
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            background: var(--gray-50);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.75rem);
+            left: 0;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            padding: 0.5rem;
+            display: none;
+            z-index: 100;
+            border: 1px solid var(--gray-100);
+            animation: dropdownSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes dropdownSlideIn {
+            from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .dropdown-menu.show { display: block; }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .dropdown-item:hover {
+            background: var(--gray-50);
+            color: var(--primary);
+        }
+
+        .dropdown-item.selected {
+            background: rgba(79, 70, 229, 0.05);
+            color: var(--primary);
+            font-weight: 700;
         }
 
         .filter-search input::placeholder { color: var(--gray-400); }
@@ -692,17 +784,71 @@
             <button class="filter-tab" data-filter="dark" style="color:#9333ea;">🌙 Dark <span id="cnt-dark" class="ml-1 text-xs bg-purple-100 text-purple-600 px-1.5 py-0.5 rounded-full font-bold"></span></button>
             <button class="filter-tab" data-filter="traditional" style="color:#92400e;">🏛️ Jawa <span id="cnt-traditional" class="ml-1 text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-bold"></span></button>
         </div>
-        <div style="display:flex; gap:0.75rem; align-items:center;">
+        <div style="display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap;">
             <div class="filter-search">
-                <svg width="18" height="18" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                <input type="text" id="searchInput" placeholder="Cari tema...">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" id="searchInput" placeholder="Cari tema favorit...">
             </div>
-            <select id="sortSelect" style="padding:0.625rem 1rem; border-radius:50px; border:none; background:white; font-size:0.875rem; font-family:inherit; color:#4B5563; box-shadow:0 2px 10px rgba(0,0,0,0.05); cursor:pointer; outline:none;">
-                <option value="default">🔃 Urutkan</option>
-                <option value="az">A → Z</option>
-                <option value="za">Z → A</option>
-                <option value="newest">Terbaru</option>
-            </select>
+
+            <!-- Custom Price Dropdown -->
+            <div class="custom-dropdown" id="priceDropdown">
+                <input type="hidden" id="priceFilter" value="all">
+                <button class="dropdown-trigger" type="button">
+                    <span class="flex items-center gap-2">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0114 0z"/></svg>
+                        <span class="trigger-label">Semua Harga</span>
+                    </span>
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item selected" data-value="all">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                        Semua Harga
+                    </div>
+                    <div class="dropdown-item" data-value="under50">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        Di Bawah 50rb
+                    </div>
+                    <div class="dropdown-item" data-value="50to100">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M3 4v16M3 4l3 3m15-3l-3 3"/></svg>
+                        50rb - 100rb
+                    </div>
+                    <div class="dropdown-item" data-value="above100">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6"/></svg>
+                        Di Atas 100rb
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Sort Dropdown -->
+            <div class="custom-dropdown" id="sortDropdown">
+                <input type="hidden" id="sortSelect" value="default">
+                <button class="dropdown-trigger" type="button">
+                    <span class="flex items-center gap-2">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/></svg>
+                        <span class="trigger-label">Urutkan</span>
+                    </span>
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </button>
+                <div class="dropdown-menu">
+                    <div class="dropdown-item selected" data-value="default">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        Default
+                    </div>
+                    <div class="dropdown-item" data-value="az">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/></svg>
+                        A → Z
+                    </div>
+                    <div class="dropdown-item" data-value="za">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/></svg>
+                        Z → A
+                    </div>
+                    <div class="dropdown-item" data-value="newest">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Terbaru
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -722,6 +868,8 @@
                     'watercolor-flow' => 'Tema artistik dengan sentuhan cat air yang lembut dan mengalir indah.',
                     'midnight-garden' => 'Tema mewah bertema malam dengan aksen emas berkilau. Nuansa gelap, elegan, dan penuh bintang.',
                     'jawa-keraton' => 'Tema sakral tradisional Jawa. Nuansa sogan, emas, dan batik kawung dengan animasi gunungan wayang yang megah.',
+                    'sunda-asih' => 'Tema natural tradisional Sunda. Hijau daun, bambu, dan mega mendung dengan animasi tirai kain dan siluet rumah panggung.',
+                    'sekar-jagad' => 'Tema elegan kontemporer. Dusty rose, navy, dan emas dengan navigasi top-tab, flip card acara, dan galeri masonry.',
                 ];
                 $description = $descriptions[$theme->slug] ?? 'Tema undangan digital dengan desain eksklusif dan responsif.';
 
@@ -736,6 +884,8 @@
                     'watercolor-flow' => 'Modern',
                     'midnight-garden' => 'Dark',
                     'jawa-keraton' => 'Traditional',
+                    'sunda-asih' => 'Traditional',
+                    'sekar-jagad' => 'Wedding',
                 ];
                 $category = $categories[$theme->slug] ?? 'Wedding';
 
@@ -749,6 +899,8 @@
                     'watercolor-flow' => ['new', '🎨 New'],
                     'midnight-garden' => ['new', '🌙 New'],
                     'jawa-keraton' => ['new', '🏛️ New'],
+                    'sunda-asih' => ['new', '🌿 New'],
+                    'sekar-jagad' => ['new', '🌸 New'],
                 ];
                 $badge = $badges[$theme->slug] ?? null;
 
@@ -763,15 +915,17 @@
                     'watercolor-flow' => ['Artistic', 'Gallery', 'RSVP', 'Music'],
                     'midnight-garden' => ['Dark Luxury', 'Stars BG', 'RSVP', 'Music'],
                     'jawa-keraton' => ['Gunungan Gate', 'Batik Motif', 'RSVP', 'Music'],
+                    'sunda-asih' => ['Rumah Panggung', 'Mega Mendung', 'RSVP', 'Music'],
+                    'sekar-jagad' => ['Flip Card', 'Snap Scroll', 'RSVP', 'Music'],
                 ];
                 $featureList = $features[$theme->slug] ?? ['Responsive', 'Gallery', 'RSVP'];
             @endphp
-            <div class="theme-card" data-category="{{ strtolower($category) }}" data-name="{{ strtolower($theme->name) }}">
+            <div class="theme-card" data-category="{{ strtolower($category) }}" data-name="{{ strtolower($theme->name) }}" data-price="{{ $theme->effective_price }}">
                 <div class="theme-card-image">
                     @if($badge)
                     <span class="theme-badge {{ $badge[0] }}">{{ $badge[1] }}</span>
                     @endif
-                    <span class="theme-price">Rp 99k</span>
+                    <span class="theme-price">{{ $theme->short_price }}</span>
                     {{-- Selalu gunakan slug sebagai nama file thumbnail, bukan kolom thumbnail dari DB --}}
                     <img src="{{ asset('assets/thumbnail/' . $theme->slug . '.png') }}" alt="{{ $theme->name }}" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=600&fit=crop'">
                     <div class="theme-card-overlay">
@@ -983,14 +1137,23 @@
                 const activeTab = document.querySelector('.filter-tab.active');
                 const category = (activeTab ? activeTab.getAttribute('data-filter') : 'all').toLowerCase();
                 const searchTerm = (searchInput?.value || '').toLowerCase().trim();
+                const priceRange = document.getElementById('priceFilter')?.value || 'all';
                 let visibleCount = 0;
 
                 cards.forEach(card => {
                     const cardCategory = (card.getAttribute('data-category') || '').toLowerCase();
                     const cardName = (card.getAttribute('data-name') || '').toLowerCase();
+                    const cardPrice = parseInt(card.getAttribute('data-price') || 0);
+
                     const matchesCategory = category === 'all' || cardCategory === category;
                     const matchesSearch = !searchTerm || cardName.includes(searchTerm);
-                    if (matchesCategory && matchesSearch) {
+                    
+                    let matchesPrice = true;
+                    if (priceRange === 'under50') matchesPrice = cardPrice < 50000;
+                    else if (priceRange === '50to100') matchesPrice = cardPrice >= 50000 && cardPrice <= 100000;
+                    else if (priceRange === 'above100') matchesPrice = cardPrice > 100000;
+
+                    if (matchesCategory && matchesSearch && matchesPrice) {
                         card.style.display = 'block';
                         visibleCount++;
                     } else {
@@ -1016,6 +1179,57 @@
                 }
             }
 
+            // ── Custom Dropdowns Logic ───────────────────────────────
+            document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+                const trigger = dropdown.querySelector('.dropdown-trigger');
+                const menu = dropdown.querySelector('.dropdown-menu');
+                const items = dropdown.querySelectorAll('.dropdown-item');
+                const input = dropdown.querySelector('input[type="hidden"]');
+                const label = dropdown.querySelector('.trigger-label');
+
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Close other dropdowns
+                    document.querySelectorAll('.dropdown-menu').forEach(m => {
+                        if (m !== menu) m.classList.remove('show');
+                    });
+                    document.querySelectorAll('.dropdown-trigger').forEach(t => {
+                        if (t !== trigger) t.classList.remove('active');
+                    });
+                    
+                    menu.classList.toggle('show');
+                    trigger.classList.toggle('active');
+                });
+
+                items.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const val = item.getAttribute('data-value');
+                        const text = item.textContent.trim();
+                        
+                        input.value = val;
+                        label.textContent = text;
+                        
+                        items.forEach(i => i.classList.remove('selected'));
+                        item.classList.add('selected');
+                        
+                        menu.classList.remove('show');
+                        trigger.classList.remove('active');
+                        
+                        // Trigger sort or filter
+                        if (input.id === 'sortSelect') {
+                            sortCards(val);
+                        }
+                        filterThemes();
+                    });
+                });
+            });
+
+            // Close dropdowns on outside click
+            window.addEventListener('click', () => {
+                document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+                document.querySelectorAll('.dropdown-trigger').forEach(t => t.classList.remove('active'));
+            });
+
             // ── Event Listeners ───────────────────────────────────────
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
@@ -1025,10 +1239,6 @@
                 });
             });
             searchInput?.addEventListener('input', filterThemes);
-            sortSelect?.addEventListener('change', function() {
-                sortCards(this.value);
-                filterThemes();
-            });
         });
 
         const mainNav = document.getElementById('mainNav');

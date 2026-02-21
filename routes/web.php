@@ -82,6 +82,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/approve/{id}', [AdminController::class, 'approve'])->name('admin.approve');
     Route::post('/reset-password/{user_id}', [AdminController::class, 'resetPassword'])->name('admin.resetPassword');
+
+    // Theme Management
+    Route::get('/themes', [AdminController::class, 'themes'])->name('admin.themes');
+    Route::post('/themes/{id}/price', [AdminController::class, 'updateThemePrice'])->name('admin.themes.price');
+    Route::post('/themes/default-price', [AdminController::class, 'updateDefaultPrice'])->name('admin.themes.defaultPrice');
 });
 
 

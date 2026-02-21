@@ -153,11 +153,18 @@ class OrderController extends Controller
 
     public function payment()
     {
+        // Ambil slug pesanan dari session
+        $slug = session('order_slug');
 
-        if (!session('success')) {
+        if (!$slug) {
             return redirect()->route('order.create');
         }
 
-        return view('order.payment');
+        // Ambil data undangan beserta temanya
+        $invitation = Invitation::where('slug', $slug)
+            ->with('theme')
+            ->firstOrFail();
+
+        return view('order.payment', compact('invitation'));
     }
 }

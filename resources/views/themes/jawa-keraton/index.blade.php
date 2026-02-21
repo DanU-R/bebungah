@@ -32,24 +32,23 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-famil
 /* ═══ GUNUNGAN GATE ═══ */
 .gate{position:absolute;inset:0;z-index:999;display:flex;align-items:center;justify-content:center}
 .gate-half{position:absolute;top:0;bottom:0;width:50%;transition:transform 1.4s cubic-bezier(0.77,0,0.18,1)}
-.gate-left{left:0;transform-origin:left center;background:linear-gradient(160deg,var(--sogan) 0%,var(--sogan2) 100%);
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='10' r='9' fill='none' stroke='%23E0B84A' stroke-width='0.7' opacity='0.15'/%3E%3Ccircle cx='30' cy='50' r='9' fill='none' stroke='%23E0B84A' stroke-width='0.7' opacity='0.15'/%3E%3Ccircle cx='10' cy='30' r='9' fill='none' stroke='%23E0B84A' stroke-width='0.7' opacity='0.15'/%3E%3Ccircle cx='50' cy='30' r='9' fill='none' stroke='%23E0B84A' stroke-width='0.7' opacity='0.15'/%3E%3C/svg%3E");}
-.gate-right{right:0;transform-origin:right center;background:linear-gradient(200deg,var(--sogan2) 0%,var(--sogan) 100%);
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='10' r='9' fill='none' stroke='%23E0B84A' stroke-width='0.7' opacity='0.15'/%3E%3Ccircle cx='30' cy='50' r='9' fill='none' stroke='%23E0B84A' stroke-width='0.7' opacity='0.15'/%3E%3Ccircle cx='10' cy='30' r='9' fill='none' stroke='%23E0B84A' stroke-width='0.7' opacity='0.15'/%3E%3Ccircle cx='50' cy='30' r='9' fill='none' stroke='%23E0B84A' stroke-width='0.7' opacity='0.15'/%3E%3C/svg%3E");}
+.gate-left{left:0;transform-origin:left center;background:var(--hitam);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Ccircle cx='40' cy='40' r='12' fill='none' stroke='%23B8861A' stroke-width='0.5' opacity='0.08'/%3E%3Ccircle cx='40' cy='40' r='8' fill='none' stroke='%23B8861A' stroke-width='0.4' opacity='0.06'/%3E%3Ccircle cx='0' cy='0' r='10' fill='none' stroke='%23B8861A' stroke-width='0.4' opacity='0.05'/%3E%3Ccircle cx='80' cy='80' r='10' fill='none' stroke='%23B8861A' stroke-width='0.4' opacity='0.05'/%3E%3C/svg%3E");}
+.gate-right{right:0;transform-origin:right center;background:var(--hitam);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Ccircle cx='40' cy='40' r='12' fill='none' stroke='%23B8861A' stroke-width='0.5' opacity='0.08'/%3E%3Ccircle cx='40' cy='40' r='8' fill='none' stroke='%23B8861A' stroke-width='0.4' opacity='0.06'/%3E%3Ccircle cx='0' cy='0' r='10' fill='none' stroke='%23B8861A' stroke-width='0.4' opacity='0.05'/%3E%3Ccircle cx='80' cy='80' r='10' fill='none' stroke='%23B8861A' stroke-width='0.4' opacity='0.05'/%3E%3C/svg%3E");}
 .gate.open .gate-left{transform:translateX(-100%)}
 .gate.open .gate-right{transform:translateX(100%)}
 .gate-center{position:relative;z-index:2;text-align:center;padding:0 24px;pointer-events:none}
 .gate-center.hide{opacity:0;transition:opacity 0.4s}
-.gate-ornament{margin:0 auto 16px;display:block}
-.gate-eyebrow{font-size:9px;letter-spacing:6px;text-transform:uppercase;color:var(--gold-l);margin-bottom:10px}
-.gate-names{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;font-style:italic;color:var(--ivory);line-height:1.1;text-shadow:0 0 30px rgba(224,184,74,0.4);margin-bottom:8px}
-.gate-amp{color:var(--gold-l);font-style:normal}
-.gate-date{font-size:10px;letter-spacing:4px;color:rgba(245,235,208,0.6);margin-bottom:20px}
-.gate-guest{background:rgba(184,134,26,0.15);border:1px solid rgba(224,184,74,0.3);border-radius:4px;padding:8px 20px;display:inline-block;margin-bottom:28px}
-.gate-guest-label{font-size:8px;letter-spacing:3px;color:var(--gold-l);text-transform:uppercase}
-.gate-guest-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--ivory);font-style:italic}
-.btn-buka{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--hitam);border:none;padding:12px 36px;font-family:'Cinzel',serif;font-weight:600;font-size:10px;letter-spacing:4px;text-transform:uppercase;cursor:pointer;transition:0.3s;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);pointer-events:all}
-.btn-buka:hover{box-shadow:0 0 24px rgba(224,184,74,0.5);transform:scale(1.04)}
+.gate-ornament{margin:0 auto 20px;display:block;opacity:0.95;filter: drop-shadow(0 0 10px rgba(184,134,26,0.3))}
+.gate-eyebrow{font-size:10px;letter-spacing:6px;text-transform:uppercase;color:var(--gold-l);margin-bottom:15px;opacity:0.9}
+.gate-names{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:400;font-style:italic;color:var(--ivory);line-height:1.1;margin:18px 0}
+.gate-amp{color:var(--ivory);font-style:normal;font-weight:300;display:inline-block;margin:0 10px}
+.gate-divider-wrap{margin:18px auto;display:flex;align-items:center;justify-content:center;gap:12px;opacity:0.6}
+.gate-divider{width:60px;height:1px;background:linear-gradient(to right,transparent,var(--gold-xl),var(--gold-xl),transparent)}
+.gate-divider-dot{width:4px;height:4px;background:var(--gold-l);border-radius:50%}
+.btn-buka{background:linear-gradient(135deg,#B8861A, #F2D785, #B8861A);color:var(--hitam);border:none;padding:14px 44px;font-family:'Cinzel',serif;font-weight:700;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:0.4s;border-radius:50px;pointer-events:all;box-shadow:0 10px 30px rgba(184,134,26,0.25);display:inline-flex;align-items:center;gap:10px}
+.btn-buka:hover{box-shadow:0 12px 35px rgba(184,134,26,0.45);transform:translateY(-3px);filter:brightness(1.05)}
 
 /* ═══ PAGES ═══ */
 .page{position:absolute;inset:0;overflow-y:auto;display:none;padding-bottom:90px}
@@ -226,38 +225,47 @@ $target = \Carbon\Carbon::parse($akad['waktu'] ?? now()->addDays(90));
         <div class="gate-half gate-right"></div>
         <div class="gate-center" id="gateContent">
 
-            {{-- Gunungan SVG --}}
-            <svg class="gate-ornament" width="90" height="130" viewBox="0 0 90 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="45,4 86,124 4,124" fill="none" stroke="rgba(224,184,74,0.6)" stroke-width="1.5"/>
-                <polygon points="45,16 76,118 14,118" fill="none" stroke="rgba(224,184,74,0.35)" stroke-width="1"/>
-                <line x1="45" y1="14" x2="45" y2="110" stroke="rgba(224,184,74,0.3)" stroke-width="0.8"/>
-                <circle cx="45" cy="42" r="10" fill="none" stroke="rgba(224,184,74,0.5)" stroke-width="1"/>
-                <circle cx="45" cy="42" r="4" fill="rgba(224,184,74,0.4)"/>
-                <line x1="30" y1="68" x2="60" y2="68" stroke="rgba(224,184,74,0.3)" stroke-width="0.8"/>
-                <circle cx="30" cy="80" r="5" fill="none" stroke="rgba(224,184,74,0.4)" stroke-width="1"/>
-                <circle cx="60" cy="80" r="5" fill="none" stroke="rgba(224,184,74,0.4)" stroke-width="1"/>
-                <circle cx="45" cy="96" r="6" fill="none" stroke="rgba(224,184,74,0.4)" stroke-width="1"/>
-                <rect x="35" y="110" width="20" height="14" rx="2" fill="none" stroke="rgba(224,184,74,0.5)" stroke-width="1"/>
+            <p class="gate-eyebrow">UNDANGAN PERNIKAHAN</p>
+
+            <div class="gate-divider-wrap" style="transform:translateY(-8px)">
+                <div class="gate-divider"></div>
+                <div class="gate-divider-dot"></div>
+                <div class="gate-divider"></div>
+            </div>
+
+            {{-- High Fidelity Gunungan SVG --}}
+            <svg class="gate-ornament" width="110" height="150" viewBox="0 0 110 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Outer Shape -->
+                <path d="M55,5 L105,135 L55,145 L5,135 Z" stroke="var(--gold-l)" stroke-width="1.8"/>
+                <path d="M55,15 L95,128 L55,138 L15,128 Z" stroke="var(--gold-l)" stroke-width="0.8" opacity="0.6"/>
+                <!-- Tree of Life Trunk -->
+                <rect x="54" y="45" width="2" height="90" fill="var(--gold-l)"/>
+                <!-- Detailed Foliage / Motif -->
+                <circle cx="55" cy="55" r="12" stroke="var(--gold-l)" stroke-width="0.8" opacity="0.8"/>
+                <path d="M55,43 Q65,43 75,55 Q65,67 55,67 Q45,67 35,55 Q45,43 55,43" stroke="var(--gold-l)" stroke-width="0.8"/>
+                <path d="M55,75 Q75,75 85,95 M55,75 Q35,75 25,95" stroke="var(--gold-l)" stroke-width="0.8" opacity="0.7"/>
+                <!-- Wings / Roots -->
+                <path d="M55,105 Q85,105 100,125 M55,105 Q25,105 10,125" stroke="var(--gold-l)" stroke-width="1.2"/>
+                <!-- Base / House Decor -->
+                <rect x="42" y="115" width="26" height="15" stroke="var(--gold-l)" stroke-width="1"/>
+                <line x1="42" y1="122" x2="68" y2="122" stroke="var(--gold-l)" stroke-width="0.5"/>
+                <line x1="55" y1="115" x2="55" y2="130" stroke="var(--gold-l)" stroke-width="0.5"/>
             </svg>
 
-            <p class="gate-eyebrow">✦ Undangan Pernikahan ✦</p>
             <h1 class="gate-names">
-                {{ $pria['panggilan'] ?? 'Raka' }}<br>
-                <span class="gate-amp">&amp;</span><br>
-                {{ $wanita['panggilan'] ?? 'Sari' }}
+                {{ $pria['panggilan'] ?? 'Raka' }} <span class="gate-amp">&amp;</span> {{ $wanita['panggilan'] ?? 'Sari' }}
             </h1>
-            <p class="gate-date">{{ $target->translatedFormat('d · F · Y') }}</p>
 
-            @if(isset($guest))
-            <div class="gate-guest">
-                <div class="gate-guest-label">Katur dhumateng</div>
-                <div class="gate-guest-name">{{ $guest->name }}</div>
+            <div class="gate-divider-wrap" style="transform:translateY(8px)">
+                <div class="gate-divider"></div>
+                <div class="gate-divider-dot"></div>
+                <div class="gate-divider"></div>
             </div>
-            <br>
-            @endif
+
+            <br><br>
 
             <button class="btn-buka" onclick="openSurat()">
-                ✦ &nbsp; Buka Surat &nbsp; ✦
+                <span style="font-size:16px">💎</span> &nbsp; BUKA SURAT &nbsp;
             </button>
         </div>
     </div>
@@ -508,7 +516,7 @@ function openSurat(){
     gc.classList.add('hide');
     setTimeout(()=>{ gate.classList.add('open'); },300);
     setTimeout(()=>{
-        gate.style.pointerEvents='none';
+        gate.style.display = 'none'; // hide completely so it never blocks clicks
         document.getElementById('radialNav').classList.add('show');
         document.getElementById('musicFab').classList.add('show');
         const a = document.getElementById('bgAudio');

@@ -401,7 +401,7 @@
                         <h3 class="text-2xl font-bold text-gray-900">{{ $theme->name }}</h3>
                         <div class="flex items-center justify-center gap-6 pt-2">
                             <div class="text-center">
-                                <div class="text-3xl font-extrabold text-gray-900">Rp 99k</div>
+                                <div class="text-3xl font-extrabold text-gray-900">{{ $theme->short_price }}</div>
                                 <div class="text-xs text-gray-500 mt-1">{{ $isFeatured ? 'Tema terpopuler' : 'Harga spesial' }}</div>
                             </div>
                             <a href="{{ route('order.create') }}?theme={{ $theme->slug }}" class="text-sm font-bold border-2 {{ $isFeatured ? 'border-indigo-600 bg-indigo-600 text-white hover:bg-indigo-700 hover:border-indigo-700' : 'border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white' }} px-6 py-3 rounded-full transition-all duration-300 uppercase tracking-widest hover:scale-105 shadow-lg hover:shadow-xl">
