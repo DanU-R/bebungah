@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Invitation;
 use App\Models\Guest;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -150,6 +152,11 @@ class ClientController extends Controller
         $invitation->content = $content;
         $invitation->save();
 
+        // Log perubahan settings undangan
+        ActivityLog::record('info', 'invitation.settings_updated', $invitation, [
+            'updated_by' => auth()->user()->email,
+        ]);
+
         return back()->with('success', 'Data undangan berhasil diperbarui!');
     }
 
@@ -269,6 +276,21 @@ class ClientController extends Controller
         ]);
 
         return back()->with('success', 'Berhasil menambahkan tamu: ' . $request->name);
+    }
+    public function deleteGuest(Guest $guest)
+    {
+        $user = auth()->user();
+        $invitation = $user->invitations()->firstOrFail();
+
+        // Pastikan tamu memang milik undangan user ini
+        if ($guest->invitation_id !== $invitation->id) {
+            abort(403, 'Akses ditolak.');
+        }
+
+        $name = $guest->name;
+        $guest->delete();
+
+        return back()->with('success', "Tamu \"{$name}\" berhasil dihapus.");
     }
 
 }

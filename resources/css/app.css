@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- CONFIGURATION --- */
 :root {
     --glass-border: rgba(255, 255, 255, 0.15);
     --glass-bg: rgba(10, 10, 10, 0.7);
@@ -18,7 +17,6 @@ body {
     width: 100vw;
 }
 
-/* --- GLASSMORPHISM --- */
 .glass {
     background: var(--glass-bg);
     backdrop-filter: blur(12px);
@@ -33,7 +31,6 @@ body {
     border-radius: 12px;
 }
 
-/* --- ORNAMENTS (FIREFLIES) --- */
 .firefly {
     position: fixed; border-radius: 50%; background: var(--gold);
     box-shadow: 0 0 10px var(--gold); opacity: 0; pointer-events: none; z-index: 1;
@@ -45,37 +42,33 @@ body {
     100% { transform: translateY(-150px) translateX(40px); opacity: 0; }
 }
 
-/* --- PAGE LOGIC --- */
 .page-section {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     opacity: 0; visibility: hidden; transform: scale(0.98);
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 10; 
-    /* Padding atas bawah supaya konten mulai dari tengah, bukan nabrak frame */
-    padding-top: 100px; 
-    padding-bottom: 120px; 
+    z-index: 10;
+
+    padding-top: 100px;
+    padding-bottom: 120px;
     overflow: hidden;
 }
 
-/* SCROLL MASKING (RAHASIA AGAR TIDAK NABRAK FRAME) */
-.page-section.scrollable { 
-    overflow-y: auto; 
+.page-section.scrollable {
+    overflow-y: auto;
     scrollbar-width: none;
-    /* Masking: Konten akan transparan di atas dan bawah */
+
     mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
 }
 .page-section.scrollable::-webkit-scrollbar { display: none; }
 .page-section.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 20; }
 
-/* --- GATE --- */
 .gate-overlay {
     position: fixed; inset: 0; z-index: 999; background-color: #050505;
     transition: transform 1s ease-in-out; display: flex; align-items: center; justify-content: center;
 }
 .gate-overlay.open { transform: translateY(-100%); }
 
-/* --- NAVBAR (KECIL) --- */
 .nav-wrapper {
     position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
     z-index: 100; display: flex; flex-direction: column; align-items: center;
@@ -110,7 +103,6 @@ body {
 }
 .nav-btn:hover::after { opacity: 1; top: -30px; }
 
-/* Utils */
 .font-royal { font-family: 'Cinzel', serif; }
 .font-script { font-family: 'Great Vibes', cursive; }
 .animate-spin-slow { animation: spin 8s linear infinite; }

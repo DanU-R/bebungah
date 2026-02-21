@@ -1,7 +1,7 @@
 :root {
-    --primary: #d65a78;      /* Pink Mawar */
-    --secondary: #8e44ad;    /* Ungu Soft */
-    --glass-bg: rgba(255, 255, 255, 0.7); /* Kaca lebih tebal dikit biar tulisan kebaca */
+    --primary: #d65a78;
+    --secondary: #8e44ad;
+    --glass-bg: rgba(255, 255, 255, 0.7);
     --glass-border: 1px solid rgba(255, 255, 255, 0.9);
     --shadow: 0 10px 30px rgba(214, 90, 120, 0.15);
     --font-heading: 'Pinyon Script', cursive;
@@ -28,12 +28,10 @@ body {
     overflow: hidden;
 }
 
-/* BACKGROUND BLOBS */
 .blob { position: absolute; border-radius: 50%; filter: blur(70px); z-index: 0; opacity: 0.7; }
 .blob-1 { top: -50px; left: -50px; width: 300px; height: 300px; background: #ffc2d1; }
 .blob-2 { bottom: 20%; right: -50px; width: 250px; height: 250px; background: #e0b0ff; }
 
-/* GLASS CARD UTILITY */
 .glass-card {
     background: var(--glass-bg);
     backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
@@ -43,17 +41,14 @@ body {
     padding: 25px;
     margin-bottom: 25px;
     position: relative; z-index: 2;
-    
-    /* PERBAIKAN: Memastikan isi kartu rata tengah & lebar penuh */
+
     width: 100%;
     text-align: center;
 }
 
-/* TYPOGRAPHY */
 h1, h2, h3 { font-family: var(--font-heading); color: var(--secondary); font-weight: 400; }
 .section-title { font-size: 2.5rem; margin-bottom: 25px; text-align: center; }
 
-/* 1. HERO COVER (LOCK SCREEN) */
 .hero {
     height: 100vh; width: 100%;
     display: flex; flex-direction: column;
@@ -95,14 +90,13 @@ h1, h2, h3 { font-family: var(--font-heading); color: var(--secondary); font-wei
 }
 .btn-open:hover { transform: scale(1.05); }
 
-/* 2. HOME / HERO INSIDE */
 .hero-inside {
-    height: 80vh; /* Hampir full layar */
+    height: 80vh;
     width: 100%;
     position: relative;
     border-radius: 0 0 50px 50px;
     overflow: hidden;
-    margin-bottom: -50px; /* Overlap dengan konten bawahnya */
+    margin-bottom: -50px;
     z-index: 1;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
@@ -114,27 +108,23 @@ h1, h2, h3 { font-family: var(--font-heading); color: var(--secondary); font-wei
     text-align: center;
 }
 
-/* SECTION PADDING & ALIGNMENT */
-.section { 
-    padding: 40px 20px; 
-    position: relative; 
+.section {
+    padding: 40px 20px;
+    position: relative;
     z-index: 2;
-    
-    /* PERBAIKAN: Memastikan semua elemen section rata tengah */
+
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* 3. COUPLE */
 .couple-img {
     width: 140px; height: 140px; object-fit: cover;
     border-radius: 50%; border: 4px solid white;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 10px;
 }
 
-/* 4. LOVE STORY TIMELINE */
 .timeline { position: relative; padding-left: 20px; border-left: 2px solid rgba(214, 90, 120, 0.3); margin-left: 10px; }
 .timeline-item { margin-bottom: 30px; position: relative; }
 .timeline-dot {
@@ -146,7 +136,6 @@ h1, h2, h3 { font-family: var(--font-heading); color: var(--secondary); font-wei
 .story-year { font-weight: bold; color: var(--primary); font-size: 1.1rem; }
 .story-title { font-family: var(--font-heading); font-size: 1.5rem; margin: 5px 0; color: var(--secondary); }
 
-/* 5. EVENTS & COUNTDOWN */
 .event-item {
     border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 20px; margin-bottom: 20px; text-align: center;
 }
@@ -166,7 +155,6 @@ h1, h2, h3 { font-family: var(--font-heading); color: var(--secondary); font-wei
 .timer-item span { font-weight: bold; color: var(--secondary); font-size: 1.1rem; }
 .timer-item small { font-size: 0.6rem; }
 
-/* 6. GALLERY & GIFT */
 .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .gallery-item { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; border: 2px solid white; }
 
@@ -175,7 +163,6 @@ h1, h2, h3 { font-family: var(--font-heading); color: var(--secondary); font-wei
     padding: 20px; border-radius: 15px; border: 1px solid white; text-align: center;
 }
 
-/* FORM & MUSIC & PETALS */
 .form-control { width: 100%; padding: 12px; border-radius: 30px; border: 1px solid white; margin-bottom: 10px; background: rgba(255,255,255,0.8); }
 .btn-submit { width: 100%; padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 30px; }
 .music-box { position: fixed; bottom: 25px; right: 25px; width: 45px; height: 45px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 99; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; }

@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wedding of {{ $invitation->content['mempelai']['pria']['panggilan'] ?? 'Pria' }} & {{ $invitation->content['mempelai']['wanita']['panggilan'] ?? 'Wanita' }}</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22><rect width=%2248%22 height=%2248%22 rx=%2212%22 fill=%22%234F46E5%22/><path d=%22M15 13h18v6h-6v17h-6v-17h-6v-6z%22 fill=%22white%22/></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
+
     @vite(['resources/css/floral-pastel.css'])
 
     <style>
-        /* Fallback CSS */
+
         :root { --primary: #D4A373; --secondary: #A98467; --bg-color: #FAFAFA; --font-heading: 'Pinyon Script', cursive; }
         body { font-family: 'Jost', sans-serif; background: var(--bg-color); margin: 0; color: #555; }
         .mobile-container { max-width: 480px; margin: 0 auto; background: white; min-height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
@@ -41,11 +41,10 @@
         .gallery-item { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; }
     </style>
 </head>
-<body style="overflow: hidden;"> 
+<body style="overflow: hidden;">
 
     @php
-        // Helper Sederhana untuk Cek URL (Demo vs Lokal)
-        // Jika link dimulai "http", pakai langsung. Jika tidak, bungkus asset()
+
         function getImgUrl($path) {
             if (!$path) return 'https://via.placeholder.com/150';
             return \Illuminate\Support\Str::startsWith($path, 'http') ? $path : asset($path);
@@ -70,8 +69,8 @@
             <div class="hero-box">
                 <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;">The Wedding Of</p>
                 <h1 class="hero-names">
-                    {{ $invitation->content['mempelai']['pria']['panggilan'] ?? 'Pria' }} 
-                    <br> & <br> 
+                    {{ $invitation->content['mempelai']['pria']['panggilan'] ?? 'Pria' }}
+                    <br> & <br>
                     {{ $invitation->content['mempelai']['wanita']['panggilan'] ?? 'Wanita' }}
                 </h1>
                 <p style="margin-bottom: 20px;">
@@ -95,7 +94,7 @@
                     <p style="margin-top: 10px;">Mohon doa restu dari Bapak/Ibu/Saudara/i</p>
                 </div>
             </div>
-            
+
             <section class="section" style="padding-top: 0;">
                 <div class="glass-card">
                     <i class="ph-duotone ph-flower-lotus" style="font-size: 2.5rem; color: var(--primary);"></i>
@@ -116,9 +115,9 @@
                         </a>
                         @endif
                     </div>
-                    
+
                     <div style="font-family: var(--font-heading); font-size: 2.5rem; color: #ccc;">&</div>
-                    
+
                     <div style="margin-top: 30px;">
                         <img src="{{ getImgUrl($invitation->content['mempelai']['wanita']['foto'] ?? '') }}" class="couple-img">
                         <h3 style="font-size: 2rem; color: var(--primary); font-family: var(--font-heading);">{{ $invitation->content['mempelai']['wanita']['nama'] ?? 'Mempelai Wanita' }}</h3>
@@ -154,7 +153,7 @@
             <section class="section" style="padding-top: 0;">
                 <h2 class="section-title">Save The Date</h2>
                 <div class="glass-card">
-                    
+
                     <div class="countdown-box" id="countdown">
                         <div class="timer-item"><span id="days">00</span><small>HARI</small></div>
                         <div class="timer-item"><span id="hours">00</span><small>JAM</small></div>
@@ -205,7 +204,7 @@
                 <h2 class="section-title">Wedding Gift</h2>
                 <div class="glass-card">
                     <p style="margin-bottom: 20px;">Doa restu Anda merupakan karunia yang sangat berarti bagi kami.</p>
-                    
+
                     @if(!empty($invitation->content['amplop']['bank_name']))
                     <div class="bank-container">
                         <h3 style="margin: 0;">{{ $invitation->content['amplop']['bank_name'] }}</h3>
@@ -218,11 +217,11 @@
                         </button>
                     </div>
                     @endif
-                    
+
                     <div style="margin-top: 25px;">
                         <h4 style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Kirim Kado</h4>
                         <p style="margin: 5px 0; font-size: 0.9rem;">{{ $invitation->content['amplop']['alamat_kado'] ?? '-' }}</p>
-                        
+
                         @if(!empty($invitation->content['amplop']['maps_kado']))
                         <a href="{{ $invitation->content['amplop']['maps_kado'] }}" target="_blank" style="display:inline-block; margin-top:5px; font-size:0.8rem; color:var(--primary);">
                             Lihat Lokasi Kado
@@ -244,7 +243,7 @@
                     <form action="{{ route('kirim.ucapan') }}" method="POST">
                         @csrf
                         <input type="hidden" name="invitation_slug" value="{{ $invitation->slug }}">
-                        
+
                         <input type="text" name="nama" class="form-control" placeholder="Nama Anda" required>
                         <select name="kehadiran" class="form-control" required>
                             <option value="hadir">Hadir</option>
@@ -295,7 +294,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. PETALS ANIMATION
+
             function createPetals() {
                 const container = document.getElementById('petals-container');
                 if(!container) return;
@@ -311,9 +310,9 @@
                     petal.style.left = `${Math.random() * 100}%`;
                     petal.style.top = `-20px`;
                     petal.style.transition = `top ${Math.random() * 5 + 5}s linear, transform ${Math.random() * 5 + 5}s linear`;
-                    
+
                     container.appendChild(petal);
-                    
+
                     setTimeout(() => {
                         petal.style.top = '110vh';
                         petal.style.transform = `rotate(${Math.random() * 360}deg)`;
@@ -330,15 +329,14 @@
             }
             createPetals();
 
-            // 2. AUDIO & OPEN
             const audio = document.getElementById('bgMusic');
             const musicBtn = document.getElementById('musicBtn');
 
             window.openInvitation = function() {
                 const cover = document.getElementById('heroCover');
                 if(cover) cover.classList.add('open');
-                document.body.style.overflow = 'auto'; 
-                
+                document.body.style.overflow = 'auto';
+
                 if(audio && musicBtn) {
                     musicBtn.style.display = 'flex';
                     audio.play().then(() => {
@@ -349,17 +347,16 @@
 
             window.toggleMusic = function() {
                 if(audio && musicBtn) {
-                    if(audio.paused) { 
-                        audio.play(); 
-                        musicBtn.classList.add('spin'); 
-                    } else { 
-                        audio.pause(); 
-                        musicBtn.classList.remove('spin'); 
+                    if(audio.paused) {
+                        audio.play();
+                        musicBtn.classList.add('spin');
+                    } else {
+                        audio.pause();
+                        musicBtn.classList.remove('spin');
                     }
                 }
             }
 
-            // 3. COPY TEXT
             window.copyToClipboard = function(id) {
                 const el = document.getElementById(id);
                 if(el) {
@@ -367,14 +364,13 @@
                 }
             }
 
-            // 4. COUNTDOWN
             const targetStr = "{{ \Carbon\Carbon::parse($invitation->content['acara']['akad']['waktu'] ?? now())->format('Y-m-d H:i:s') }}";
             const targetDate = new Date(targetStr).getTime();
 
             setInterval(function() {
                 const now = new Date().getTime();
                 const distance = targetDate - now;
-                
+
                 if (distance < 0) {
                     const ids = ['days', 'hours', 'minutes', 'seconds'];
                     ids.forEach(id => {
@@ -383,7 +379,7 @@
                     });
                     return;
                 }
-                
+
                 const d = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));

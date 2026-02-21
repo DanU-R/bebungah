@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\InvitationController;
 
@@ -35,6 +36,10 @@ Route::get('/', function () {
     return view('landing');
 })->name('home');
 
+// Theme Catalog
+Route::get('/themes', [ThemeController::class, 'index'])->name('themes.index');
+Route::get('/themes/{slug}', [ThemeController::class, 'show'])->name('themes.show');
+
 
 // =====================
 // 3. PUBLIC ROUTES (Order & Undangan)
@@ -48,9 +53,11 @@ Route::get('/order-success/{id}', [OrderController::class, 'success'])->name('or
 Route::get('/demo/{theme}', [InvitationController::class, 'demo'])->name('demo.show');
 Route::get('/undangan/{slug}', [InvitationController::class, 'show'])->name('invitation.show');
 
-// Fitur Undangan (Kirim Ucapan & RSVP)
-Route::post('/kirim-ucapan', [InvitationController::class, 'kirimUcapan'])->name('kirim.ucapan');
-Route::post('/rsvp/{id}', [InvitationController::class, 'submitRSVP'])->name('invitation.rsvp');
+// Fitur Undangan — Rate limit: maks 10 ucapan per menit per IP, mencegah spam
+Route::middleware('throttle:10,1')->group(function () {
+    Route::post('/kirim-ucapan', [InvitationController::class, 'kirimUcapan'])->name('kirim.ucapan');
+    Route::post('/rsvp/{id}', [InvitationController::class, 'submitRSVP'])->name('invitation.rsvp');
+});
 
 
 // =====================
@@ -71,7 +78,7 @@ Route::get('/dashboard', function () {
 // =====================
 // 5. ADMIN ROUTES
 // =====================
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/approve/{id}', [AdminController::class, 'approve'])->name('admin.approve');
     Route::post('/reset-password/{user_id}', [AdminController::class, 'resetPassword'])->name('admin.resetPassword');
@@ -83,16 +90,19 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 // =====================
 Route::middleware(['auth'])->prefix('client')->group(function () {
     Route::get('/dashboard', [ClientController::class, 'index'])->name('client.dashboard');
-    
+
     // Fitur Tamu (Import Excel)
     Route::post('/import-guests', [ClientController::class, 'importGuests'])->name('client.importGuests');
     Route::get('/download-template', [ClientController::class, 'downloadTemplate'])->name('client.downloadTemplate');
-    
-    // Fitur Tamu (Input Manual) -- PERBAIKAN DI SINI
-    // Hapus '/client' di depan, dan sederhanakan pemanggilan controllernya
+
+    // Fitur Tamu (Input Manual)
     Route::post('/store-guest', [ClientController::class, 'storeGuest'])->name('client.storeGuest');
-    
+    Route::delete('/delete-guest/{guest}', [ClientController::class, 'deleteGuest'])->name('client.deleteGuest');
+
     // Edit Undangan (Settings)
     Route::get('/settings', [ClientController::class, 'settings'])->name('client.settings');
     Route::put('/settings', [ClientController::class, 'updateSettings'])->name('client.updateSettings');
 });
+
+// CATATAN: Route /debug-session telah dihapus karena berbahaya di production.
+// Gunakan 'php artisan tinker' atau Laravel Telescope untuk debugging.

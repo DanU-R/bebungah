@@ -1,205 +1,250 @@
 <x-app-layout>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <x-slot name="header">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
-                    Admin Panel <span class="text-indigo-600 dark:text-indigo-400">.</span>
-                </h2>
-                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                    Kelola pesanan dan akun klien dalam satu tempat.
-                </p>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl shadow-indigo-500/30 rotate-3 hover:rotate-0 transition-transform">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                </div>
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                        Admin Dashboard
+                    </h2>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mt-0.5">
+                        Kelola pesanan dan akun klien dalam satu tempat
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="hidden md:flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="text-sm text-gray-600 dark:text-gray-400">System Online</span>
+                </div>
             </div>
         </div>
     </x-slot>
 
-    <div class="py-12 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-12">
+    <div class="py-8 bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
-            <div>
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 p-2 rounded-lg shadow-sm">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="stat-card stat-card-pending">
+                    <div class="stat-icon bg-gradient-to-br from-amber-400 to-orange-500">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
-                        Permintaan Masuk 
-                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-2 bg-white dark:bg-gray-700 px-2 py-0.5 rounded-full border dark:border-gray-600">
-                            ({{ $pendingOrders->count() }} Pending)
-                        </span>
-                    </h2>
+                    <div class="stat-content">
+                        <p class="stat-label">Menunggu Aktivasi</p>
+                        <p class="stat-value text-amber-600 dark:text-amber-400">{{ $pendingOrders->count() }}</p>
+                    </div>
+                    <div class="stat-bg-pattern"></div>
                 </div>
-
-                <div class="bg-white dark:bg-gray-800 shadow-xl shadow-yellow-100/50 dark:shadow-none rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700 transition-colors">
-                    @if($pendingOrders->count() > 0)
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-yellow-50 dark:bg-yellow-900/20">
-                                <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">ID / Tanggal</th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Mempelai</th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Paket</th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Kontak WA</th>
-                                    <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                @foreach($pendingOrders as $order)
-                                <tr class="hover:bg-yellow-50/30 dark:hover:bg-yellow-900/10 transition-colors group">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="font-mono text-xs font-bold text-yellow-700 dark:text-yellow-300 bg-yellow-100 dark:bg-yellow-900/40 px-2 py-1 rounded">#INV-{{ $order->id }}</span>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">{{ $order->created_at->format('d M Y, H:i') }}</div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm font-bold text-gray-900 dark:text-white">
-                                            {{ $order->content['mempelai']['pria']['nama'] }} & {{ $order->content['mempelai']['wanita']['nama'] }}
-                                        </div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 flex items-center gap-1">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                            Acara: {{ $order->event_date->format('d M Y') }}
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-600">
-                                            {{ $order->theme->name }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <a href="https://wa.me/{{ $order->client_whatsapp }}" target="_blank" class="text-green-600 dark:text-green-400 font-bold hover:text-green-800 dark:hover:text-green-300 transition flex items-center gap-1 bg-green-50 dark:bg-green-900/20 w-fit px-3 py-1 rounded-full border border-green-100 dark:border-green-800">
-                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                                            {{ $order->client_whatsapp }}
-                                        </a>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right">
-                                        <form action="{{ route('admin.approve', $order->id) }}" method="POST" onsubmit="konfirmasiSwalACC(event, '{{ $order->content['mempelai']['pria']['nama'] }} & {{ $order->content['mempelai']['wanita']['nama'] }}')">
-                                            @csrf
-                                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-5 rounded-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 text-xs uppercase tracking-wide flex items-center gap-2 ml-auto">
-                                                <span>Aktifkan</span>
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                <div class="stat-card stat-card-active">
+                    <div class="stat-icon bg-gradient-to-br from-emerald-400 to-green-500">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
-                    @else
-                    <div class="p-12 text-center text-gray-400 dark:text-gray-500 flex flex-col items-center">
-                        <svg class="w-16 h-16 mb-4 text-gray-200 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-                        <p>Belum ada pesanan baru masuk.</p>
+                    <div class="stat-content">
+                        <p class="stat-label">Klien Aktif</p>
+                        <p class="stat-value text-emerald-600 dark:text-emerald-400">{{ $activeOrders->count() }}</p>
                     </div>
-                    @endif
+                    <div class="stat-bg-pattern"></div>
+                </div>
+                <div class="stat-card stat-card-total">
+                    <div class="stat-icon bg-gradient-to-br from-indigo-400 to-purple-500">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <div class="stat-content">
+                        <p class="stat-label">Total Undangan</p>
+                        <p class="stat-value text-indigo-600 dark:text-indigo-400">{{ $pendingOrders->count() + $activeOrders->count() }}</p>
+                    </div>
+                    <div class="stat-bg-pattern"></div>
                 </div>
             </div>
 
-            <div>
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 p-2 rounded-lg shadow-sm">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            <!-- Pending Orders Section -->
+            <div class="dashboard-card">
+                <div class="card-header card-header-warning">
+                    <div class="flex items-center gap-4">
+                        <div class="header-icon bg-gradient-to-br from-amber-500 to-orange-500">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Permintaan Masuk</h3>
+                            <p class="card-subtitle">{{ $pendingOrders->count() }} pesanan menunggu aktivasi</p>
+                        </div>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
-                        Klien Aktif 
-                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400 ml-2 bg-white dark:bg-gray-700 px-2 py-0.5 rounded-full border dark:border-gray-600">
-                            ({{ $activeOrders->count() }} Akun)
-                        </span>
-                    </h2>
-                </div>
-
-                <div class="bg-white dark:bg-gray-800 shadow-xl shadow-green-100/50 dark:shadow-none rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700 transition-colors">
-                    @if($activeOrders->count() > 0)
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-green-50 dark:bg-green-900/20">
-                                <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Info Login</th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Detail Klien</th>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-4 text-right text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Manajemen</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                @foreach($activeOrders as $client)
-                                <tr class="hover:bg-green-50/30 dark:hover:bg-green-900/10 transition-colors">
-                                    <td class="px-6 py-4">
-                                        @if($client->user)
-                                            <div class="text-sm font-mono font-bold text-gray-800 dark:text-white bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded w-fit select-all">{{ $client->user->email }}</div>
-                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wide font-bold">Username</div>
-                                        @else
-                                            <span class="text-red-500 dark:text-red-400 text-xs font-bold bg-red-100 dark:bg-red-900/20 px-2 py-1 rounded">Error: User Missing</span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm font-bold text-gray-900 dark:text-white">
-                                            {{ $client->content['mempelai']['pria']['nama'] }} & {{ $client->content['mempelai']['wanita']['nama'] }}
-                                        </div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                            <a href="{{ url('undangan/'.$client->slug) }}" target="_blank" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline flex items-center gap-1">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                                                Lihat Undangan
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 text-xs font-extrabold px-3 py-1 rounded-full border border-green-200 dark:border-green-800 shadow-sm flex items-center gap-1 w-fit">
-                                            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> AKTIF
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right">
-                                        @if($client->user)
-                                        <form action="{{ route('admin.resetPassword', $client->user->id) }}" method="POST" onsubmit="konfirmasiSwalReset(event, '{{ $client->user->email }}')">
-                                            @csrf
-                                            <button type="submit" class="border border-red-200 dark:border-red-800 bg-white dark:bg-gray-700 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-700 dark:hover:text-red-300 font-bold py-1.5 px-4 rounded-lg transition-all text-xs flex items-center gap-1 ml-auto shadow-sm">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
-                                                Reset Pass
-                                            </button>
-                                        </form>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                    @else
-                    <div class="p-12 text-center text-gray-400 dark:text-gray-500 flex flex-col items-center">
-                        <svg class="w-16 h-16 mb-4 text-gray-200 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                        <p>Belum ada klien aktif.</p>
-                    </div>
+                    @if($pendingOrders->count() > 0)
+                    <span class="badge badge-warning animate-pulse">Perlu Tindakan</span>
                     @endif
                 </div>
+
+                @if($pendingOrders->count() > 0)
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID / Tanggal</th>
+                                <th>Mempelai</th>
+                                <th>Paket</th>
+                                <th>Kontak</th>
+                                <th class="text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($pendingOrders as $order)
+                            <tr class="table-row-hover">
+                                <td>
+                                    <span class="id-badge id-badge-warning">#INV-{{ $order->id }}</span>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ $order->created_at->format('d M Y, H:i') }}</p>
+                                </td>
+                                <td>
+                                    <p class="font-bold text-gray-900 dark:text-white">{{ $order->content['mempelai']['pria']['nama'] }} & {{ $order->content['mempelai']['wanita']['nama'] }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                        {{ $order->event_date->format('d M Y') }}
+                                    </p>
+                                </td>
+                                <td>
+                                    <span class="theme-badge">{{ $order->theme->name }}</span>
+                                </td>
+                                <td>
+                                    <a href="https://wa.me/{{ $order->client_whatsapp }}" target="_blank" class="wa-link">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                                        {{ $order->client_whatsapp }}
+                                    </a>
+                                </td>
+                                <td class="text-right">
+                                    <form action="{{ route('admin.approve', $order->id) }}" method="POST" onsubmit="konfirmasiSwalACC(event, '{{ $order->content['mempelai']['pria']['nama'] }} & {{ $order->content['mempelai']['wanita']['nama'] }}')">
+                                        @csrf
+                                        <button type="submit" class="btn-activate">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                            Aktifkan
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                @else
+                <div class="empty-state">
+                    <div class="empty-icon bg-amber-100 dark:bg-amber-900/20">
+                        <svg class="w-10 h-10 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    </div>
+                    <p class="empty-text">Tidak ada pesanan baru</p>
+                    <p class="empty-subtext">Pesanan baru akan muncul di sini</p>
+                </div>
+                @endif
+            </div>
+
+            <!-- Active Clients Section -->
+            <div class="dashboard-card">
+                <div class="card-header card-header-success">
+                    <div class="flex items-center gap-4">
+                        <div class="header-icon bg-gradient-to-br from-emerald-500 to-green-500">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <div>
+                            <h3 class="card-title">Klien Aktif</h3>
+                            <p class="card-subtitle">{{ $activeOrders->count() }} akun sudah aktif</p>
+                        </div>
+                    </div>
+                </div>
+
+                @if($activeOrders->count() > 0)
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Info Login</th>
+                                <th>Detail Klien</th>
+                                <th>Status</th>
+                                <th class="text-right">Manajemen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($activeOrders as $client)
+                            <tr class="table-row-hover">
+                                <td>
+                                    @if($client->user)
+                                    <div class="email-display">{{ $client->user->email }}</div>
+                                    <p class="text-[10px] text-gray-400 dark:text-gray-500 mt-1 uppercase tracking-wider font-semibold">Username</p>
+                                    @else
+                                    <span class="error-badge">Error: User Missing</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <p class="font-bold text-gray-900 dark:text-white">{{ $client->content['mempelai']['pria']['nama'] }} & {{ $client->content['mempelai']['wanita']['nama'] }}</p>
+                                    <a href="{{ url('undangan/'.$client->slug) }}" target="_blank" class="invite-link">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                        Lihat Undangan
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="status-badge status-active">
+                                        <span class="status-dot"></span>
+                                        AKTIF
+                                    </span>
+                                </td>
+                                <td class="text-right">
+                                    @if($client->user)
+                                    <form action="{{ route('admin.resetPassword', $client->user->id) }}" method="POST" onsubmit="konfirmasiSwalReset(event, '{{ $client->user->email }}')">
+                                        @csrf
+                                        <button type="submit" class="btn-reset">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+                                            Reset Password
+                                        </button>
+                                    </form>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                @else
+                <div class="empty-state">
+                    <div class="empty-icon bg-emerald-100 dark:bg-emerald-900/20">
+                        <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <p class="empty-text">Belum ada klien aktif</p>
+                    <p class="empty-subtext">Aktifkan pesanan untuk menambah klien</p>
+                </div>
+                @endif
             </div>
 
         </div>
     </div>
 
+    <!-- New Account Modal -->
     @if(session('new_account'))
-    <div class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity duration-300">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-lg w-full transform scale-100 animate-bounce-in transition-colors">
-            <div class="text-center mb-6">
-                <div class="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
-                    <svg class="w-10 h-10 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+    <div class="modal-overlay" id="newAccountModal">
+        <div class="modal-content">
+            <div class="modal-header-success">
+                <div class="modal-icon bg-gradient-to-br from-emerald-400 to-green-500">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 </div>
-                <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white">Akun Berhasil Dibuat!</h2>
-                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Salin detail login ini sebelum menutup.</p>
+                <h2 class="modal-title">Akun Berhasil Dibuat!</h2>
+                <p class="modal-subtitle">Salin detail login sebelum menutup</p>
             </div>
 
-            <div class="bg-gray-50 dark:bg-gray-700/50 p-5 rounded-xl border border-gray-200 dark:border-gray-700 mb-6 font-mono text-sm space-y-3">
-                <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-600 pb-2">
-                    <span class="text-gray-500 dark:text-gray-400 font-bold">Email:</span> 
-                    <span class="select-all font-bold text-gray-800 dark:text-white">{{ session('new_account')['email'] }}</span>
+            <div class="credentials-box">
+                <div class="credential-row">
+                    <span class="credential-label">Email</span>
+                    <span class="credential-value select-all">{{ session('new_account')['email'] }}</span>
                 </div>
-                <div class="flex justify-between items-center pt-1">
-                    <span class="text-gray-500 dark:text-gray-400 font-bold">Password:</span> 
-                    <span class="select-all bg-white dark:bg-gray-600 px-3 py-1 rounded border border-gray-300 dark:border-gray-500 text-red-600 dark:text-red-400 font-bold tracking-widest">{{ session('new_account')['password'] }}</span>
+                <div class="credential-row">
+                    <span class="credential-label">Password</span>
+                    <span class="credential-value credential-password select-all">{{ session('new_account')['password'] }}</span>
                 </div>
             </div>
 
-            <div class="mb-6">
-                <label class="text-xs text-gray-500 dark:text-gray-400 font-bold mb-2 block uppercase tracking-wide">Template Pesan WhatsApp:</label>
+            <div class="wa-template-box">
+                <label class="wa-template-label">Template Pesan WhatsApp</label>
                 <div class="relative">
-                    <textarea id="waMessage" class="w-full text-sm p-4 border border-gray-300 dark:border-gray-600 rounded-xl h-32 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none resize-none font-sans leading-relaxed" readonly>Halo Kak, undangan sudah aktif! 🎉
+                    <textarea id="waMessage" class="wa-textarea" readonly>Halo Kak, undangan sudah aktif! 🎉
 
 Login Dashboard:
 🔗 {{ url('/login') }}
@@ -207,109 +252,240 @@ Login Dashboard:
 🔑 {{ session('new_account')['password'] }}
 
 Terima kasih!</textarea>
-                    <button onclick="navigator.clipboard.writeText(document.getElementById('waMessage').value); this.innerText='Disalin!'" class="absolute top-2 right-2 bg-white dark:bg-gray-800 text-xs border dark:border-gray-600 shadow-sm px-2 py-1 rounded text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-bold">Salin</button>
+                    <button onclick="copyWAMessage(this)" class="copy-btn">Salin</button>
                 </div>
             </div>
 
-            <button onclick="this.closest('.fixed').remove()" class="bg-gray-900 hover:bg-black dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-xl w-full transition shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+            <button onclick="closeModal('newAccountModal')" class="modal-close-btn">
                 Selesai & Tutup
             </button>
         </div>
     </div>
     @endif
 
+    <!-- Reset Password Modal -->
     @if(session('reset_success'))
-    <div class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-lg w-full transform scale-100 transition-colors">
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
+    <div class="modal-overlay" id="resetModal">
+        <div class="modal-content">
+            <div class="modal-header-warning">
+                <div class="modal-icon bg-gradient-to-br from-amber-400 to-orange-500">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Password Direset!</h2>
+                <h2 class="modal-title">Password Berhasil Direset!</h2>
             </div>
 
-            <div class="bg-yellow-50 dark:bg-yellow-900/10 p-4 rounded-xl border border-yellow-200 dark:border-yellow-800 mb-6 font-mono text-sm text-center">
-                <p class="text-yellow-800 dark:text-yellow-300 mb-2 font-bold">Password Baru:</p>
-                <div class="select-all text-2xl font-bold text-gray-900 dark:text-white bg-white dark:bg-gray-700 py-2 rounded border border-yellow-300 dark:border-yellow-700 tracking-widest">{{ session('reset_success')['password'] }}</div>
+            <div class="new-password-box">
+                <p class="new-password-label">Password Baru</p>
+                <p class="new-password-value select-all">{{ session('reset_success')['password'] }}</p>
             </div>
 
-            <button onclick="this.closest('.fixed').remove()" class="bg-gray-900 hover:bg-black dark:bg-indigo-600 dark:hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl w-full transition">Tutup</button>
+            <button onclick="closeModal('resetModal')" class="modal-close-btn">Tutup</button>
         </div>
     </div>
     @endif
 
-    <script>
-        // 1. Toast Notification untuk Sukses (Pojok Kanan Atas)
-        @if(session('success'))
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                background: '#ECFDF5', // Green-50
-                color: '#065F46',      // Green-800
-                iconColor: '#34D399',  // Green-400
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
+    <style>
+        /* Stat Cards */
+        .stat-card {
+            position: relative;
+            background: white;
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1); }
+        .dark .stat-card { background: rgb(17 24 39); border-color: rgba(55, 65, 81, 0.5); }
+        .stat-icon { width: 3.5rem; height: 3.5rem; border-radius: 1rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2); flex-shrink: 0; }
+        .stat-content { flex: 1; }
+        .stat-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; }
+        .dark .stat-label { color: #9ca3af; }
+        .stat-value { font-size: 2rem; font-weight: 800; line-height: 1.2; }
+        .stat-bg-pattern { position: absolute; right: -20px; top: -20px; width: 100px; height: 100px; border-radius: 50%; background: currentColor; opacity: 0.05; }
 
-            Toast.fire({
-                icon: 'success',
-                title: '{{ session('success') }}'
-            })
+        /* Dashboard Card */
+        .dashboard-card {
+            background: white;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(229, 231, 235, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .dark .dashboard-card { background: rgb(17 24 39); border-color: rgba(55, 65, 81, 0.5); }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        }
+        .dark .card-header { border-color: rgba(55, 65, 81, 0.5); }
+        .card-header-warning { background: linear-gradient(to right, rgba(251, 191, 36, 0.08), transparent); }
+        .card-header-success { background: linear-gradient(to right, rgba(16, 185, 129, 0.08), transparent); }
+        .header-icon { width: 3rem; height: 3rem; border-radius: 1rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.2); }
+        .card-title { font-size: 1.25rem; font-weight: 700; color: #1f2937; }
+        .dark .card-title { color: white; }
+        .card-subtitle { font-size: 0.875rem; color: #6b7280; }
+        .dark .card-subtitle { color: #9ca3af; }
+
+        /* Badges */
+        .badge { padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .badge-warning { background: linear-gradient(to right, #fbbf24, #f59e0b); color: white; box-shadow: 0 4px 12px -2px rgba(251, 191, 36, 0.4); }
+        .id-badge { font-family: monospace; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 0.375rem; }
+        .id-badge-warning { background: rgba(251, 191, 36, 0.15); color: #b45309; }
+        .dark .id-badge-warning { background: rgba(251, 191, 36, 0.2); color: #fcd34d; }
+        .theme-badge { background: #f3f4f6; color: #374151; padding: 0.375rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; border: 1px solid #e5e7eb; }
+        .dark .theme-badge { background: rgb(55 65 81); color: #d1d5db; border-color: rgb(75 85 99); }
+        .status-badge { display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.375rem 0.75rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .status-active { background: rgba(16, 185, 129, 0.15); color: #047857; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .dark .status-active { background: rgba(16, 185, 129, 0.2); color: #34d399; border-color: rgba(16, 185, 129, 0.4); }
+        .status-dot { width: 0.5rem; height: 0.5rem; background: currentColor; border-radius: 50%; animation: pulse 2s infinite; }
+        .error-badge { background: rgba(239, 68, 68, 0.15); color: #dc2626; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; }
+        .dark .error-badge { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+        /* Table */
+        .data-table { width: 100%; }
+        .data-table thead { background: #f9fafb; }
+        .dark .data-table thead { background: rgb(31 41 55); }
+        .data-table th { padding: 1rem 1.5rem; text-align: left; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; }
+        .dark .data-table th { color: #9ca3af; }
+        .data-table td { padding: 1rem 1.5rem; vertical-align: middle; }
+        .data-table tbody tr { border-bottom: 1px solid #f3f4f6; }
+        .dark .data-table tbody tr { border-color: rgb(55 65 81); }
+        .table-row-hover:hover { background: rgba(99, 102, 241, 0.04); }
+        .dark .table-row-hover:hover { background: rgba(99, 102, 241, 0.08); }
+
+        /* Links */
+        .wa-link { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(34, 197, 94, 0.1); color: #16a34a; padding: 0.375rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; border: 1px solid rgba(34, 197, 94, 0.2); transition: all 0.2s; }
+        .wa-link:hover { background: rgba(34, 197, 94, 0.2); transform: translateY(-1px); }
+        .dark .wa-link { background: rgba(34, 197, 94, 0.15); color: #4ade80; border-color: rgba(34, 197, 94, 0.3); }
+        .invite-link { display: inline-flex; align-items: center; gap: 0.25rem; color: #6366f1; font-size: 0.75rem; font-weight: 600; margin-top: 0.25rem; transition: color 0.2s; }
+        .invite-link:hover { color: #4f46e5; text-decoration: underline; }
+        .dark .invite-link { color: #818cf8; }
+        .dark .invite-link:hover { color: #a5b4fc; }
+        .email-display { font-family: monospace; font-size: 0.875rem; font-weight: 600; background: #f3f4f6; color: #1f2937; padding: 0.375rem 0.625rem; border-radius: 0.5rem; display: inline-block; }
+        .dark .email-display { background: rgb(55 65 81); color: white; }
+
+        /* Buttons */
+        .btn-activate { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(to right, #6366f1, #8b5cf6); color: white; padding: 0.625rem 1.25rem; border-radius: 0.75rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.025em; box-shadow: 0 4px 12px -2px rgba(99, 102, 241, 0.4); transition: all 0.2s; }
+        .btn-activate:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.5); }
+        .btn-reset { display: inline-flex; align-items: center; gap: 0.375rem; background: white; color: #ef4444; padding: 0.5rem 1rem; border-radius: 0.625rem; font-size: 0.75rem; font-weight: 600; border: 1px solid rgba(239, 68, 68, 0.3); transition: all 0.2s; margin-left: auto; }
+        .btn-reset:hover { background: rgba(239, 68, 68, 0.1); }
+        .dark .btn-reset { background: rgb(55 65 81); color: #f87171; border-color: rgba(239, 68, 68, 0.4); }
+        .dark .btn-reset:hover { background: rgba(239, 68, 68, 0.2); }
+
+        /* Empty State */
+        .empty-state { padding: 4rem 2rem; text-align: center; }
+        .empty-icon { width: 5rem; height: 5rem; border-radius: 1.25rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+        .empty-text { font-size: 1rem; font-weight: 600; color: #6b7280; }
+        .dark .empty-text { color: #9ca3af; }
+        .empty-subtext { font-size: 0.875rem; color: #9ca3af; margin-top: 0.25rem; }
+        .dark .empty-subtext { color: #6b7280; }
+
+        /* Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 1rem; }
+        .modal-content { background: white; border-radius: 1.5rem; padding: 2rem; max-width: 28rem; width: 100%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); animation: modalIn 0.3s ease; }
+        .dark .modal-content { background: rgb(17 24 39); }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .modal-header-success, .modal-header-warning { text-align: center; margin-bottom: 1.5rem; }
+        .modal-icon { width: 4.5rem; height: 4.5rem; border-radius: 1.25rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2); }
+        .modal-title { font-size: 1.5rem; font-weight: 800; color: #1f2937; }
+        .dark .modal-title { color: white; }
+        .modal-subtitle { font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; }
+        .dark .modal-subtitle { color: #9ca3af; }
+        .credentials-box { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 1rem; padding: 1rem; margin-bottom: 1.5rem; }
+        .dark .credentials-box { background: rgb(31 41 55); border-color: rgb(55 65 81); }
+        .credential-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; }
+        .credential-row:first-child { border-bottom: 1px solid #e5e7eb; }
+        .dark .credential-row:first-child { border-color: rgb(55 65 81); }
+        .credential-label { font-size: 0.875rem; font-weight: 600; color: #6b7280; }
+        .dark .credential-label { color: #9ca3af; }
+        .credential-value { font-family: monospace; font-weight: 700; color: #1f2937; }
+        .dark .credential-value { color: white; }
+        .credential-password { background: white; padding: 0.375rem 0.75rem; border-radius: 0.5rem; border: 1px solid #e5e7eb; color: #dc2626; letter-spacing: 0.1em; }
+        .dark .credential-password { background: rgb(55 65 81); border-color: rgb(75 85 99); color: #f87171; }
+        .wa-template-box { margin-bottom: 1.5rem; }
+        .wa-template-label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7280; margin-bottom: 0.5rem; }
+        .dark .wa-template-label { color: #9ca3af; }
+        .wa-textarea { width: 100%; height: 8rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.75rem; background: #f9fafb; font-size: 0.875rem; color: #374151; resize: none; line-height: 1.5; }
+        .dark .wa-textarea { background: rgb(31 41 55); border-color: rgb(55 65 81); color: #d1d5db; }
+        .copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; background: white; border: 1px solid #e5e7eb; padding: 0.25rem 0.625rem; border-radius: 0.375rem; font-size: 0.75rem; font-weight: 600; color: #6b7280; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .copy-btn:hover { color: #6366f1; border-color: #6366f1; }
+        .dark .copy-btn { background: rgb(55 65 81); border-color: rgb(75 85 99); color: #d1d5db; }
+        .modal-close-btn { width: 100%; background: linear-gradient(to right, #1f2937, #111827); color: white; padding: 1rem; border-radius: 0.75rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.2); }
+        .modal-close-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.3); }
+        .dark .modal-close-btn { background: linear-gradient(to right, #6366f1, #8b5cf6); }
+        .new-password-box { text-align: center; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.3); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .new-password-label { font-size: 0.875rem; font-weight: 600; color: #b45309; margin-bottom: 0.5rem; }
+        .dark .new-password-label { color: #fcd34d; }
+        .new-password-value { font-family: monospace; font-size: 1.5rem; font-weight: 800; color: #1f2937; background: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; display: inline-block; letter-spacing: 0.15em; border: 1px solid rgba(251, 191, 36, 0.3); }
+        .dark .new-password-value { background: rgb(55 65 81); color: white; border-color: rgba(251, 191, 36, 0.4); }
+
+        /* Animations */
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    </style>
+
+    <script>
+        function closeModal(id) {
+            document.getElementById(id).remove();
+        }
+
+        function copyWAMessage(btn) {
+            navigator.clipboard.writeText(document.getElementById('waMessage').value);
+            btn.innerText = 'Disalin!';
+            btn.style.color = '#10b981';
+            setTimeout(() => { btn.innerText = 'Salin'; btn.style.color = ''; }, 2000);
+        }
+
+        @if(session('success'))
+        Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            background: '#ECFDF5',
+            color: '#065F46',
+            iconColor: '#34D399'
+        }).fire({ icon: 'success', title: '{{ session('success') }}' });
         @endif
 
-        // 2. Fungsi Konfirmasi ACC (Lebih Modern)
         function konfirmasiSwalACC(event, namaPasangan) {
             event.preventDefault();
-            const form = event.target;
-
             Swal.fire({
                 title: 'Aktifkan Order?',
                 html: "Anda akan mengaktifkan undangan untuk:<br><b>" + namaPasangan + "</b>",
                 icon: 'info',
                 showCancelButton: true,
-                confirmButtonColor: '#4F46E5', // Indigo
+                confirmButtonColor: '#6366f1',
                 cancelButtonColor: '#9CA3AF',
                 confirmButtonText: 'Ya, Aktifkan!',
                 cancelButtonText: 'Batal',
-                background: '#fff',
-                width: '400px',
-                padding: '2em',
-                backdrop: `
-                    rgba(0,0,123,0.1)
-                    left top
-                    no-repeat
-                `,
-                showLoaderOnConfirm: true, // Efek loading saat diklik
-                preConfirm: () => {
-                    form.submit(); // Submit form setelah loading
-                }
+                showLoaderOnConfirm: true,
+                preConfirm: () => event.target.submit()
             });
         }
 
-        // 3. Fungsi Konfirmasi Reset Password
         function konfirmasiSwalReset(event, email) {
             event.preventDefault();
-            const form = event.target;
-
             Swal.fire({
                 title: 'Reset Password?',
-                html: "Password akun <b>" + email + "</b> akan dihapus dan diganti baru.",
+                html: "Password akun <b>" + email + "</b> akan diganti.",
                 icon: 'warning',
                 iconColor: '#EF4444',
                 showCancelButton: true,
-                confirmButtonColor: '#EF4444', // Red
+                confirmButtonColor: '#EF4444',
                 cancelButtonColor: '#9CA3AF',
-                confirmButtonText: 'Ya, Reset Password',
+                confirmButtonText: 'Ya, Reset!',
                 cancelButtonText: 'Batal',
                 showLoaderOnConfirm: true,
-                preConfirm: () => {
-                    form.submit();
-                }
+                preConfirm: () => event.target.submit()
             });
         }
     </script>

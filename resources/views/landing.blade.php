@@ -218,12 +218,8 @@
                     Fitur
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
                 </a>
-                <a href="#tema" class="hover:text-indigo-600 transition-all duration-300 hover:scale-105 relative group">
+                <a href="{{ route('themes.index') }}" class="hover:text-indigo-600 transition-all duration-300 hover:scale-105 relative group">
                     Katalog Tema
-                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
-                </a>
-                <a href="#harga" class="hover:text-indigo-600 transition-all duration-300 hover:scale-105 relative group">
-                    Harga
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
                 </a>
             </div>
@@ -282,16 +278,16 @@
                 <!-- Stats - New -->
                 <div class="grid grid-cols-3 gap-6 pt-8 max-w-lg mx-auto lg:mx-0">
                     <div class="text-center lg:text-left">
-                        <div class="text-3xl font-extrabold text-indigo-600">500+</div>
-                        <div class="text-sm text-gray-500 font-medium mt-1">Pasangan Bahagia</div>
+                        <div class="text-3xl font-extrabold text-indigo-600">100%</div>
+                        <div class="text-sm text-gray-500 font-medium mt-1">Digital & Paperless</div>
                     </div>
                     <div class="text-center lg:text-left">
-                        <div class="text-3xl font-extrabold text-indigo-600">12</div>
-                        <div class="text-sm text-gray-500 font-medium mt-1">Tema Premium</div>
+                        <div class="text-3xl font-extrabold text-indigo-600">RSVP</div>
+                        <div class="text-sm text-gray-500 font-medium mt-1">Konfirmasi Kehadiran Online</div>
                     </div>
                     <div class="text-center lg:text-left">
-                        <div class="text-3xl font-extrabold text-indigo-600">4.9</div>
-                        <div class="text-sm text-gray-500 font-medium mt-1">Rating Pengguna</div>
+                        <div class="text-3xl font-extrabold text-indigo-600">Music</div>
+                        <div class="text-sm text-gray-500 font-medium mt-1">Auto-Play Backsound Romantis</div>
                     </div>
                 </div>
             </div>
@@ -310,21 +306,22 @@
                         <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
                         <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
                         
-                        <!-- Screen Content -->
-                        <div class="rounded-[2.5rem] overflow-hidden w-full h-full bg-white relative">
-                            <img src="{{ asset('assets/thumbnail/rustic-green.png') }}" 
-                                alt="Preview Rustic Green" 
-                                class="w-full h-full object-cover">
+                    <!-- Screen Content -->
+                    @php $heroTheme = \App\Models\Theme::where('is_active', true)->first(); @endphp
+                    <div class="rounded-[2.5rem] overflow-hidden w-full h-full bg-white relative">
+                        <img src="{{ asset('assets/thumbnail/' . ($heroTheme->slug ?? 'floral-pastel') . '.png') }}" 
+                            alt="Preview {{ $heroTheme->name ?? 'Tema' }}" 
+                            class="w-full h-full object-cover">
 
-                            <!-- Overlay on Hover -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-end p-8">
-                                <button onclick="openPreview('{{ route('demo.show', 'rustic-green') }}')" class="bg-white text-gray-900 px-8 py-3.5 rounded-full font-bold text-base shadow-2xl hover:scale-105 transition-all transform flex items-center gap-3 mb-4">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                    Lihat Demo Interaktif
-                                </button>
-                                <p class="text-white/90 text-sm font-medium">Klik untuk preview lengkap</p>
-                            </div>
+                        <!-- Overlay on Hover -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-end p-8">
+                            <button onclick="openPreview('{{ route('demo.show', $heroTheme->slug ?? 'floral-pastel') }}')" class="bg-white text-gray-900 px-8 py-3.5 rounded-full font-bold text-base shadow-2xl hover:scale-105 transition-all transform flex items-center gap-3 mb-4">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                Lihat Demo Interaktif
+                            </button>
+                            <p class="text-white/90 text-sm font-medium">Klik untuk preview lengkap</p>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -348,161 +345,77 @@
                 </p>
             </div>
 
-            <!-- Theme Cards Grid - Enhanced -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 place-items-center">
-                
-                <!-- Theme Card 1 - Rustic Green -->
-                <div class="flex flex-col items-center group w-full max-w-sm animate-fadeInUp">
-                    <div class="relative card-hover w-full">
-                        <div class="relative mx-auto border-gray-900 bg-gradient-to-b from-gray-800 to-gray-900 border-[14px] rounded-[3rem] h-[560px] w-[280px] phone-shadow transform -rotate-3 md:-rotate-6 group-hover:rotate-0">
-                            <!-- Side Buttons -->
-                            <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
-                            <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
-                            <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
-                            
-                            <!-- Screen -->
-                            <div class="rounded-[2.5rem] overflow-hidden w-full h-full bg-white relative">
-                                <img src="{{ asset('assets/thumbnail/rustic-green.png') }}" alt="Rustic Green" class="w-full h-full object-cover">
-                                
-                                <!-- Hover Overlay -->
-                                <div class="absolute inset-0 bg-gradient-to-t from-green-900/80 via-green-600/40 to-transparent backdrop-blur-[2px] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 gap-4 p-6">
-                                    <div class="text-white text-center space-y-2 mb-4">
-                                        <div class="text-2xl font-bold">Rustic Green</div>
-                                        <div class="text-sm opacity-90">Kesegaran alam dalam undangan Anda</div>
-                                    </div>
-                                    <button onclick="openPreview('{{ route('demo.show', 'rustic-green') }}')" class="bg-white text-gray-900 px-8 py-3 rounded-full font-bold text-sm hover:bg-green-50 transition-all transform hover:scale-105 flex items-center gap-2 shadow-2xl">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                        Live Preview
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Theme Info - Enhanced -->
-                    <div class="mt-10 text-center px-4 relative z-10 space-y-4 w-full">
-                        <h3 class="text-2xl font-bold text-gray-900">Rustic Green</h3>
-                        <div class="flex items-center justify-center gap-2">
-                            <span class="text-xs font-bold tracking-wider uppercase bg-green-100 text-green-700 px-3 py-1.5 rounded-full">Nature</span>
-                            <span class="text-xs font-bold tracking-wider uppercase bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full">Elegant</span>
-                        </div>
-                        <div class="flex items-center justify-center gap-6 pt-2">
-                            <div class="text-center">
-                                <div class="text-3xl font-extrabold text-gray-900">Rp 99k</div>
-                                <div class="text-xs text-gray-500 mt-1">Harga spesial</div>
-                            </div>
-                            <a href="{{ route('order.create') }}?theme=rustic-green" class="text-sm font-bold border-2 border-gray-900 text-gray-900 px-6 py-3 rounded-full hover:bg-gray-900 hover:text-white transition-all duration-300 uppercase tracking-widest hover:scale-105 shadow-lg hover:shadow-xl">
-                                Pilih Tema
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            <!-- Theme Cards Grid — Dynamic dari Database -->
+            @php
+                $catalogThemes = \App\Models\Theme::where('is_active', true)->orderBy('id')->take(3)->get();
+                $rotations = ['-rotate-3 md:-rotate-6 group-hover:rotate-0', '', 'rotate-3 md:rotate-6 group-hover:rotate-0'];
+                $delays = ['', 'animation-delay-200', 'animation-delay-400'];
+                $featured = [false, true, false];
+            @endphp
 
-                <!-- Theme Card 2 - Royal Glass (Featured) -->
-                <div class="flex flex-col items-center group w-full max-w-sm relative md:-top-16 animate-fadeInUp animation-delay-200">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 place-items-center">
+                @foreach($catalogThemes as $i => $theme)
+                @php
+                    $rotation = $rotations[$i] ?? '';
+                    $delay    = $delays[$i] ?? '';
+                    $isFeatured = $featured[$i] ?? false;
+                    $thumbnail = asset('assets/thumbnail/' . $theme->slug . '.png');
+                @endphp
+                <div class="flex flex-col items-center group w-full max-w-sm {{ $isFeatured ? 'relative md:-top-16' : '' }} animate-fadeInUp {{ $delay }}">
                     <div class="relative card-hover w-full">
-                        <div class="relative mx-auto border-gray-900 bg-gradient-to-b from-gray-800 to-gray-900 border-[14px] rounded-[3rem] h-[560px] w-[280px] phone-shadow transform scale-110 hover:scale-[1.15] ring-4 ring-indigo-200/50">
+                        <div class="relative mx-auto border-gray-900 bg-gradient-to-b from-gray-800 to-gray-900 border-[14px] rounded-[3rem] h-[560px] w-[280px] phone-shadow transform {{ $rotation }} {{ $isFeatured ? 'scale-110 hover:scale-[1.15] ring-4 ring-indigo-200/50' : '' }}">
                             <!-- Side Buttons -->
                             <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
                             <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
                             <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
-                            
+
                             <!-- Screen -->
                             <div class="rounded-[2.5rem] overflow-hidden w-full h-full bg-white relative">
-                                <img src="{{ asset('assets/thumbnail/royal-glass.png') }}" alt="Royal Glass" class="w-full h-full object-cover">
-                                
+                                <img src="{{ $thumbnail }}" alt="{{ $theme->name }}" class="w-full h-full object-cover">
+
                                 <!-- Hover Overlay -->
-                                <div class="absolute inset-0 bg-gradient-to-t from-yellow-900/80 via-yellow-600/40 to-transparent backdrop-blur-[2px] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 gap-4 p-6">
+                                <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/80 via-indigo-600/40 to-transparent backdrop-blur-[2px] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 gap-4 p-6">
                                     <div class="text-white text-center space-y-2 mb-4">
-                                        <div class="text-2xl font-bold">Royal Glass</div>
-                                        <div class="text-sm opacity-90">Kemewahan dalam setiap detail</div>
+                                        <div class="text-2xl font-bold">{{ $theme->name }}</div>
+                                        <div class="text-sm opacity-90">Klik untuk melihat preview</div>
                                     </div>
-                                    <button onclick="openPreview('{{ route('demo.show', 'royal-glass') }}')" class="bg-white text-gray-900 px-8 py-3 rounded-full font-bold text-sm hover:bg-yellow-50 transition-all transform hover:scale-105 flex items-center gap-2 shadow-2xl">
+                                    <button onclick="openPreview('{{ route('demo.show', $theme->slug) }}')" class="bg-white text-gray-900 px-8 py-3 rounded-full font-bold text-sm hover:bg-indigo-50 transition-all transform hover:scale-105 flex items-center gap-2 shadow-2xl">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                         Live Preview
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Premium Badge - Enhanced -->
+
+                        @if($isFeatured)
+                        <!-- Premium Badge -->
                         <div class="absolute -top-6 -right-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-black px-4 py-2 rounded-full shadow-2xl rotate-12 z-20 premium-badge flex items-center gap-1.5">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                            PREMIUM
+                            POPULER
                         </div>
+                        @endif
                     </div>
-                    
-                    <!-- Theme Info - Enhanced -->
-                    <div class="mt-10 text-center px-4 space-y-4 w-full">
-                        <h3 class="text-2xl font-bold text-gray-900">Royal Glass</h3>
-                        <div class="flex items-center justify-center gap-2">
-                            <span class="text-xs font-bold tracking-wider uppercase bg-yellow-100 text-yellow-700 px-3 py-1.5 rounded-full">Gold</span>
-                            <span class="text-xs font-bold tracking-wider uppercase bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full">Luxury</span>
-                        </div>
-                        <div class="flex items-center justify-center gap-6 pt-2">
-                            <div class="text-center">
-                                <div class="text-3xl font-extrabold text-gray-900">Rp 129k</div>
-                                <div class="text-xs text-gray-500 mt-1">Tema terpopuler</div>
-                            </div>
-                            <a href="{{ route('order.create') }}?theme=royal-glass" class="text-sm font-bold border-2 border-indigo-600 bg-indigo-600 text-white px-6 py-3 rounded-full hover:bg-indigo-700 hover:border-indigo-700 transition-all duration-300 uppercase tracking-widest hover:scale-105 shadow-xl hover:shadow-2xl">
-                                Pilih Tema
-                            </a>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Theme Card 3 - Floral Pastel -->
-                <div class="flex flex-col items-center group w-full max-w-sm animate-fadeInUp animation-delay-400">
-                    <div class="relative card-hover w-full">
-                        <div class="relative mx-auto border-gray-900 bg-gradient-to-b from-gray-800 to-gray-900 border-[14px] rounded-[3rem] h-[560px] w-[280px] phone-shadow transform rotate-3 md:rotate-6 group-hover:rotate-0">
-                            <!-- Side Buttons -->
-                            <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
-                            <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
-                            <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[17px] top-[142px] rounded-r-lg"></div>
-                            
-                            <!-- Screen -->
-                            <div class="rounded-[2.5rem] overflow-hidden w-full h-full bg-white relative">
-                                <img src="{{ asset('assets/thumbnail/floral-pastel.png') }}" alt="Floral Pastel" class="w-full h-full object-cover">
-                                
-                                <!-- Hover Overlay -->
-                                <div class="absolute inset-0 bg-gradient-to-t from-pink-900/80 via-pink-600/40 to-transparent backdrop-blur-[2px] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 gap-4 p-6">
-                                    <div class="text-white text-center space-y-2 mb-4">
-                                        <div class="text-2xl font-bold">Floral Pastel</div>
-                                        <div class="text-sm opacity-90">Kelembutan romantis yang memikat</div>
-                                    </div>
-                                    <button onclick="openPreview('{{ route('demo.show', 'floral-pastel') }}')" class="bg-white text-gray-900 px-8 py-3 rounded-full font-bold text-sm hover:bg-pink-50 transition-all transform hover:scale-105 flex items-center gap-2 shadow-2xl">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                        Live Preview
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Theme Info - Enhanced -->
+                    <!-- Theme Info -->
                     <div class="mt-10 text-center px-4 relative z-10 space-y-4 w-full">
-                        <h3 class="text-2xl font-bold text-gray-900">Floral Pastel</h3>
-                        <div class="flex items-center justify-center gap-2">
-                            <span class="text-xs font-bold tracking-wider uppercase bg-pink-100 text-pink-700 px-3 py-1.5 rounded-full">Romantic</span>
-                            <span class="text-xs font-bold tracking-wider uppercase bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full">Soft</span>
-                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900">{{ $theme->name }}</h3>
                         <div class="flex items-center justify-center gap-6 pt-2">
                             <div class="text-center">
                                 <div class="text-3xl font-extrabold text-gray-900">Rp 99k</div>
-                                <div class="text-xs text-gray-500 mt-1">Harga spesial</div>
+                                <div class="text-xs text-gray-500 mt-1">{{ $isFeatured ? 'Tema terpopuler' : 'Harga spesial' }}</div>
                             </div>
-                            <a href="{{ route('order.create') }}?theme=floral-pastel" class="text-sm font-bold border-2 border-gray-900 text-gray-900 px-6 py-3 rounded-full hover:bg-gray-900 hover:text-white transition-all duration-300 uppercase tracking-widest hover:scale-105 shadow-lg hover:shadow-xl">
+                            <a href="{{ route('order.create') }}?theme={{ $theme->slug }}" class="text-sm font-bold border-2 {{ $isFeatured ? 'border-indigo-600 bg-indigo-600 text-white hover:bg-indigo-700 hover:border-indigo-700' : 'border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white' }} px-6 py-3 rounded-full transition-all duration-300 uppercase tracking-widest hover:scale-105 shadow-lg hover:shadow-xl">
                                 Pilih Tema
                             </a>
                         </div>
                     </div>
                 </div>
-
+                @endforeach
             </div>
-            
+
             <!-- View More CTA - Enhanced -->
             <div class="mt-24 text-center relative z-20 space-y-6">
-                <a href="#" class="group inline-flex items-center gap-4 bg-white border-2 border-gray-200 px-10 py-5 rounded-full font-bold text-gray-700 hover:border-indigo-600 hover:text-indigo-600 transition-all duration-500 shadow-xl hover:shadow-2xl hover:scale-105">
+                <a href="{{ route('themes.index') }}" class="group inline-flex items-center gap-4 bg-white border-2 border-gray-200 px-10 py-5 rounded-full font-bold text-gray-700 hover:border-indigo-600 hover:text-indigo-600 transition-all duration-500 shadow-xl hover:shadow-2xl hover:scale-105">
                     <span class="text-lg">Jelajahi Koleksi Lengkap</span>
                     <div class="bg-gradient-to-r from-indigo-100 to-purple-100 group-hover:from-indigo-600 group-hover:to-purple-600 rounded-full p-2 transition-all duration-300">
                         <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
@@ -630,16 +543,16 @@
             <!-- Trust Indicators -->
             <div class="grid grid-cols-3 gap-8 pt-12 max-w-3xl mx-auto border-t border-white/20">
                 <div class="text-center">
-                    <div class="text-3xl font-extrabold text-white">500+</div>
-                    <div class="text-white/70 text-sm mt-2">Undangan Dibuat</div>
+                    <div class="text-3xl font-extrabold text-white">Premium</div>
+                    <div class="text-white/70 text-sm mt-2">Pilihan Desain Eksklusif</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-3xl font-extrabold text-white">4.9/5</div>
-                    <div class="text-white/70 text-sm mt-2">Rating Pengguna</div>
+                    <div class="text-3xl font-extrabold text-white">Aman</div>
+                    <div class="text-white/70 text-sm mt-2">Data Privasi Terjaga</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-3xl font-extrabold text-white">24/7</div>
-                    <div class="text-white/70 text-sm mt-2">Customer Support</div>
+                    <div class="text-3xl font-extrabold text-white">Fast Respon</div>
+                    <div class="text-white/70 text-sm mt-2">Siap Membantu Anda</div>
                 </div>
             </div>
         </div>
@@ -719,10 +632,6 @@
                     <p class="text-gray-400 text-sm text-center md:text-left">
                         &copy; {{ date('Y') }} <span class="font-semibold text-white">TEMANTEN</span> Digital Invitation. All rights reserved.
                     </p>
-                    <div class="flex gap-6 text-sm text-gray-400">
-                        <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                        <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
-                    </div>
                 </div>
             </div>
         </div>

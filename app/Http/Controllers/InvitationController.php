@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Invitation;
 use App\Models\Guest;
 use App\Models\Theme;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class InvitationController extends Controller
 {
@@ -43,7 +45,7 @@ class InvitationController extends Controller
         $invitation = new \stdClass();
         $invitation->slug = 'demo-' . $themeSlug;
 
-        $invitation->content = [
+        $content = [
             'mempelai' => [
                 'pria' => [
                     'nama' => 'Romeo Putra Perkasa',
@@ -81,7 +83,7 @@ class InvitationController extends Controller
             'quote' => 'Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri...',
             'media' => [
                 'cover' => 'https://via.placeholder.com/1920x1080.png?text=Wedding+Cover',
-                'music' => null,
+                'music' => 'assets/music/' . $themeSlug . '.mp3',
                 'video_link' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
                 'gallery' => [
                     'https://via.placeholder.com/500x500.png?text=Gallery+1',
@@ -111,6 +113,11 @@ class InvitationController extends Controller
             ],
         ];
 
+        if (in_array($themeSlug, ['emerald-garden', 'ocean-breeze', 'watercolor-flow'])) {
+            $invitation->content = [];
+        } else {
+            $invitation->content = $content;
+        }
         $invitation->comments = collect([]);
 
         return view($theme->view_path, compact('invitation'));
@@ -120,32 +127,48 @@ class InvitationController extends Controller
     {
         $request->validate([
             'invitation_slug' => 'required|exists:invitations,slug',
-            'nama' => 'required|string|max:255',
-            'ucapan' => 'required|string',
-            'kehadiran' => 'required|in:hadir,tidak_hadir,ragu',
+            'nama'            => 'required|string|max:255',
+            'ucapan'          => 'required|string|max:2000',
+            'kehadiran'       => 'required|in:hadir,tidak_hadir,ragu',
         ]);
 
-        $invitation = Invitation::where('slug', $request->invitation_slug)->firstOrFail();
+        try {
+            $invitation = Invitation::where('slug', $request->invitation_slug)->firstOrFail();
 
-        $guest = Guest::where('invitation_id', $invitation->id)
-            ->where('name', $request->nama)
-            ->first();
+            $guest = Guest::where('invitation_id', $invitation->id)
+                ->where('name', $request->nama)
+                ->first();
 
-        if ($guest) {
-            $guest->update([
-                'comment' => $request->ucapan,
-                'rsvp_status' => $request->kehadiran,
+            if ($guest) {
+                $guest->update([
+                    'comment'     => $request->ucapan,
+                    'rsvp_status' => $request->kehadiran,
+                ]);
+            } else {
+                $guestSlug = Str::slug($request->nama) . '-' . Str::random(4);
+
+                $invitation->guests()->create([
+                    'name'        => $request->nama,
+                    'slug'        => $guestSlug,
+                    'category'    => 'Umum',
+                    'comment'     => $request->ucapan,
+                    'rsvp_status' => $request->kehadiran,
+                ]);
+            }
+
+            // Log ucapan masuk
+            ActivityLog::record('info', 'guest.rsvp_submitted', $invitation, [
+                'nama'      => $request->nama,
+                'kehadiran' => $request->kehadiran,
             ]);
-        } else {
-            $guestSlug = Str::slug($request->nama) . '-' . Str::random(4);
 
-            $invitation->guests()->create([
-                'name' => $request->nama,
-                'slug' => $guestSlug,
-                'category' => 'Umum',
-                'comment' => $request->ucapan,
-                'rsvp_status' => $request->kehadiran,
+        } catch (\Exception $e) {
+            Log::channel('daily')->error('Failed to save ucapan/rsvp', [
+                'invitation_slug' => $request->invitation_slug,
+                'error'           => $e->getMessage(),
             ]);
+
+            return back()->with('error', 'Gagal mengirim ucapan. Silakan coba lagi.');
         }
 
         return back()->with('success', 'Terima kasih! Ucapan Anda berhasil dikirim.');

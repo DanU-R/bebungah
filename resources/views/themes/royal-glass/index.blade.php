@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Wedding of {{ $invitation->content['mempelai']['pria']['panggilan'] ?? 'Pria' }} & {{ $invitation->content['mempelai']['wanita']['panggilan'] ?? 'Wanita' }}</title>
-    
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22><rect width=%2248%22 height=%2248%22 rx=%2212%22 fill=%22%234F46E5%22/><path d=%22M15 13h18v6h-6v17h-6v-17h-6v-6z%22 fill=%22white%22/></svg>">
@@ -17,7 +17,7 @@
     <div class="fixed inset-0 z-[5] pointer-events-none">
         <div class="absolute inset-4 border border-[#D4AF37]/40 rounded-[20px]"></div>
         <div class="absolute inset-5 border border-[#D4AF37]/10 rounded-[16px]"></div>
-        
+
         <img src="{{ asset('frame-atas.png') }}" class="absolute top-0 left-0 w-32 md:w-48 opacity-100 z-10" alt="">
         <img src="{{ asset('frame-bawah.png') }}" class="absolute bottom-0 right-0 w-32 md:w-48 opacity-100 z-10" alt="">
     </div>
@@ -34,7 +34,7 @@
             <i class="ph ph-music-notes text-sm"></i>
         </button>
     </div>
-    
+
     <audio id="bg-music" loop>
         <source src="{{ asset($invitation->content['media']['music']) }}" type="audio/mp3">
     </audio>
@@ -44,13 +44,13 @@
         <div class="absolute inset-0 bg-black/80"></div>
         <div class="relative z-10 space-y-6">
             <p class="font-royal text-xs tracking-[0.4em] text-gray-400 uppercase">The Wedding Of</p>
-            
+
             <h1 class="font-royal text-6xl md:text-8xl text-[#D4AF37] drop-shadow-lg">
                 {{ $invitation->content['mempelai']['pria']['panggilan'] ?? 'Romeo' }} & {{ $invitation->content['mempelai']['wanita']['panggilan'] ?? 'Juliet' }}
             </h1>
-            
+
             <div class="w-24 h-px bg-white/30 mx-auto"></div>
-            
+
             <div class="glass-card px-6 py-4 inline-block border border-[#D4AF37]/30">
                 <p class="text-[10px] text-gray-400 tracking-widest uppercase mb-1">Kepada Yth.</p>
                 <h3 class="font-royal text-xl md:text-2xl text-white font-bold tracking-wider capitalize">
@@ -71,12 +71,12 @@
             <img src="{{ asset($invitation->content['media']['cover'] ?? '') }}" class="w-full h-full object-cover rounded-[2.5rem] brightness-90 group-hover:brightness-100 transition duration-700">
             <div class="absolute inset-0 border border-white/10 rounded-[3rem] scale-110 pointer-events-none"></div>
         </div>
-        
+
         <p class="font-script text-2xl text-[#D4AF37] mb-2">We Are Getting Married</p>
         <h1 class="font-royal text-5xl md:text-7xl text-white mb-2 drop-shadow-2xl">
             {{ $invitation->content['mempelai']['pria']['panggilan'] ?? 'Romeo' }} & {{ $invitation->content['mempelai']['wanita']['panggilan'] ?? 'Juliet' }}
         </h1>
-        
+
         <div class="flex items-center gap-4 text-gray-400 text-xs tracking-[0.2em] uppercase mt-2">
             <span>{{ \Carbon\Carbon::parse($invitation->content['acara']['akad']['waktu'] ?? now())->translatedFormat('l') }}</span>
             <div class="w-1 h-1 bg-[#D4AF37] rounded-full"></div>
@@ -88,7 +88,7 @@
         <div class="max-w-4xl mx-auto text-center pb-8">
             <h2 class="font-royal text-3xl text-[#D4AF37] mb-2">The Couple</h2>
             <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-8">Ar-Rum Ayat 21</p>
-            
+
             <div class="flex flex-col md:flex-row gap-6 justify-center items-center mt-4">
                 <div class="glass-card p-6 w-full max-w-xs relative overflow-hidden group">
                     <div class="absolute inset-0 bg-[#D4AF37]/5 transform scale-x-0 group-hover:scale-x-100 transition origin-left duration-500"></div>
@@ -96,27 +96,27 @@
                     <h3 class="font-royal text-2xl text-white relative z-10">{{ $invitation->content['mempelai']['pria']['nama'] ?? 'Mempelai Pria' }}</h3>
                     <p class="text-[10px] uppercase tracking-widest text-[#D4AF37] mt-1 relative z-10">The Groom</p>
                     <p class="text-xs text-gray-300 mt-3 relative z-10">Putra dari<br>{{ $invitation->content['mempelai']['pria']['ayah'] ?? '...' }} & {{ $invitation->content['mempelai']['pria']['ibu'] ?? '...' }}</p>
-                    
+
                     @if(!empty($invitation->content['mempelai']['pria']['instagram']))
                     <a href="https://instagram.com/{{ $invitation->content['mempelai']['pria']['instagram'] }}" target="_blank" class="relative z-10 inline-block mt-4 text-[#D4AF37] hover:text-white"><i class="ph ph-instagram-logo text-xl"></i></a>
                     @endif
                 </div>
-                
+
                 <div class="text-3xl font-script text-[#D4AF37] opacity-80">&</div>
-                
+
                 <div class="glass-card p-6 w-full max-w-xs relative overflow-hidden group">
                     <div class="absolute inset-0 bg-[#D4AF37]/5 transform scale-x-0 group-hover:scale-x-100 transition origin-right duration-500"></div>
                     <img src="{{ asset($invitation->content['mempelai']['wanita']['foto'] ?? 'https://via.placeholder.com/150') }}" class="w-28 h-28 mx-auto rounded-full border border-[#D4AF37] p-1 mb-4 object-cover relative z-10">
                     <h3 class="font-royal text-2xl text-white relative z-10">{{ $invitation->content['mempelai']['wanita']['nama'] ?? 'Mempelai Wanita' }}</h3>
                     <p class="text-[10px] uppercase tracking-widest text-[#D4AF37] mt-1 relative z-10">The Bride</p>
                     <p class="text-xs text-gray-300 mt-3 relative z-10">Putri dari<br>{{ $invitation->content['mempelai']['wanita']['ayah'] ?? '...' }} & {{ $invitation->content['mempelai']['wanita']['ibu'] ?? '...' }}</p>
-                    
+
                     @if(!empty($invitation->content['mempelai']['wanita']['instagram']))
                     <a href="https://instagram.com/{{ $invitation->content['mempelai']['wanita']['instagram'] }}" target="_blank" class="relative z-10 inline-block mt-4 text-[#D4AF37] hover:text-white"><i class="ph ph-instagram-logo text-xl"></i></a>
                     @endif
                 </div>
             </div>
-            
+
             <p class="font-script text-lg text-gray-500 mt-12">"{{ $invitation->content['quote'] ?? 'Mohon doa restu...' }}"</p>
         </div>
     </section>
@@ -126,7 +126,7 @@
             <h2 class="font-royal text-3xl text-center text-[#D4AF37] mb-12">Our Journey</h2>
             <div class="relative">
                 <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[#D4AF37]/50 to-transparent"></div>
-                
+
                 @if(isset($invitation->content['love_stories']) && is_array($invitation->content['love_stories']))
                     @foreach($invitation->content['love_stories'] as $index => $story)
                     @if(!empty($story['title'])) <div class="relative flex flex-col md:flex-row items-center mb-10">
@@ -167,12 +167,12 @@
                     <p class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($invitation->content['acara']['akad']['waktu'] ?? now())->format('H:i') }} WIB - Selesai</p>
                     <p class="text-xs text-gray-300 mt-2 font-bold">{{ $invitation->content['acara']['akad']['tempat'] ?? 'Lokasi Akad' }}</p>
                     <p class="text-[10px] text-gray-500 mt-1">{{ $invitation->content['acara']['akad']['alamat'] ?? '' }}</p>
-                    
+
                     @if(!empty($invitation->content['acara']['akad']['maps']))
                     <a href="{{ $invitation->content['acara']['akad']['maps'] }}" target="_blank" class="inline-flex items-center gap-1 mt-3 text-[#D4AF37] text-[10px] uppercase tracking-widest hover:text-white transition"><i class="ph ph-map-pin"></i> Google Maps</a>
                     @endif
                 </div>
-                
+
                 <div class="glass-card p-6 border-l-4 border-l-[#D4AF37] text-left">
                     <h3 class="font-royal text-lg text-white">{{ $invitation->content['acara']['resepsi']['judul'] ?? 'Resepsi' }}</h3>
                     <p class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($invitation->content['acara']['resepsi']['waktu'] ?? now())->format('H:i') }} WIB - Selesai</p>
@@ -185,7 +185,7 @@
                 </div>
             </div>
 
-            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+{{ $invitation->content['mempelai']['pria']['panggilan'] ?? 'Groom' }}+%26+{{ $invitation->content['mempelai']['wanita']['panggilan'] ?? 'Bride' }}" target="_blank" 
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Wedding+{{ $invitation->content['mempelai']['pria']['panggilan'] ?? 'Groom' }}+%26+{{ $invitation->content['mempelai']['wanita']['panggilan'] ?? 'Bride' }}" target="_blank"
                class="bg-[#D4AF37] text-black px-6 py-3 rounded-full font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-white transition inline-flex items-center gap-2 shadow-[0_0_15px_#D4AF37]">
                <i class="ph ph-calendar-plus"></i> Simpan di Kalender
             </a>
@@ -196,7 +196,7 @@
         <div class="max-w-5xl mx-auto text-center pb-8">
             <h2 class="font-royal text-3xl text-[#D4AF37] mb-2">Gallery</h2>
             <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-8">Memories Captured in Time</p>
-            
+
             <div class="columns-2 md:columns-3 gap-3 space-y-3">
                 @if(isset($invitation->content['media']['gallery']) && is_array($invitation->content['media']['gallery']))
                     @foreach($invitation->content['media']['gallery'] as $photo)
@@ -219,7 +219,7 @@
                 @if(!empty($invitation->content['amplop']['bank_name']))
                 <div class="glass-card p-5 flex items-center justify-between text-left relative overflow-hidden group">
                     <div class="absolute right-0 top-0 w-24 h-24 bg-[#D4AF37] opacity-10 rounded-full blur-xl pointer-events-none"></div>
-                    
+
                     <div class="relative z-10">
                         <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Bank {{ $invitation->content['amplop']['bank_name'] }}</p>
                         <p id="rek1" class="font-royal text-xl text-white tracking-widest">{{ $invitation->content['amplop']['account_number'] ?? '0000' }}</p>
@@ -237,7 +237,7 @@
                 <i class="ph ph-gift text-2xl text-[#D4AF37] mb-2"></i>
                 <p class="text-sm font-bold text-white">Kirim Kado Fisik</p>
                 <p class="text-xs text-gray-400 mt-1 mb-4">{{ $invitation->content['amplop']['alamat_kado'] ?? 'Alamat belum diisi' }}</p>
-                
+
                 @if(!empty($invitation->content['amplop']['maps_kado']))
                 <a href="{{ $invitation->content['amplop']['maps_kado'] }}" target="_blank" class="bg-white/5 border border-white/10 text-white px-4 py-2 rounded-full text-[10px] uppercase tracking-widest hover:bg-[#D4AF37] hover:text-black hover:border-[#D4AF37] transition">
                     Lihat Alamat
@@ -251,37 +251,37 @@
     <section id="rsvp" class="page-section scrollable px-6">
         <div class="max-w-xl mx-auto pb-8">
             <h2 class="font-royal text-3xl text-center text-[#D4AF37] mb-8">Wishes</h2>
-            
+
             @if(session('success'))
                 <div class="glass-card bg-green-900/30 border-green-500/30 text-green-200 px-4 py-3 rounded-lg mb-6 text-center text-xs">
                     <i class="ph ph-check-circle text-lg mb-1 block"></i>
                     {{ session('success') }}
                 </div>
             @endif
-            
+
             <form action="{{ route('kirim.ucapan') }}" method="POST" class="glass-card p-6 space-y-4 mb-8">
                 @csrf
                 <input type="hidden" name="invitation_slug" value="{{ $invitation->slug }}">
-                
+
                 <input type="text" name="nama" required placeholder="Nama Anda" class="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white text-xs focus:border-[#D4AF37] outline-none">
-                
+
                 <select name="kehadiran" class="form-control" required>
                     <option value="hadir">Hadir</option>
                     <option value="tidak_hadir">Tidak Hadir</option>
                     <option value="ragu">Ragu-ragu</option>
-                </select>               
+                </select>
                 <textarea name="ucapan" rows="3" required placeholder="Tulis doa & ucapan..." class="w-full bg-black/40 border border-white/10 rounded-lg p-3 text-white text-xs focus:border-[#D4AF37] outline-none"></textarea>
-                
+
                 <button type="submit" class="w-full bg-[#D4AF37] text-black font-bold py-3 rounded-lg hover:bg-white transition uppercase text-[10px] tracking-widest shadow-[0_0_15px_#D4AF37]/50">
                     Kirim Ucapan
                 </button>
             </form>
-            
+
             <div class="space-y-3 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
                 @if($invitation->comments->count() > 0)
                     @foreach($invitation->comments->sortByDesc('created_at') as $comment)
                         <div class="glass-card p-3 flex gap-3 items-start animate-fade-in-up">
-                            <div class="w-8 h-8 rounded-full 
+                            <div class="w-8 h-8 rounded-full
                                 {{ $comment->rsvp_status == 'hadir' ? 'bg-green-600' : ($comment->rsvp_status == 'tidak_hadir' ? 'bg-red-600' : 'bg-gray-600') }}
                                 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-lg">
                                 {{ substr($comment->name, 0, 1) }}
@@ -345,7 +345,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Partikel
+
             const container = document.getElementById('ornaments-container');
             if(container) {
                 for (let i = 0; i < 20; i++) {
@@ -406,15 +406,13 @@
             toggleNav();
         }
 
-        // COUNTDOWN JS DINAMIS (Menggunakan Data JSON)
-        // Pastikan format tanggal PHP bisa dibaca JS (Y-m-d H:i:s)
         const weddingDateStr = "{{ \Carbon\Carbon::parse($invitation->content['acara']['akad']['waktu'] ?? now())->format('Y-m-d H:i:s') }}";
         const weddingDate = new Date(weddingDateStr).getTime();
-        
+
         setInterval(() => {
             const now = new Date().getTime();
             const diff = weddingDate - now;
-            
+
             if (diff < 0) {
                  document.getElementById("days").innerText = "00";
                  document.getElementById("hours").innerText = "00";

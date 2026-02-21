@@ -127,6 +127,28 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        // ----------------------------------------------------------------
+        // Channel untuk event keamanan (akses ditolak, login mencurigakan)
+        // ----------------------------------------------------------------
+        'security' => [
+            'driver' => 'daily',
+            'path'   => storage_path('logs/security.log'),
+            'level'  => 'warning',
+            'days'   => 30,
+            'replace_placeholders' => true,
+        ],
+
+        // ----------------------------------------------------------------
+        // Channel untuk log aktivitas bisnis (approval, reset password, dll)
+        // ----------------------------------------------------------------
+        'activity' => [
+            'driver' => 'daily',
+            'path'   => storage_path('logs/activity.log'),
+            'level'  => 'info',
+            'days'   => 60,
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];
