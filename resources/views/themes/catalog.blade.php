@@ -544,50 +544,65 @@
 </head>
 <body>
 
-    <div id="previewModal" class="fixed inset-0 z-[100] hidden bg-gradient-to-br from-gray-900/98 via-indigo-900/95 to-purple-900/98 backdrop-blur-xl transition-all duration-500 opacity-0 flex flex-col">
+    <div id="previewModal" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-xl transition-all duration-500 opacity-0 flex flex-col">
 
-        <div class="w-full h-20 bg-gray-900/95 backdrop-blur-xl border-b border-white/20 shadow-xl flex justify-between items-center px-6 md:px-10 z-50 shrink-0">
+        {{-- Modal Header --}}
+        <div class="w-full shrink-0 bg-gray-950/95 border-b border-white/10 flex justify-between items-center px-5 py-3 z-50">
+            {{-- Left: device toggle + theme name --}}
             <div class="flex items-center gap-4">
-                <div class="hidden md:flex items-center gap-3">
-                    <span class="text-white text-sm font-semibold">Mode Tampilan:</span>
-                    <div class="flex bg-black/40 rounded-xl p-1.5 border border-white/20 gap-1">
-                        <button onclick="setDevice('mobile')" id="btnMobile" class="group p-3 rounded-lg text-white bg-indigo-600 transition-all shadow-lg shadow-indigo-500/30 bg-indigo-700" title="Tampilan Mobile">
-                            <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                        </button>
-                        <button onclick="setDevice('desktop')" id="btnDesktop" class="group p-3 rounded-lg text-white/70 hover:text-white/90 hover:bg-white/15 transition-all" title="Tampilan Desktop">
-                            <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        </button>
-                    </div>
+                <div class="flex bg-white/5 rounded-xl p-1 border border-white/10 gap-1">
+                    <button onclick="setDevice('mobile')" id="btnMobile" title="Mobile" class="px-3 py-2 rounded-lg text-xs font-semibold text-indigo-300 bg-indigo-600/30 border border-indigo-500/40 transition-all flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        Mobile
+                    </button>
+                    <button onclick="setDevice('desktop')" id="btnDesktop" title="Desktop" class="px-3 py-2 rounded-lg text-xs font-semibold text-white/50 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        Desktop
+                    </button>
+                </div>
+                <div class="hidden md:block">
+                    <p id="previewThemeName" class="text-white font-semibold text-sm">Preview Tema</p>
+                    <p class="text-white/40 text-xs">Scroll untuk jelajahi · Klik luar untuk tutup</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-4">
-                <a id="btnOrderTheme" href="#" class="btn-primary relative flex bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 md:px-8 py-3 md:py-3.5 rounded-full text-sm md:text-base font-bold transition-all shadow-2xl shadow-indigo-500/40 hover:shadow-indigo-500/60 items-center gap-2 hover:scale-105">
-                    <span class="relative z-10">Pilih Tema Ini</span>
-                    <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+            {{-- Right: Order + Close --}}
+            <div class="flex items-center gap-3">
+                <a id="btnOrderTheme" href="#"
+                   class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-lg shadow-indigo-500/30 hover:scale-105">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    Pilih Tema Ini
                 </a>
-                <button onclick="closePreview()" class="group text-white/70 hover:text-white transition bg-white/10 hover:bg-red-500/80 rounded-xl p-3 border border-white/20 hover:border-red-500">
-                    <svg class="w-6 h-6 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <button onclick="closePreview()" title="Tutup (Esc)" class="text-white/60 hover:text-white bg-white/5 hover:bg-red-600 border border-white/10 hover:border-red-500 rounded-xl p-2.5 transition-all group">
+                    <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
         </div>
 
-        <div class="flex-1 flex items-center justify-center overflow-hidden relative p-6" onclick="closePreview()">
+        {{-- Modal Body --}}
+        <div class="flex-1 flex items-center justify-center overflow-hidden relative" onclick="closePreview()">
 
-            <div id="loader" class="absolute inset-0 flex flex-col items-center justify-center z-0 pointer-events-none gap-4">
+            {{-- Loader --}}
+            <div id="loader" class="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none gap-4 bg-black/80">
                 <div class="relative">
-                    <div class="animate-spin rounded-full h-16 w-16 border-4 border-indigo-500/30 border-t-indigo-500"></div>
-                    <div class="absolute inset-0 animate-ping rounded-full h-16 w-16 border-4 border-indigo-500/20"></div>
+                    <div class="animate-spin rounded-full h-14 w-14 border-4 border-indigo-500/30 border-t-indigo-500"></div>
                 </div>
-                <p class="text-white/60 text-sm font-medium">Memuat preview...</p>
+                <p class="text-white/50 text-sm">Memuat tema...</p>
             </div>
 
-            <div id="frameWrapper" class="relative bg-white shadow-2xl transition-all duration-700 ease-in-out z-10 rounded-3xl" onclick="event.stopPropagation()">
-
-                <div id="phoneNotch" class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[140px] h-[32px] bg-gray-900 rounded-b-3xl z-30 pointer-events-none transition-opacity duration-300"></div>
-
-                <iframe id="previewFrame" src="" class="w-full h-full bg-white rounded-3xl" frameborder="0" onload="if(window.hideLoader) window.hideLoader()"></iframe>
-
+            {{-- Phone Frame (Mobile) --}}
+            <div id="frameWrapper" onclick="event.stopPropagation()" class="relative transition-all duration-500 flex-shrink-0 shadow-2xl">
+                {{-- Phone chrome --}}
+                <div id="phoneChromeTop" class="absolute top-0 inset-x-0 z-30 pointer-events-none">
+                    <div class="mx-auto w-[120px] h-[28px] bg-gray-900 rounded-b-2xl"></div>
+                </div>
+                {{-- Home indicator --}}
+                <div id="phoneChromeBottom" class="absolute bottom-0 inset-x-0 z-30 pointer-events-none flex justify-center pb-2">
+                    <div class="w-20 h-1 bg-white/30 rounded-full"></div>
+                </div>
+                <iframe id="previewFrame" src="" frameborder="0" scrolling="yes"
+                    class="block bg-white"
+                    style="width:375px;height:calc(100vh - 110px);border-radius:44px;display:block;"
+                    onload="onFrameLoad()"></iframe>
             </div>
         </div>
     </div>
@@ -621,8 +636,8 @@
                     Katalog Tema
                     <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-indigo-600 transition-all duration-300"></span>
                 </a>
-                <a href="{{ route('home') }}#harga" class="hover:text-indigo-600 transition-all duration-300 hover:scale-105 relative group">
-                    Harga
+                <a href="{{ route('order.create') }}" class="hover:text-indigo-600 transition-all duration-300 hover:scale-105 relative group">
+                    Pesan Sekarang
                     <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
                 </a>
             </div>
@@ -666,18 +681,27 @@
         </div>
     </section>
 
-    <div class="filter-bar">
-        <div class="filter-tabs">
-            <button class="filter-tab active" data-filter="all">Semua</button>
-            <button class="filter-tab" data-filter="modern">Modern</button>
-            <button class="filter-tab" data-filter="islamic">Islami</button>
-            <button class="filter-tab" data-filter="floral">Floral</button>
-            <button class="filter-tab" data-filter="rustic">Rustic</button>
-            <button class="filter-tab" data-filter="boho terracotta">Boho Terracotta</button>
+    <div class="filter-bar" style="flex-wrap:wrap; gap:0.75rem;">
+        <div class="filter-tabs" id="filterTabs">
+            <button class="filter-tab active" data-filter="all">Semua <span id="cnt-all" class="ml-1 text-xs bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-full font-bold"></span></button>
+            <button class="filter-tab" data-filter="modern">Modern <span id="cnt-modern" class="ml-1 text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full font-bold"></span></button>
+            <button class="filter-tab" data-filter="islamic">Islami <span id="cnt-islamic" class="ml-1 text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full font-bold"></span></button>
+            <button class="filter-tab" data-filter="floral">Floral <span id="cnt-floral" class="ml-1 text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full font-bold"></span></button>
+            <button class="filter-tab" data-filter="rustic">Rustic <span id="cnt-rustic" class="ml-1 text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full font-bold"></span></button>
+            <button class="filter-tab" data-filter="boho terracotta">Boho <span id="cnt-boho-terracotta" class="ml-1 text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full font-bold"></span></button>
+            <button class="filter-tab" data-filter="dark" style="color:#9333ea;">🌙 Dark <span id="cnt-dark" class="ml-1 text-xs bg-purple-100 text-purple-600 px-1.5 py-0.5 rounded-full font-bold"></span></button>
         </div>
-        <div class="filter-search">
-            <svg width="18" height="18" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" placeholder="Cari tema...">
+        <div style="display:flex; gap:0.75rem; align-items:center;">
+            <div class="filter-search">
+                <svg width="18" height="18" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" id="searchInput" placeholder="Cari tema...">
+            </div>
+            <select id="sortSelect" style="padding:0.625rem 1rem; border-radius:50px; border:none; background:white; font-size:0.875rem; font-family:inherit; color:#4B5563; box-shadow:0 2px 10px rgba(0,0,0,0.05); cursor:pointer; outline:none;">
+                <option value="default">🔃 Urutkan</option>
+                <option value="az">A → Z</option>
+                <option value="za">Z → A</option>
+                <option value="newest">Terbaru</option>
+            </select>
         </div>
     </div>
 
@@ -701,14 +725,14 @@
 
                 $categories = [
                     'barakah-love' => 'Islamic',
-                    'emerald-garden' => 'Modern Islamic',
+                    'emerald-garden' => 'Islamic',
                     'floral-pastel' => 'Floral',
                     'rustic-green' => 'Rustic',
                     'royal-glass' => 'Modern',
                     'boho-terracotta' => 'Boho Terracotta',
-                    'ocean-breeze' => 'Ocean',
-                    'watercolor-flow' => 'Watercolor',
-                    'midnight-garden' => 'Modern',
+                    'ocean-breeze' => 'Modern',
+                    'watercolor-flow' => 'Modern',
+                    'midnight-garden' => 'Dark',
                 ];
                 $category = $categories[$theme->slug] ?? 'Wedding';
 
@@ -747,7 +771,7 @@
                     <img src="{{ asset('assets/thumbnail/' . $theme->slug . '.png') }}" alt="{{ $theme->name }}" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=600&fit=crop'">
                     <div class="theme-card-overlay">
                         <div class="theme-card-actions">
-                            <button onclick="openPreview('{{ route('demo.show', $theme->slug) }}')" class="btn-preview">
+                            <button onclick="openPreview('{{ route('demo.show', $theme->slug) }}', '{{ addslashes($theme->name) }}')" class="btn-preview">
                                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                 Preview
                             </button>
@@ -820,40 +844,50 @@
 
         window.hideLoader = function () {
             if (loader) {
-                loader.classList.add('opacity-0');
+                loader.style.opacity = '0';
                 setTimeout(() => loader.classList.add('hidden'), 300);
             }
         };
 
-        window.openPreview = function (url) {
-            if (loader) {
-                loader.classList.remove('hidden', 'opacity-0');
-            }
+        // Auto-open the invitation gate in iframe after the theme loads
+        window.onFrameLoad = function () {
+            window.hideLoader();
+            setTimeout(() => {
+                try {
+                    const doc = frame.contentWindow.document;
+                    // Try to click the 'Buka Undangan' button automatically
+                    const openBtn = doc.querySelector('.btn-open, [onclick*="openInvitation"], [onclick*="buka"]');
+                    if (openBtn) openBtn.click();
+                } catch (e) { /* cross-origin or missing — ignored */ }
+            }, 600);
+        };
 
+        window.openPreview = function (url, themeName) {
+            if (loader) {
+                loader.classList.remove('hidden');
+                loader.style.opacity = '1';
+            }
             if (modal) {
                 modal.classList.remove('hidden');
                 document.body.style.overflow = 'hidden';
-                setTimeout(() => modal.classList.remove('opacity-0'), 10);
+                requestAnimationFrame(() => modal.style.opacity = '1');
+                modal.style.transition = 'opacity 0.3s';
             }
-
-            if (frame) {
-                frame.src = url;
-                frame.onload = function () {
-                    if (window.hideLoader) window.hideLoader();
-                };
-            }
-
+            if (frame) { frame.src = url; }
+            // Update theme name in header
+            const nameEl = document.getElementById('previewThemeName');
+            if (nameEl && themeName) nameEl.textContent = 'Preview: ' + themeName;
+            // Update order button
             if (btnOrder && url) {
                 const slug = url.split('/').pop();
                 btnOrder.href = "{{ route('order.create') }}?theme=" + slug;
             }
-
             setDevice('mobile');
         };
 
         window.closePreview = function () {
             if (modal) {
-                modal.classList.add('opacity-0');
+                modal.style.opacity = '0';
                 document.body.style.overflow = '';
                 setTimeout(() => {
                     modal.classList.add('hidden');
@@ -864,35 +898,40 @@
 
         window.setDevice = function (type) {
             if (!frameWrapper || !frame) return;
+            const vhFrame = 'calc(100vh - 110px)';
+
+            const chromeTop = document.getElementById('phoneChromeTop');
+            const chromeBot = document.getElementById('phoneChromeBottom');
 
             if (type === 'mobile') {
-                frameWrapper.className =
-                    "relative transition-all duration-700 ease-in-out shadow-2xl bg-gradient-to-b from-gray-800 to-gray-900 border-[14px] border-gray-900 rounded-[3rem] overflow-hidden";
-                frameWrapper.style.width = "375px";
-                frameWrapper.style.height = "812px";
-                frame.className = "w-full h-full bg-white rounded-[2rem]";
-                if (phoneNotch) phoneNotch.classList.remove('hidden');
-                highlightBtn(btnMobile, btnDesktop);
+                frameWrapper.style.cssText = `
+                    border-radius: 44px;
+                    border: 12px solid #111;
+                    box-shadow: 0 0 0 1px #333, 0 40px 80px rgba(0,0,0,0.6);
+                    overflow: hidden;
+                    transition: all 0.4s ease;
+                `;
+                frame.style.cssText = `width:375px; height:${vhFrame}; border-radius:32px; display:block;`;
+                if (chromeTop) chromeTop.style.display = 'block';
+                if (chromeBot) chromeBot.style.display = 'flex';
+                // Highlight buttons
+                btnMobile.className = 'px-3 py-2 rounded-lg text-xs font-semibold text-indigo-300 bg-indigo-600/30 border border-indigo-500/40 transition-all flex items-center gap-1.5';
+                btnDesktop.className = 'px-3 py-2 rounded-lg text-xs font-semibold text-white/50 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1.5';
             } else {
-                frameWrapper.className =
-                    "relative transition-all duration-700 ease-in-out shadow-2xl bg-white border-0 rounded-2xl overflow-hidden";
-                frameWrapper.style.width = "90%";
-                frameWrapper.style.height = "90%";
-                frameWrapper.style.maxWidth = "1400px";
-                frame.className = "w-full h-full bg-white";
-                if (phoneNotch) phoneNotch.classList.add('hidden');
-                highlightBtn(btnDesktop, btnMobile);
+                frameWrapper.style.cssText = `
+                    border-radius: 16px;
+                    border: none;
+                    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+                    overflow: hidden;
+                    transition: all 0.4s ease;
+                `;
+                frame.style.cssText = `width:min(1200px,92vw); height:${vhFrame}; border-radius:0; display:block;`;
+                if (chromeTop) chromeTop.style.display = 'none';
+                if (chromeBot) chromeBot.style.display = 'none';
+                btnDesktop.className = 'px-3 py-2 rounded-lg text-xs font-semibold text-indigo-300 bg-indigo-600/30 border border-indigo-500/40 transition-all flex items-center gap-1.5';
+                btnMobile.className = 'px-3 py-2 rounded-lg text-xs font-semibold text-white/50 hover:text-white hover:bg-white/10 transition-all flex items-center gap-1.5';
             }
         };
-
-        function highlightBtn(active, inactive) {
-            if (active) {
-                active.className = "group p-3 rounded-lg text-indigo-300 bg-white/15 transition-all";
-            }
-            if (inactive) {
-                inactive.className = "group p-3 rounded-lg text-white/50 hover:text-white/90 hover:bg-white/10 transition-all";
-            }
-        }
 
         document.addEventListener('keydown', function (event) {
             if (event.key === "Escape") closePreview();
@@ -900,24 +939,52 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const tabs = document.querySelectorAll('.filter-tab');
-            const searchInput = document.querySelector('.filter-search input');
-            const cards = document.querySelectorAll('.theme-card');
-            const emptyState = document.querySelector('.empty-state');
+            const searchInput = document.getElementById('searchInput');
+            const sortSelect = document.getElementById('sortSelect');
+            const cards = Array.from(document.querySelectorAll('.theme-card'));
             const themesGrid = document.querySelector('.themes-grid');
 
+            // ── Count badges per category ─────────────────────────────
+            function updateCounts() {
+                const allCards = document.querySelectorAll('.theme-card');
+                const counts = { all: allCards.length };
+                allCards.forEach(c => {
+                    const cat = (c.getAttribute('data-category') || '').toLowerCase();
+                    counts[cat] = (counts[cat] || 0) + 1;
+                });
+                document.querySelectorAll('.filter-tab').forEach(tab => {
+                    const f = tab.getAttribute('data-filter');
+                    const key = f === 'all' ? 'all' : f.toLowerCase();
+                    const el = tab.querySelector('span');
+                    if (el) el.textContent = counts[key] || 0;
+                });
+            }
+            updateCounts();
+
+            // ── Sort ──────────────────────────────────────────────────
+            function sortCards(type) {
+                if (!themesGrid) return;
+                const sorted = [...cards];
+                if (type === 'az') sorted.sort((a, b) => (a.dataset.name || '').localeCompare(b.dataset.name || ''));
+                else if (type === 'za') sorted.sort((a, b) => (b.dataset.name || '').localeCompare(a.dataset.name || ''));
+                else sorted.sort((a, b) => parseInt(a.dataset.order||0) - parseInt(b.dataset.order||0));
+                sorted.forEach(c => themesGrid.appendChild(c));
+            }
+            // Record original order
+            cards.forEach((c, i) => c.dataset.order = i);
+
+            // ── Filter + Search ──────────────────────────────────────
             function filterThemes() {
                 const activeTab = document.querySelector('.filter-tab.active');
-                const category = activeTab ? activeTab.getAttribute('data-filter') : 'all';
-                const searchTerm = searchInput.value.toLowerCase().trim();
+                const category = (activeTab ? activeTab.getAttribute('data-filter') : 'all').toLowerCase();
+                const searchTerm = (searchInput?.value || '').toLowerCase().trim();
                 let visibleCount = 0;
 
                 cards.forEach(card => {
-                    const cardCategory = card.getAttribute('data-category');
-                    const cardName = card.getAttribute('data-name');
-
+                    const cardCategory = (card.getAttribute('data-category') || '').toLowerCase();
+                    const cardName = (card.getAttribute('data-name') || '').toLowerCase();
                     const matchesCategory = category === 'all' || cardCategory === category;
-                    const matchesSearch = cardName.includes(searchTerm);
-
+                    const matchesSearch = !searchTerm || cardName.includes(searchTerm);
                     if (matchesCategory && matchesSearch) {
                         card.style.display = 'block';
                         visibleCount++;
@@ -926,31 +993,25 @@
                     }
                 });
 
+                // Empty state
+                let emptyMsg = document.getElementById('dynamicEmpty');
                 if (visibleCount === 0) {
-                    if (!emptyState) {
-                        const emptyDiv = document.createElement('div');
-                        emptyDiv.className = 'empty-state';
-                        emptyDiv.innerHTML = `
-                            <div class="empty-state-icon">🔍</div>
-                            <h3>Tidak Ada Hasil</h3>
-                            <p>Coba kata kunci lain atau ganti kategori filter.</p>
-                        `;
-                        themesGrid?.parentNode.appendChild(emptyDiv);
-                    } else {
-                        emptyState.style.display = 'block';
-                        emptyState.innerHTML = `
-                             <div class="empty-state-icon">🔍</div>
-                             <h3>Tidak Ada Hasil</h3>
-                             <p>Tidak ada tema yang cocok dengan "${searchTerm}" di kategori ini.</p>
-                        `;
+                    if (!emptyMsg) {
+                        emptyMsg = document.createElement('div');
+                        emptyMsg.id = 'dynamicEmpty';
+                        emptyMsg.className = 'empty-state';
+                        themesGrid?.parentNode.appendChild(emptyMsg);
                     }
-                    if(themesGrid) themesGrid.style.display = 'none';
+                    emptyMsg.innerHTML = `<div class="empty-state-icon">🔍</div><h3>Tidak Ada Hasil</h3><p>Coba kata kunci lain atau ganti kategori.</p>`;
+                    emptyMsg.style.display = 'block';
+                    if (themesGrid) themesGrid.style.display = 'none';
                 } else {
-                    if (emptyState) emptyState.style.display = 'none';
-                    if(themesGrid) themesGrid.style.display = 'grid';
+                    if (emptyMsg) emptyMsg.style.display = 'none';
+                    if (themesGrid) themesGrid.style.display = 'grid';
                 }
             }
 
+            // ── Event Listeners ───────────────────────────────────────
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     tabs.forEach(t => t.classList.remove('active'));
@@ -958,8 +1019,9 @@
                     filterThemes();
                 });
             });
-
-            searchInput.addEventListener('input', function() {
+            searchInput?.addEventListener('input', filterThemes);
+            sortSelect?.addEventListener('change', function() {
+                sortCards(this.value);
                 filterThemes();
             });
         });
