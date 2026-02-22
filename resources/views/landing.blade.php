@@ -54,14 +54,6 @@
         .animation-delay-2000 { animation-delay: 2s; }
         .animation-delay-4000 { animation-delay: 4s; }
         
-        /* Gradient Text */
-        .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
         /* Glassmorphism */
         .glass {
             background: rgba(255, 255, 255, 0.9);
@@ -135,10 +127,10 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 via-white to-indigo-50/30 text-gray-800 antialiased overflow-x-hidden">
+<body class="bg-gray-50 text-gray-800 antialiased overflow-x-hidden">
 
     <!-- Preview Modal - Enhanced -->
-    <div id="previewModal" class="fixed inset-0 z-[100] hidden bg-gradient-to-br from-gray-900/98 via-indigo-900/95 to-purple-900/98 backdrop-blur-xl transition-all duration-500 opacity-0 flex flex-col">
+    <div id="previewModal" class="fixed inset-0 z-[100] hidden bg-gray-900/98 backdrop-blur-xl transition-all duration-500 opacity-0 flex flex-col">
     
         <!-- Modal Header - Enhanced -->
         <div class="w-full h-20 bg-gray-900/95 backdrop-blur-xl border-b border-white/20 shadow-xl flex justify-between items-center px-6 md:px-10 z-50 shrink-0">
@@ -157,7 +149,7 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <a id="btnOrderTheme" href="#" class="btn-primary relative flex bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 md:px-8 py-3 md:py-3.5 rounded-full text-sm md:text-base font-bold transition-all shadow-2xl shadow-indigo-500/40 hover:shadow-indigo-500/60 items-center gap-2 hover:scale-105">
+                <a id="btnOrderTheme" href="#" class="btn-primary relative flex bg-indigo-600 hover:bg-indigo-700 text-white px-6 md:px-8 py-3 md:py-3.5 rounded-full text-sm md:text-base font-bold transition-all shadow-2xl shadow-indigo-500/40 hover:shadow-indigo-500/60 items-center gap-2 hover:scale-105">
                     <span class="relative z-10">Pilih Tema Ini</span>
                     <svg class="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 </a>
@@ -197,13 +189,7 @@
             <!-- Logo - Enhanced -->
             <a href="#" class="flex items-center gap-3 group">
                 <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-11 h-11 group-hover:rotate-12 group-hover:scale-110 transition-all duration-300 drop-shadow-lg">
-                    <rect width="48" height="48" rx="12" fill="url(#gradient)" />
-                    <defs>
-                        <linearGradient id="gradient" x1="0" y1="0" x2="48" y2="48">
-                            <stop offset="0%" stop-color="#667eea"/>
-                            <stop offset="100%" stop-color="#764ba2"/>
-                        </linearGradient>
-                    </defs>
+                    <rect width="48" height="48" rx="12" fill="#4F46E5" />
                     <path d="M15 13h18v6h-6v17h-6v-17h-6v-6z" fill="white" /> 
                 </svg>
                 <div class="flex flex-col">
@@ -231,7 +217,7 @@
                 @else
                     <a href="{{ route('login') }}" class="text-sm font-bold text-gray-700 hover:text-indigo-600 hidden md:block transition-all duration-300 hover:scale-105">Masuk</a>
                 @endauth
-                <a href="{{ route('order.create') }}" class="btn-primary relative bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-full text-sm font-bold shadow-xl shadow-indigo-200 hover:shadow-2xl hover:shadow-indigo-300 hover:scale-105 transition-all duration-300">
+                <a href="{{ route('order.create') }}" class="btn-primary relative bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full text-sm font-bold shadow-xl shadow-indigo-200 hover:shadow-2xl hover:shadow-indigo-300 hover:scale-105 transition-all duration-300">
                     <span class="relative z-10">Buat Undangan</span>
                 </a>
             </div>
@@ -242,9 +228,9 @@
     <section class="pt-40 pb-28 px-6 relative overflow-hidden">
         <!-- Animated Background Blobs - Enhanced -->
         <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-            <div class="absolute top-10 left-1/4 w-96 h-96 bg-gradient-to-br from-purple-300 to-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob"></div>
-            <div class="absolute top-20 right-1/4 w-96 h-96 bg-gradient-to-br from-yellow-300 to-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000"></div>
-            <div class="absolute -bottom-8 left-1/3 w-96 h-96 bg-gradient-to-br from-pink-300 to-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-4000"></div>
+            <div class="absolute top-10 left-1/4 w-96 h-96 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob"></div>
+            <div class="absolute top-20 right-1/4 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-8 left-1/3 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-4000"></div>
         </div>
 
         <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -257,7 +243,7 @@
                 
                 <h1 class="text-5xl md:text-7xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] tracking-tight">
                     Bagikan Momen<br>
-                    <span class="font-serif italic gradient-text">Bahagiamu</span>
+                    <span class="font-serif italic text-indigo-600">Bahagiamu</span>
                 </h1>
                 
                 <p class="text-lg md:text-xl text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium">
@@ -265,7 +251,7 @@
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start pt-4">
-                    <a href="#tema" class="group btn-primary relative bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-10 py-5 rounded-full font-bold text-lg shadow-2xl shadow-indigo-300 hover:shadow-indigo-400 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3">
+                    <a href="#tema" class="group btn-primary relative bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-5 rounded-full font-bold text-lg shadow-2xl shadow-indigo-300 hover:shadow-indigo-400 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3">
                         <span class="relative z-10">Pilih Tema Favorit</span>
                         <svg class="w-6 h-6 group-hover:translate-y-1 transition-transform relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                     </a>
@@ -296,8 +282,8 @@
             <div class="relative z-10 flex justify-center lg:justify-end animate-scaleIn">
                 <div class="relative animate-float">
                     <!-- Decorative Elements -->
-                    <div class="absolute -top-8 -right-8 w-24 h-24 bg-gradient-to-br from-yellow-400 to-pink-500 rounded-full opacity-20 blur-2xl"></div>
-                    <div class="absolute -bottom-8 -left-8 w-32 h-32 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full opacity-20 blur-2xl"></div>
+                    <div class="absolute -top-8 -right-8 w-24 h-24 bg-pink-300 rounded-full opacity-20 blur-2xl"></div>
+                    <div class="absolute -bottom-8 -left-8 w-32 h-32 bg-indigo-300 rounded-full opacity-20 blur-2xl"></div>
                     
                     <!-- Phone Device -->
                     <div class="relative mx-auto border-gray-800 bg-gray-900 border-[14px] rounded-[3rem] h-[650px] w-[320px] phone-shadow hover:scale-105 transition-all duration-700 group">
@@ -314,7 +300,7 @@
                             class="w-full h-full object-cover">
 
                         <!-- Overlay on Hover -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-end p-8">
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-end p-8">
                             <button onclick="openPreview('{{ route('demo.show', $heroTheme->slug ?? 'floral-pastel') }}')" class="bg-white text-gray-900 px-8 py-3.5 rounded-full font-bold text-base shadow-2xl hover:scale-105 transition-all transform flex items-center gap-3 mb-4">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 Lihat Demo Interaktif
@@ -329,7 +315,7 @@
     </section>
 
     <!-- Theme Gallery Section - Enhanced -->
-    <section id="tema" class="py-32 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+    <section id="tema" class="py-32 bg-gray-50 overflow-hidden">
         <div class="max-w-7xl mx-auto px-6">
             <!-- Section Header - Enhanced -->
             <div class="text-center mb-20 space-y-5 animate-fadeInUp">
@@ -338,7 +324,7 @@
                     <span>Koleksi Tema Premium</span>
                 </div>
                 <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">
-                    Tema <span class="font-serif italic gradient-text">Eksklusif</span> untuk Anda
+                    Tema <span class="font-serif italic text-indigo-600">Eksklusif</span> untuk Anda
                 </h2>
                 <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
                     Desain mobile-first yang memukau di setiap layar smartphone. Pilih tema yang mencerminkan kepribadian Anda.
@@ -363,7 +349,7 @@
                 @endphp
                 <div class="flex flex-col items-center group w-full max-w-sm {{ $isFeatured ? 'relative md:-top-16' : '' }} animate-fadeInUp {{ $delay }}">
                     <div class="relative card-hover w-full">
-                        <div class="relative mx-auto border-gray-900 bg-gradient-to-b from-gray-800 to-gray-900 border-[14px] rounded-[3rem] h-[560px] w-[280px] phone-shadow transform {{ $rotation }} {{ $isFeatured ? 'scale-110 hover:scale-[1.15] ring-4 ring-indigo-200/50' : '' }}">
+                        <div class="relative mx-auto border-gray-900 bg-gray-900 border-[14px] rounded-[3rem] h-[560px] w-[280px] phone-shadow transform {{ $rotation }} {{ $isFeatured ? 'scale-110 hover:scale-[1.15] ring-4 ring-indigo-200/50' : '' }}">
                             <!-- Side Buttons -->
                             <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[17px] top-[72px] rounded-l-lg"></div>
                             <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[17px] top-[124px] rounded-l-lg"></div>
@@ -374,7 +360,7 @@
                                 <img src="{{ $thumbnail }}" alt="{{ $theme->name }}" class="w-full h-full object-cover">
 
                                 <!-- Hover Overlay -->
-                                <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/80 via-indigo-600/40 to-transparent backdrop-blur-[2px] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 gap-4 p-6">
+                                <div class="absolute inset-0 bg-indigo-900/80 backdrop-blur-[2px] flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 gap-4 p-6">
                                     <div class="text-white text-center space-y-2 mb-4">
                                         <div class="text-2xl font-bold">{{ $theme->name }}</div>
                                         <div class="text-sm opacity-90">Klik untuk melihat preview</div>
@@ -389,7 +375,7 @@
 
                         @if($isFeatured)
                         <!-- Premium Badge -->
-                        <div class="absolute -top-6 -right-6 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-black px-4 py-2 rounded-full shadow-2xl rotate-12 z-20 premium-badge flex items-center gap-1.5">
+                        <div class="absolute -top-6 -right-6 bg-amber-500 text-white text-xs font-black px-4 py-2 rounded-full shadow-2xl rotate-12 z-20 premium-badge flex items-center gap-1.5">
                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                             POPULER
                         </div>
@@ -425,7 +411,7 @@
             <div class="mt-24 text-center relative z-20 space-y-6">
                 <a href="{{ route('themes.index') }}" class="group inline-flex items-center gap-4 bg-white border-2 border-gray-200 px-10 py-5 rounded-full font-bold text-gray-700 hover:border-indigo-600 hover:text-indigo-600 transition-all duration-500 shadow-xl hover:shadow-2xl hover:scale-105">
                     <span class="text-lg">Jelajahi Koleksi Lengkap</span>
-                    <div class="bg-gradient-to-r from-indigo-100 to-purple-100 group-hover:from-indigo-600 group-hover:to-purple-600 rounded-full p-2 transition-all duration-300">
+                    <div class="bg-indigo-100 group-hover:bg-indigo-600 rounded-full p-2 transition-all duration-300">
                         <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                     </div>
                 </a>
@@ -440,7 +426,7 @@
     <!-- Features Section - Enhanced -->
     <section id="fitur" class="py-28 bg-white relative overflow-hidden">
         <!-- Decorative Background -->
-        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-indigo-50 to-transparent opacity-50"></div>
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-indigo-50 opacity-50"></div>
         
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <!-- Section Header - Enhanced -->
@@ -450,7 +436,7 @@
                     <span>Fitur Unggulan</span>
                 </div>
                 <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">
-                    Semua yang Anda <span class="font-serif italic gradient-text">Butuhkan</span>
+                    Semua yang Anda <span class="font-serif italic text-indigo-600">Butuhkan</span>
                 </h2>
                 <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
                     Platform lengkap dengan fitur premium untuk undangan pernikahan digital yang sempurna
@@ -461,8 +447,8 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12">
                 
                 <!-- Feature 1 -->
-                <div class="group p-8 bg-gradient-to-br from-white to-gray-50 rounded-3xl border-2 border-gray-100 hover:border-indigo-200 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 space-y-6">
-                    <div class="w-20 h-20 bg-gradient-to-br from-indigo-100 to-indigo-200 text-indigo-600 rounded-2xl flex items-center justify-center text-4xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
+                <div class="group p-8 bg-white rounded-3xl border-2 border-gray-100 hover:border-indigo-200 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 space-y-6">
+                    <div class="w-20 h-20 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-4xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
                         ⚡
                     </div>
                     <div class="space-y-3">
@@ -472,8 +458,8 @@
                 </div>
 
                 <!-- Feature 2 -->
-                <div class="group p-8 bg-gradient-to-br from-white to-gray-50 rounded-3xl border-2 border-gray-100 hover:border-purple-200 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 space-y-6">
-                    <div class="w-20 h-20 bg-gradient-to-br from-purple-100 to-purple-200 text-purple-600 rounded-2xl flex items-center justify-center text-4xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
+                <div class="group p-8 bg-white rounded-3xl border-2 border-gray-100 hover:border-purple-200 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 space-y-6">
+                    <div class="w-20 h-20 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center text-4xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
                         📱
                     </div>
                     <div class="space-y-3">
@@ -483,8 +469,8 @@
                 </div>
 
                 <!-- Feature 3 -->
-                <div class="group p-8 bg-gradient-to-br from-white to-gray-50 rounded-3xl border-2 border-gray-100 hover:border-pink-200 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 space-y-6">
-                    <div class="w-20 h-20 bg-gradient-to-br from-pink-100 to-pink-200 text-pink-600 rounded-2xl flex items-center justify-center text-4xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
+                <div class="group p-8 bg-white rounded-3xl border-2 border-gray-100 hover:border-pink-200 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 space-y-6">
+                    <div class="w-20 h-20 bg-pink-100 text-pink-600 rounded-2xl flex items-center justify-center text-4xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
                         💌
                     </div>
                     <div class="space-y-3">
@@ -522,7 +508,7 @@
     </section>
 
     <!-- CTA Section - New -->
-    <section class="py-28 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 relative overflow-hidden">
+    <section class="py-28 bg-indigo-600 relative overflow-hidden">
         <!-- Decorative Elements -->
         <div class="absolute top-0 left-0 w-full h-full">
             <div class="absolute top-20 left-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
@@ -618,9 +604,9 @@
     </section>
 
     <!-- Footer - Enhanced -->
-    <footer class="bg-gradient-to-b from-gray-900 to-black text-white relative overflow-hidden">
+    <footer class="bg-gray-900 text-white relative overflow-hidden">
         <!-- Decorative Top Border -->
-        <div class="h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+        <div class="h-1 bg-indigo-600"></div>
         
         <div class="max-w-7xl mx-auto px-6 py-16 relative z-10">
             <!-- Footer Content -->
@@ -630,13 +616,7 @@
                 <div class="space-y-6 md:col-span-2">
                     <div class="flex items-center gap-3">
                         <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-12 h-12">
-                            <rect width="48" height="48" rx="12" fill="url(#footerGradient)" />
-                            <defs>
-                                <linearGradient id="footerGradient" x1="0" y1="0" x2="48" y2="48">
-                                    <stop offset="0%" stop-color="#667eea"/>
-                                    <stop offset="100%" stop-color="#764ba2"/>
-                                </linearGradient>
-                            </defs>
+                            <rect width="48" height="48" rx="12" fill="#4F46E5" />
                             <path d="M15 13h18v6h-6v17h-6v-17h-6v-6z" fill="white" /> 
                         </svg>
                         <div>
@@ -807,7 +787,7 @@
 
         if (type === 'mobile') {
             frameWrapper.className =
-                "relative transition-all duration-700 ease-in-out shadow-2xl bg-gradient-to-b from-gray-800 to-gray-900 border-[14px] border-gray-900 rounded-[3rem] overflow-hidden";
+                "relative transition-all duration-700 ease-in-out shadow-2xl bg-gray-800 border-[14px] border-gray-900 rounded-[3rem] overflow-hidden";
             frameWrapper.style.width = "375px";
             frameWrapper.style.height = "812px";
             frame.className = "w-full h-full bg-white rounded-[2rem]";
