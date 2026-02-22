@@ -239,7 +239,14 @@
                                 <div class="flex-1 min-w-0">
                                     <h3 class="font-bold text-gray-900 text-base">{{ $theme->name }}</h3>
                                     <p class="text-xs text-gray-500 mt-0.5">Premium Theme</p>
-                                    <p class="text-base text-indigo-600 font-extrabold mt-1">{{ $theme->formatted_price }}</p>
+                                    @if($theme->has_promo)
+                                        <div class="mt-1 flex items-center gap-2">
+                                            <p class="text-sm text-gray-400 line-through">Rp {{ $theme->short_original_price }}</p>
+                                            <p class="text-base text-amber-500 font-extrabold">Rp {{ $theme->short_price }}</p>
+                                        </div>
+                                    @else
+                                        <p class="text-base text-indigo-600 font-extrabold mt-1">Rp {{ $theme->short_price }}</p>
+                                    @endif
                                 </div>
                                 {{-- Radio indicator --}}
                                 <div class="flex-shrink-0">

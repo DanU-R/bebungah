@@ -150,16 +150,26 @@ class AdminController extends Controller
     {
         $request->validate([
             'price' => 'nullable|integer|min:0|max:99999999',
+            'promo_price' => 'nullable|integer|min:0|max:99999999',
         ]);
 
         $theme = \App\Models\Theme::findOrFail($id);
+        
+        // Cek promo price tidak boleh lebih besar dari harga asli (jika ada)
+        $originalPrice = $request->filled('price') ? (int)$request->price : config('app.default_price', 99000);
+        if ($request->filled('promo_price') && (int)$request->promo_price >= $originalPrice) {
+            return redirect()->back()->withErrors(['promo_price' => 'Harga promo harus lebih kecil dari harga asli.']);
+        }
+
         // null = pakai harga default global
         $theme->price = $request->filled('price') ? (int)$request->price : null;
+        $theme->promo_price = $request->filled('promo_price') ? (int)$request->promo_price : null;
         $theme->save();
 
         ActivityLog::record('admin_action', 'theme.price_updated', $theme, [
             'theme_slug'   => $theme->slug,
             'new_price'    => $theme->price,
+            'promo_price'  => $theme->promo_price,
             'updated_by'   => auth()->user()->email,
         ]);
 

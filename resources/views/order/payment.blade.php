@@ -246,10 +246,17 @@
                         </div>
                         <div class="flex justify-between items-center text-sm">
                             <span class="text-gray-600">Status</span>
-                            <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 px-3 py-1 rounded-lg text-xs font-bold">
-                                <div class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
-                                Menunggu Pembayaran
-                            </span>
+                            @if($invitation->status === 'cancelled')
+                                <span class="inline-flex items-center gap-1.5 bg-red-50 text-red-700 px-3 py-1 rounded-lg text-xs font-bold">
+                                    <svg class="w-3 h-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Dibatalkan
+                                </span>
+                            @else
+                                <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 px-3 py-1 rounded-lg text-xs font-bold">
+                                    <div class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+                                    Menunggu Pembayaran
+                                </span>
+                            @endif
                         </div>
                     </div>
                     
@@ -259,10 +266,16 @@
                     <!-- Total -->
                     <div class="flex justify-between items-center bg-indigo-50 rounded-xl p-4">
                         <span class="text-gray-700 font-bold text-base">Total Pembayaran</span>
-                        <span class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">{{ $invitation->theme->formatted_price }}</span>
+                        <div class="text-right">
+                            @if($invitation->theme->has_promo)
+                                <div class="text-xs text-gray-500 line-through">{{ $invitation->theme->formatted_original_price }}</div>
+                            @endif
+                            <span class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">{{ $invitation->theme->formatted_price }}</span>
+                        </div>
                     </div>
                 </div>
 
+                @if($invitation->status !== 'cancelled')
                 <!-- Important Notice -->
                 <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-5 mb-8 animate-slideUp">
                     <div class="flex gap-4">
@@ -308,6 +321,29 @@
                     <span class="text-lg">Konfirmasi Pembayaran via WhatsApp</span>
                     <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
                 </a>
+                @else
+                <div class="bg-red-50 border-2 border-red-200 rounded-2xl p-5 mb-8 animate-slideUp">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            </div>
+                        </div>
+                        <div class="flex-1 space-y-2">
+                            <h4 class="font-bold text-red-900 text-sm">Pesanan Dibatalkan</h4>
+                            <p class="text-red-800 text-sm leading-relaxed">
+                                Mohon maaf, pesanan ini telah dibatalkan otomatis karena melewati batas waktu pembayaran 1x24 jam. Silakan buat pesanan baru jika ingin melanjutkan.
+                            </p>
+                            <div class="mt-4">
+                                <a href="{{ route('order.create') }}" class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                    Buat Pesanan Baru
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
                 
                 <!-- 
                     ============================================
@@ -317,7 +353,7 @@
                 <a href="/" 
                    class="group text-center text-sm text-gray-500 hover:text-indigo-600 transition-colors flex items-center justify-center gap-2">
                     <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    <span>Batalkan & Kembali ke Beranda</span>
+                    <span>Kembali ke Beranda</span>
                 </a>
 
                 <!-- Features Info -->

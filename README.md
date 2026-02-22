@@ -33,8 +33,7 @@
 | **Boho Terracotta** | Bohemian hangat & artistik | ✅ |
 
 ### 🛠️ Fitur Admin & Monetisasi
-- 💰 **Manajemen Harga Per-Tema** — Admin dapat mengatur harga yang berbeda untuk setiap tema melalui dashboard.
-- 📉 **Diskon & Harga Promo** — Mendukung tampilan harga coret (Rp 150.000 -> Rp 99.000) di seluruh sistem.
+- 💰 **Manajemen Harga Per-Tema & Promo Spesial** 🆕 — Admin dapat mengatur harga dasar dan harga promo ("Harga Coret") untuk setiap tema melalui dashboard. Harga otomatis terupdate di katalog dan checkout form.
 - 🏗️ **Katalog Dinamis & Filter Harga** — Katalog tema dilengkapi filter harga kustom dan dropdown premium untuk memudahkan navigasi.
 - 🔐 **Persetujuan Undangan** — Kontrol penuh admin untuk mengaktifkan atau menonaktifkan undangan user.
 
@@ -45,15 +44,15 @@
 - 💬 **WhatsApp Blast & Link Generator** — Kirim undangan personal otomatis via WA dengan URL-encoded message.
 - 🔔 **Toast Notification System** — Notifikasi real-time untuk interaksi sukses/gagal.
 
+### 🌐 Landing Page & Katalog
+- 📱 **Dynamic Hero Mockup** — Tampilan mock-up interaktif pada tema populer dan fitur Live Preview iframe.
+- ❓ **Tanya Jawab (FAQ) & Footer Modern** 🆕 — Bagian FAQ accordion intuitif dan layout footer 3 kolom fungsional terintegrasi langsung dengan WhatsApp Admin & Email.
+- 💳 **Pemesanan Mudah** — Integrasi form order responsif yang menampilkan rincian harga, potongan harga, dan badge promo secara real-time.
+
 ### 🔐 Authentikasi & Role
 - Login, Register, Verifikasi Email, Reset Password (Laravel Breeze)
 - Role: **Admin** dan **Client**
-- Admin dashboard: approve undangan, reset password user
-
-### 🌐 Landing Page
-- Dynamic hero mockup — tampilkan tema pertama dari database
-- Katalog tema dinamis dari database
-- CTA order undangan langsung
+- Admin dashboard: update harga tema, konfigurasi promo, approve undangan, reset password user
 
 ### 🛡️ Keamanan
 - Rate limiting pada endpoint ucapan & RSVP (10 request/menit)

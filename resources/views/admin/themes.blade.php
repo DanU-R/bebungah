@@ -124,36 +124,73 @@
                     <div class="flex items-center gap-2 mb-0.5">
                         <h3 class="font-bold text-gray-900">{{ $theme->name }}</h3>
                         @if($hasCustom)
-                            <span class="bg-rose-100 text-rose-700 text-xs font-semibold px-2 py-0.5 rounded-full">Harga Khusus</span>
+                            @if($theme->has_promo)
+                                <span class="bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-0.5 rounded-full flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"></path></svg>
+                                    Promo Aktif
+                                </span>
+                            @else
+                                <span class="bg-rose-100 text-rose-700 text-xs font-semibold px-2 py-0.5 rounded-full">Harga Khusus</span>
+                            @endif
                         @else
                             <span class="bg-gray-100 text-gray-500 text-xs font-medium px-2 py-0.5 rounded-full">Pakai Default</span>
                         @endif
                     </div>
                     <p class="text-sm text-gray-500">Slug: <code class="bg-gray-100 px-1 rounded text-xs">{{ $theme->slug }}</code></p>
-                    <p class="text-sm font-semibold text-indigo-600 mt-1">Harga efektif: {{ $theme->formatted_price }}</p>
+                    <div class="mt-1 flex items-center gap-2">
+                        @if($theme->has_promo)
+                            <span class="text-sm text-gray-400 line-through">{{ $theme->formatted_original_price }}</span>
+                            <span class="text-sm font-bold text-amber-600">{{ $theme->formatted_price }}</span>
+                        @else
+                            <span class="text-sm font-semibold text-indigo-600">Harga: {{ $theme->formatted_price }}</span>
+                        @endif
+                    </div>
                 </div>
 
                 {{-- Form harga --}}
                 <form action="{{ route('admin.themes.price', $theme->id) }}" method="POST"
-                      class="flex items-center gap-2 flex-shrink-0">
+                      class="flex flex-col sm:flex-row items-end sm:items-center gap-2 flex-shrink-0">
                     @csrf
-                    <div class="flex rounded-lg overflow-hidden border border-gray-200 focus-within:border-indigo-500 transition-all">
-                        <span class="inline-flex items-center px-2.5 bg-gray-50 text-gray-400 text-xs font-semibold border-r border-gray-200">Rp</span>
-                        <input type="number" name="price"
-                               value="{{ $theme->price ?? '' }}"
-                               min="0" max="99999999" step="1000"
-                               placeholder="{{ number_format($defaultPrice, 0, ',', '.') }}"
-                               class="w-36 px-3 py-2 text-sm text-gray-900 focus:outline-none">
+                    
+                    <div class="flex flex-col gap-2">
+                        <!-- Harga Normal Input -->
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-500 w-24 text-right">Harga Normal:</span>
+                            <div class="flex rounded-lg overflow-hidden border border-gray-200 focus-within:border-indigo-500 transition-all">
+                                <span class="inline-flex items-center px-2.5 bg-gray-50 text-gray-400 text-xs font-semibold border-r border-gray-200">Rp</span>
+                                <input type="number" name="price"
+                                    value="{{ $theme->price ?? '' }}"
+                                    min="0" max="99999999" step="1000"
+                                    placeholder="{{ number_format($defaultPrice, 0, ',', '.') }}"
+                                    class="w-32 px-3 py-1.5 text-sm text-gray-900 focus:outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Harga Promo Input -->
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-amber-600 font-semibold w-24 text-right">Harga Promo:</span>
+                            <div class="flex rounded-lg overflow-hidden border border-amber-200 focus-within:border-amber-500 transition-all shadow-sm">
+                                <span class="inline-flex items-center px-2.5 bg-amber-50 text-amber-500 text-xs font-semibold border-r border-amber-200">Rp</span>
+                                <input type="number" name="promo_price"
+                                    value="{{ $theme->promo_price ?? '' }}"
+                                    min="0" max="99999999" step="1000"
+                                    placeholder="Opsional"
+                                    class="w-32 px-3 py-1.5 text-sm text-gray-900 focus:outline-none bg-amber-50/30">
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit"
-                            class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition shadow-sm">
-                        Simpan
-                    </button>
-                    @if($hasCustom)
-                    <button type="submit" form="reset-{{ $theme->id }}"
-                            class="text-gray-400 hover:text-red-500 transition text-xs font-semibold px-2 py-2.5"
-                            title="Reset ke default">✕</button>
-                    @endif
+
+                    <div class="flex sm:flex-col gap-2 ml-2 h-full justify-center">
+                        <button type="submit"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition shadow-sm h-full max-h-10">
+                            Simpan
+                        </button>
+                        @if($hasCustom)
+                        <button type="submit" form="reset-{{ $theme->id }}"
+                                class="bg-gray-100 hover:bg-red-50 text-gray-500 hover:text-red-500 border border-gray-200 hover:border-red-200 transition text-xs font-semibold px-4 py-2 rounded-lg"
+                                title="Reset ke default">Reset</button>
+                        @endif
+                    </div>
                 </form>
 
                 {{-- Hidden reset form --}}
@@ -161,6 +198,7 @@
                 <form id="reset-{{ $theme->id }}" action="{{ route('admin.themes.price', $theme->id) }}" method="POST" class="hidden">
                     @csrf
                     <input type="hidden" name="price" value="">
+                    <input type="hidden" name="promo_price" value="">
                 </form>
                 @endif
             </div>

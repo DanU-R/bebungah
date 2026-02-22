@@ -12,27 +12,71 @@ class Theme extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'price' => 'integer',
-        'is_active' => 'boolean',
+        'price'       => 'integer',
+        'promo_price' => 'integer',
+        'is_active'   => 'boolean',
     ];
 
     /**
-     * Harga efektif tema ini.
+     * Harga asli sebelum promo.
      * Jika kolom price terisi → gunakan itu.
      * Jika null → gunakan APP_DEFAULT_PRICE dari .env (default: 99000).
      */
-    public function getEffectivePriceAttribute(): int
+    public function getOriginalPriceAttribute(): int
     {
         return $this->price ?? config('app.default_price', 99000);
     }
 
     /**
+     * Harga efektif tema ini untuk checkout.
+     * Jika kolom promo_price terisi → gunakan itu.
+     * Jika tidak, gunakan original_price.
+     */
+    public function getEffectivePriceAttribute(): int
+    {
+        return $this->promo_price ?? $this->original_price;
+    }
+
+    /**
+     * Cek apakah tema ini memiliki promo aktif
+     */
+    public function getHasPromoAttribute(): bool
+    {
+        return !is_null($this->promo_price) && $this->promo_price < $this->original_price;
+    }
+
+    /**
+     * Harga asli terformat penuh, contoh: "Rp 150.000"
+     */
+    public function getFormattedOriginalPriceAttribute(): string
+    {
+        return 'Rp ' . number_format($this->original_price, 0, ',', '.');
+    }
+
+    /**
      * Harga terformat penuh, contoh: "Rp 99.000"
-     * Digunakan di form pemesanan dan checkout.
+     * Digunakan di form pemesanan dan checkout (Harga setelah diskon jika ada).
      */
     public function getFormattedPriceAttribute(): string
     {
         return 'Rp ' . number_format($this->effective_price, 0, ',', '.');
+    }
+
+    /**
+     * Harga asli terformat singkat, contoh: 90000 -> "90K"
+     */
+    public function getShortOriginalPriceAttribute(): string
+    {
+        $price = $this->original_price;
+        if ($price >= 1_000_000) {
+            $val = $price / 1_000_000;
+            return ($val == (int)$val ? (int)$val : number_format($val, 1, ',', '')) . 'Jt';
+        }
+        if ($price >= 1_000) {
+            $val = $price / 1_000;
+            return ($val == (int)$val ? (int)$val : number_format($val, 1, ',', '')) . 'K';
+        }
+        return 'Rp ' . $price;
     }
 
     /**

@@ -443,19 +443,27 @@
         .theme-badge.popular { color: var(--accent); }
         .theme-badge.islamic { color: #2D5A4A; }
 
-        .theme-price {
+        .theme-price-wrapper {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
+            top: 1.5rem;
+            right: 0;
+            filter: drop-shadow(-4px 4px 10px rgba(0,0,0,0.15));
+            z-index: 10;
+        }
+
+        .theme-price {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 0.375rem 0.875rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 800;
-            color: var(--primary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            z-index: 10;
+            /* Membentuk seperti ribbon / hexagon cut di sebelah kiri */
+            clip-path: polygon(15px 0%, 100% 0%, 100% 100%, 15px 100%, 0% 50%);
+            padding: 0.5rem 1rem 0.5rem 1.75rem;
+            min-width: 80px;
+            font-family: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-left: 4px solid var(--accent);
         }
 
         .theme-card-body {
@@ -925,7 +933,20 @@
                     @if($badge)
                     <span class="theme-badge {{ $badge[0] }}">{{ $badge[1] }}</span>
                     @endif
-                    <span class="theme-price">{{ $theme->short_price }}</span>
+                    @if($theme->has_promo)
+                        <div class="theme-price-wrapper">
+                            <div class="theme-price shadow-sm">
+                                <span class="text-[0.65rem] text-slate-500 line-through font-bold mb-0.5 tracking-wide">{{ $theme->short_original_price }}</span>
+                                <span class="text-amber-500 font-extrabold text-sm">{{ $theme->short_price }}</span>
+                            </div>
+                        </div>
+                    @else
+                        <div class="theme-price-wrapper">
+                            <div class="theme-price shadow-sm text-indigo-600 font-extrabold text-sm py-1.5">
+                                {{ $theme->short_price }}
+                            </div>
+                        </div>
+                    @endif
                     {{-- Selalu gunakan slug sebagai nama file thumbnail, bukan kolom thumbnail dari DB --}}
                     <img src="{{ asset('assets/thumbnail/' . $theme->slug . '.png') }}" alt="{{ $theme->name }}" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=600&fit=crop'">
                     <div class="theme-card-overlay">
@@ -977,17 +998,112 @@
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="footer-brand">Temanten</div>
-        <p>Digital Wedding Invitation Platform</p>
-        <div class="footer-links">
-            <a href="#">Tentang Kami</a>
-            <a href="#">Cara Kerja</a>
-            <a href="#">Harga</a>
-            <a href="#">FAQ</a>
-            <a href="#">Kontak</a>
+    <!-- Footer - Enhanced -->
+    <footer class="bg-gradient-to-b from-gray-900 to-black text-white relative overflow-hidden mt-12">
+        <!-- Decorative Top Border -->
+        <div class="h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 py-16 relative z-10 w-full">
+            <!-- Footer Content -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 text-left">
+                
+                <!-- Brand Column -->
+                <div class="space-y-6 md:col-span-2">
+                    <div class="flex items-center gap-3">
+                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-12 h-12">
+                            <rect width="48" height="48" rx="12" fill="url(#footerGradient)" />
+                            <defs>
+                                <linearGradient id="footerGradient" x1="0" y1="0" x2="48" y2="48">
+                                    <stop offset="0%" stop-color="#667eea"/>
+                                    <stop offset="100%" stop-color="#764ba2"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M15 13h18v6h-6v17h-6v-17h-6v-6z" fill="white" /> 
+                        </svg>
+                        <div>
+                            <h2 class="font-extrabold text-2xl tracking-tight m-0 p-0 text-white">TEMANTEN</h2>
+                            <p class="text-[0.65rem] text-indigo-300 font-bold tracking-[0.2em] uppercase m-0 p-0 text-left">Digital Invitation</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-sm m-0">
+                        Platform pembuatan undangan pernikahan digital elegan, modern, dan mudah digunakan. Bagikan kebahagiaan Anda hanya dalam beberapa menit bersama Temanten.
+                    </p>
+                    <!-- Social Media -->
+                    <div class="flex gap-4 pt-2">
+                        <a href="#" class="w-10 h-10 bg-white/5 hover:bg-indigo-600 rounded-full flex items-center justify-center transition-all hover:scale-110 border border-white/10 text-white cursor-pointer" style="text-decoration: none;">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/5 hover:bg-pink-600 rounded-full flex items-center justify-center transition-all hover:scale-110 border border-white/10 text-white cursor-pointer" style="text-decoration: none;">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white/5 hover:bg-blue-500 rounded-full flex items-center justify-center transition-all hover:scale-110 border border-white/10 text-white cursor-pointer" style="text-decoration: none;">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Navigasi Utama -->
+                <div class="space-y-6">
+                    <h3 class="font-bold text-white text-lg tracking-wide uppercase text-sm border-b border-white/10 pb-3 inline-block m-0">Menu Utama</h3>
+                    <ul class="space-y-4 p-0 m-0" style="list-style: none;">
+                        <li><a href="/" class="text-gray-400 hover:text-indigo-400 transition-colors flex items-center gap-2 text-sm" style="text-decoration: none;"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500/50"></span> Beranda</a></li>
+                        <li><a href="/#fitur" class="text-gray-400 hover:text-indigo-400 transition-colors flex items-center gap-2 text-sm" style="text-decoration: none;"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500/50"></span> Fitur Unggulan</a></li>
+                        <li><a href="/#faq" class="text-gray-400 hover:text-indigo-400 transition-colors flex items-center gap-2 text-sm" style="text-decoration: none;"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500/50"></span> Tanya Jawab (FAQ)</a></li>
+                        <li><a href="{{ route('login') }}" class="text-gray-400 hover:text-indigo-400 transition-colors flex items-center gap-2 text-sm" style="text-decoration: none;"><span class="w-1.5 h-1.5 rounded-full bg-indigo-500/50"></span> Login Dashboard</a></li>
+                    </ul>
+                </div>
+
+                <!-- Hubungi Kami -->
+                <div class="space-y-6">
+                    <h3 class="font-bold text-white text-lg tracking-wide uppercase text-sm border-b border-white/10 pb-3 inline-block m-0">Hubungi Kami</h3>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-start gap-4 text-gray-400">
+                            <div class="bg-white/5 p-2 rounded-lg text-indigo-400 shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            </div>
+                            <div>
+                                <div class="font-medium text-white/90 mb-0.5">WhatsApp Admin</div>
+                                <a href="https://wa.me/6282220312195" target="_blank" class="text-gray-400 hover:text-indigo-400 transition-colors" style="text-decoration: none;">+62 822-2031-2195</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 text-gray-400">
+                            <div class="bg-white/5 p-2 rounded-lg text-indigo-400 shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <div>
+                                <div class="font-medium text-white/90 mb-0.5">Email Dukungan</div>
+                                <a href="mailto:hello@temanten.com" class="text-gray-400 hover:text-indigo-400 transition-colors" style="text-decoration: none;">hello@temanten.com</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4 text-gray-400">
+                            <div class="bg-white/5 p-2 rounded-lg text-indigo-400 shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div>
+                                <div class="font-medium text-white/90 mb-0.5">Jam Operasional</div>
+                                <span>Senin - Sabtu (09.00 - 17.00)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="pt-8 border-t border-white/10 m-0">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-gray-400 text-sm text-center md:text-left m-0">
+                        &copy; {{ date('Y') }} <span class="font-bold text-white tracking-widest">TEMANTEN</span>. Seluruh hak cipta dilindungi.
+                    </p>
+                    <div class="flex items-center gap-6 text-sm text-gray-500 font-medium m-0">
+                        <a href="#" class="text-gray-500 hover:text-white transition-colors" style="text-decoration: none;">Syarat & Ketentuan</a>
+                        <a href="#" class="text-gray-500 hover:text-white transition-colors" style="text-decoration: none;">Kebijakan Privasi</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <p class="footer-copyright">© 2026 Temanten. All rights reserved.</p>
     </footer>
 
     <script>
