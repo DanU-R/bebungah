@@ -80,6 +80,16 @@ class ThemeSeeder extends Seeder
                 'view_path' => 'themes.watercolor-flow.index',
             ]
         );
+
+        Theme::updateOrCreate(
+            ['slug' => 'golden-sunrise'],
+            [
+                'name' => 'Golden Sunrise',
+                'thumbnail' => 'golden-sunrise.png',
+                'is_active' => true,
+                'view_path' => 'themes.golden-sunrise.index',
+            ]
+        );
         
     }
 }

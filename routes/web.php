@@ -96,9 +96,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 Route::middleware(['auth'])->prefix('client')->group(function () {
     Route::get('/dashboard', [ClientController::class, 'index'])->name('client.dashboard');
 
-    // Fitur Tamu (Import Excel)
+    // Fitur Tamu (Import/Export)
     Route::post('/import-guests', [ClientController::class, 'importGuests'])->name('client.importGuests');
     Route::get('/download-template', [ClientController::class, 'downloadTemplate'])->name('client.downloadTemplate');
+    Route::get('/export-guests/{invitation}', [ClientController::class, 'exportGuests'])->name('client.exportGuests');
 
     // Fitur Tamu (Input Manual)
     Route::post('/store-guest', [ClientController::class, 'storeGuest'])->name('client.storeGuest');

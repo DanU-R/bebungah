@@ -42,7 +42,13 @@
 
             <div class="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3 rounded-xl inline-block mb-8">
                 <p class="text-[10px] uppercase tracking-widest opacity-70 mb-1">Kepada Yth:</p>
-                <h3 class="font-serif text-lg capitalize font-bold">{{ request('to', 'Tamu Undangan') }}</h3>
+                <h3 class="font-serif text-lg capitalize font-bold">
+                    @if(isset($guest))
+                        {{ $guest->name }}
+                    @else
+                        {{ request('to') ? str_replace('-', ' ', preg_replace('/-[a-zA-Z0-9]{4}$/', '', request('to'))) : 'Tamu Undangan' }}
+                    @endif
+                </h3>
             </div>
             <br>
             <button onclick="openInvitation()" class="bg-white text-[#1F4E79] px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-[#A9D6E5] transition transform hover:scale-105 shadow-xl flex items-center gap-2 mx-auto">
@@ -225,9 +231,9 @@
                 <input type="hidden" name="invitation_slug" value="{{ $invitation->slug }}">
                 <input type="text" name="nama" placeholder="Nama Lengkap" class="form-input" required>
                 <select name="kehadiran" class="form-input cursor-pointer text-gray-600">
-                    <option value="Hadir">Saya Akan Hadir</option>
-                    <option value="Tidak Hadir">Maaf, Tidak Bisa Hadir</option>
-                    <option value="Ragu-ragu">Masih Ragu</option>
+                    <option value="hadir">Saya Akan Hadir</option>
+                    <option value="tidak_hadir">Maaf, Tidak Bisa Hadir</option>
+                    <option value="ragu">Masih Ragu</option>
                 </select>
                 <textarea name="ucapan" rows="3" placeholder="Tuliskan doa restu..." class="form-input resize-none" required></textarea>
                 <button type="submit" class="btn-primary">KIRIM UCAPAN</button>
@@ -238,14 +244,14 @@
             @foreach($invitation->comments->sortByDesc('created_at') as $comment)
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex gap-3">
                 <div class="w-8 h-8 rounded-full bg-gray-100 text-deep-blue flex items-center justify-center font-bold text-xs shrink-0">
-                    {{ substr($comment->nama, 0, 1) }}
+                    {{ substr($comment->name ?? '', 0, 1) }}
                 </div>
                 <div>
                     <div class="flex items-center gap-2 mb-1">
-                        <strong class="text-deep-blue text-sm">{{ $comment->nama }}</strong>
+                        <strong class="text-deep-blue text-sm">{{ $comment->name }}</strong>
                         <span class="text-[9px] text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
                     </div>
-                    <p class="text-xs text-gray-600 italic">"{{ $comment->ucapan }}"</p>
+                    <p class="text-xs text-gray-600 italic">"{{ $comment->comment }}"</p>
                 </div>
             </div>
             @endforeach

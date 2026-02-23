@@ -244,11 +244,17 @@
                                 Import Data Tamu
                             </button>
                         </form>
-                        <div class="mt-4 pt-4 border-t dark:border-gray-700">
+                        <div class="mt-4 pt-4 border-t dark:border-gray-700 flex flex-col gap-2">
                             <a href="{{ route('client.downloadTemplate') }}" class="flex items-center justify-center gap-2 text-sm text-indigo-600 dark:text-indigo-400 font-semibold hover:text-indigo-700 transition">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                 Download Template Excel
                             </a>
+                            @if(isset($invitation) && count($guests ?? []) > 0)
+                            <a href="{{ route('client.exportGuests', $invitation->id) }}" class="flex items-center justify-center gap-2 text-sm text-green-600 dark:text-green-400 font-semibold hover:text-green-700 transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4 8l-4-4m0 0l4-4m-4 4h12"/></svg>
+                                Export Daftar Hadir (CSV)
+                            </a>
+                            @endif
                         </div>
                     </div>
                 </div>

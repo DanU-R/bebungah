@@ -45,6 +45,25 @@ class InvitationController extends Controller
         $invitation = new \stdClass();
         $invitation->slug = 'demo-' . $themeSlug;
 
+        $unsplashKey = 'C9aJ-2k6P3AkE5YTnAuw3A46NRfA5q7nhhfFMP5bDOw';
+        $getDummyImg = function($keyword, $orientation = 'portrait') use ($unsplashKey) {
+            return \Illuminate\Support\Facades\Cache::remember("unsplash_dummy_" . md5($keyword . $orientation), 86400, function() use ($unsplashKey, $keyword, $orientation) {
+                try {
+                    $response = \Illuminate\Support\Facades\Http::timeout(5)->get("https://api.unsplash.com/photos/random", [
+                        'query' => $keyword,
+                        'client_id' => $unsplashKey,
+                        'orientation' => $orientation
+                    ]);
+                    if ($response->successful()) {
+                        return $response->json()['urls']['regular'];
+                    }
+                    return 'https://placehold.co/800x600/DDDDDD/666666/png?text=' . urlencode(substr($keyword, 0, 15));
+                } catch (\Exception $e) {
+                    return 'https://placehold.co/800x600/DDDDDD/666666/png?text=' . urlencode(substr($keyword, 0, 15));
+                }
+            });
+        };
+
         $content = [
             'mempelai' => [
                 'pria' => [
@@ -53,7 +72,7 @@ class InvitationController extends Controller
                     'ayah' => 'Bpk. Wijaya',
                     'ibu' => 'Ibu Sarah',
                     'instagram' => 'romeo_official',
-                    'foto' => 'https://via.placeholder.com/500x500.png?text=Groom',
+                    'foto' => $getDummyImg('handsome groom suit wedding'),
                 ],
                 'wanita' => [
                     'nama' => 'Juliet Bunga Jelita',
@@ -61,7 +80,7 @@ class InvitationController extends Controller
                     'ayah' => 'Bpk. Sutrisno',
                     'ibu' => 'Ibu Hartini',
                     'instagram' => 'juliet_beauty',
-                    'foto' => 'https://via.placeholder.com/500x500.png?text=Bride',
+                    'foto' => $getDummyImg('beautiful bride dress wedding'),
                 ],
             ],
             'acara' => [
@@ -82,14 +101,14 @@ class InvitationController extends Controller
             ],
             'quote' => 'Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri...',
             'media' => [
-                'cover' => 'https://via.placeholder.com/1920x1080.png?text=Wedding+Cover',
+                'cover' => $getDummyImg('luxury wedding venue decoration', 'landscape'),
                 'music' => 'assets/music/' . $themeSlug . '.mp3',
                 'video_link' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
                 'gallery' => [
-                    'https://via.placeholder.com/500x500.png?text=Gallery+1',
-                    'https://via.placeholder.com/500x500.png?text=Gallery+2',
-                    'https://via.placeholder.com/500x500.png?text=Gallery+3',
-                    'https://via.placeholder.com/500x500.png?text=Gallery+4',
+                    $getDummyImg('wedding rings', 'landscape'),
+                    $getDummyImg('wedding bouquet', 'portrait'),
+                    $getDummyImg('wedding couple walking', 'landscape'),
+                    $getDummyImg('wedding cake', 'portrait'),
                 ],
             ],
             'love_stories' => [
@@ -113,11 +132,7 @@ class InvitationController extends Controller
             ],
         ];
 
-        if (in_array($themeSlug, ['emerald-garden', 'ocean-breeze', 'watercolor-flow'])) {
-            $invitation->content = [];
-        } else {
-            $invitation->content = $content;
-        }
+        $invitation->content = $content;
         $invitation->comments = collect([]);
 
         return view($theme->view_path, compact('invitation'));

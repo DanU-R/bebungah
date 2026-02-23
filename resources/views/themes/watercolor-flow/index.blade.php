@@ -59,7 +59,11 @@
             <div class="water-card px-8 py-6 inline-block">
                 <p class="text-[10px] text-gray-500 tracking-widest uppercase mb-2">Kepada Yth.</p>
                 <h3 class="font-serif text-xl md:text-2xl text-[#2C3E50] font-bold capitalize">
-                    {{ request('to', 'Tamu Undangan') }}
+                    @if(isset($guest))
+                        {{ $guest->name }}
+                    @else
+                        {{ request('to') ? str_replace('-', ' ', preg_replace('/-[a-zA-Z0-9]{4}$/', '', request('to'))) : 'Tamu Undangan' }}
+                    @endif
                 </h3>
             </div>
 
@@ -247,8 +251,8 @@
                     <input type="text" name="nama" required placeholder="Nama Anda" class="w-full bg-[#F9F9F9] border border-gray-200 rounded-lg p-3 text-sm focus:border-[#5D8AA8] outline-none transition">
 
                     <select name="kehadiran" class="w-full bg-[#F9F9F9] border border-gray-200 rounded-lg p-3 text-sm focus:border-[#5D8AA8] outline-none transition text-gray-600">
-                        <option value="Hadir">Saya Akan Hadir</option>
-                        <option value="Tidak Hadir">Maaf Tidak Bisa Hadir</option>
+                        <option value="hadir">Saya Akan Hadir</option>
+                        <option value="tidak_hadir">Maaf Tidak Bisa Hadir</option>
                     </select>
 
                     <textarea name="ucapan" rows="3" required placeholder="Tulis doa & ucapan..." class="w-full bg-[#F9F9F9] border border-gray-200 rounded-lg p-3 text-sm focus:border-[#5D8AA8] outline-none transition"></textarea>
@@ -263,17 +267,17 @@
                 @foreach($invitation->comments as $comment)
                 <div class="water-card p-3 flex gap-3 items-start">
                     <div class="w-8 h-8 rounded-full bg-gray-100 text-[#5D8AA8] flex items-center justify-center font-bold text-xs shrink-0 border border-gray-200">
-                        {{ substr($comment->nama, 0, 1) }}
+                        {{ substr($comment->name ?? '', 0, 1) }}
                     </div>
                     <div class="w-full">
                         <div class="flex justify-between items-start">
-                            <h4 class="font-bold text-[#2C3E50] text-xs">{{ $comment->nama }}</h4>
+                            <h4 class="font-bold text-[#2C3E50] text-xs">{{ $comment->name }}</h4>
                             <span class="text-[9px] text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
                         </div>
-                        <span class="text-[9px] px-2 py-0.5 rounded-full inline-block mb-1 {{ $comment->kehadiran == 'Hadir' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
-                            {{ $comment->kehadiran }}
+                        <span class="text-[9px] px-2 py-0.5 rounded-full inline-block mb-1 {{ $comment->rsvp_status == 'hadir' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' }}">
+                            {{ $comment->rsvp_status == 'hadir' ? 'Hadir' : ($comment->rsvp_status == 'ragu' ? 'Ragu' : 'Tidak Hadir') }}
                         </span>
-                        <p class="text-xs text-gray-600 italic">"{{ $comment->ucapan }}"</p>
+                        <p class="text-xs text-gray-600 italic">"{{ $comment->comment }}"</p>
                     </div>
                 </div>
                 @endforeach

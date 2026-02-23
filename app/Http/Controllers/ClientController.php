@@ -293,4 +293,52 @@ class ClientController extends Controller
         return back()->with('success', "Tamu \"{$name}\" berhasil dihapus.");
     }
 
+    public function exportGuests(Invitation $invitation)
+    {
+        if ($invitation->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $guests = $invitation->guests()->orderBy('created_at', 'desc')->get();
+
+        $filename = "daftar_tamu_{$invitation->slug}_" . date('Y-m-d_H-i-s') . ".csv";
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$filename",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = ['Nama', 'Kategori', 'WhatsApp', 'Status Kehadiran', 'Ucapan', 'Tanggal Input'];
+
+        $callback = function() use($guests, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($guests as $guest) {
+                // Formatting the RSVP status to be more readable
+                $status = 'Pending';
+                if ($guest->rsvp_status == 'hadir') $status = 'Hadir';
+                if ($guest->rsvp_status == 'tidak_hadir') $status = 'Tidak Hadir';
+                if ($guest->rsvp_status == 'ragu') $status = 'Ragu-ragu';
+
+                $row = [
+                    $guest->name,
+                    $guest->category ?? '-',
+                    $guest->whatsapp ?? '-',
+                    $status,
+                    $guest->comment ?? '-',
+                    $guest->created_at->format('Y-m-d H:i:s')
+                ];
+
+                fputcsv($file, $row);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

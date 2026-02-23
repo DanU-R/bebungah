@@ -51,7 +51,13 @@
                     </h1>
                     <div class="w-10 h-px bg-[#D4AF37] mx-auto my-8"></div>
                     <p class="text-[10px] uppercase tracking-widest text-gray-300 mb-2">Dear Guest</p>
-                    <h3 class="font-royal text-xl text-white capitalize mb-10">{{ request('to', 'Tamu Undangan') }}</h3>
+                    <h3 class="font-royal text-xl text-white capitalize mb-10">
+                        @if(isset($guest))
+                            {{ $guest->name }}
+                        @else
+                            {{ request('to') ? str_replace('-', ' ', preg_replace('/-[a-zA-Z0-9]{4}$/', '', request('to'))) : 'Tamu Undangan' }}
+                        @endif
+                    </h3>
                     <button onclick="openInvitation()" class="group relative px-8 py-3 bg-[#D4AF37] text-[#0B201A] font-bold text-xs uppercase tracking-widest rounded-full overflow-hidden shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105 transition">
                         Buka Undangan
                     </button>
@@ -266,8 +272,8 @@
                         <input type="text" name="nama" placeholder="Nama Lengkap" class="input-emerald" required>
 
                         <select name="kehadiran" class="input-emerald cursor-pointer">
-                            <option value="Hadir" class="bg-[#0B201A]">Saya Akan Hadir</option>
-                            <option value="Tidak Hadir" class="bg-[#0B201A]">Maaf, Tidak Bisa Hadir</option>
+                            <option value="hadir" class="bg-[#0B201A]">Saya Akan Hadir</option>
+                            <option value="tidak_hadir" class="bg-[#0B201A]">Maaf, Tidak Bisa Hadir</option>
                         </select>
 
                         <textarea name="ucapan" rows="2" placeholder="Tuliskan doa & ucapan..." class="input-emerald resize-none" required></textarea>
@@ -282,14 +288,14 @@
                     @foreach($invitation->comments->sortByDesc('created_at') as $comment)
                     <div class="border-b border-[#D4AF37]/10 pb-4 reveal-on-scroll flex gap-3">
                         <div class="w-8 h-8 rounded-full bg-[#D4AF37] text-[#0B201A] flex items-center justify-center font-bold text-xs shrink-0">
-                            {{ substr($comment->nama, 0, 1) }}
+                            {{ substr($comment->name ?? '', 0, 1) }}
                         </div>
                         <div class="w-full">
                             <div class="flex justify-between items-baseline mb-1">
-                                <strong class="text-[#D4AF37] text-sm">{{ $comment->nama }}</strong>
+                                <strong class="text-[#D4AF37] text-sm">{{ $comment->name }}</strong>
                                 <span class="text-[10px] text-gray-600">{{ $comment->created_at->diffForHumans() }}</span>
                             </div>
-                            <p class="text-xs text-gray-300 italic">"{{ $comment->ucapan }}"</p>
+                            <p class="text-xs text-gray-300 italic">"{{ $comment->comment }}"</p>
                         </div>
                     </div>
                     @endforeach
