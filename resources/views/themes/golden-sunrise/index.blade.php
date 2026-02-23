@@ -385,41 +385,39 @@
                 </div>
 
                 <div class="glass-panel p-6 mb-12 reveal">
-                    @if($guest)
-                        <form action="{{ route('invitation.rsvp', $invitation->id) }}" method="POST" class="space-y-4">
-                            @csrf
-                            <input type="hidden" name="guest_id" value="{{ $guest->id }}">
-                            
-                            @if(session('success'))
-                                <div class="bg-gold/10 border border-gold/30 text-gold text-xs p-3 text-center mb-4">
-                                    {{ session('success') }}
-                                </div>
-                            @endif
+                    <form action="{{ route('invitation.rsvp', $invitation->id) }}" method="POST" class="space-y-4">
+                        @csrf
+                        <input type="hidden" name="guest_id" value="{{ $guest ? $guest->id : 0 }}">
+                        
+                        @if(session('success'))
+                            <div class="bg-gold/10 border border-gold/30 text-gold text-xs p-3 text-center mb-4">
+                                {{ session('success') }}
+                            </div>
+                        @endif
 
-                            <div>
+                        <div>
+                            @if($guest)
                                 <input type="text" value="{{ $guest->name }}" readonly class="w-full bg-transparent border-b border-gray-700 text-white text-sm px-0 py-2 focus:outline-none focus:border-gold opacity-50 cursor-not-allowed">
-                            </div>
-                            <div>
-                                <select name="rsvp_status" required class="w-full bg-transparent border-b border-gray-700 text-white text-sm px-0 py-2 focus:outline-none focus:border-gold appearance-none">
-                                    <option value="" class="bg-onyx text-gray-400">Konfirmasi Kehadiran...</option>
-                                    <option value="hadir" class="bg-onyx" {{ $guest->rsvp_status == 'hadir' ? 'selected' : '' }}>Saya Akan Hadir</option>
-                                    <option value="tidak_hadir" class="bg-onyx" {{ $guest->rsvp_status == 'tidak_hadir' ? 'selected' : '' }}>Maaf, Tidak Bisa Hadir</option>
-                                    <option value="ragu" class="bg-onyx" {{ $guest->rsvp_status == 'ragu' ? 'selected' : '' }}>Masih Ragu</option>
-                                </select>
-                            </div>
-                            <div>
-                                <textarea name="comment" rows="3" placeholder="Tuliskan ucapan & doa..." required class="w-full bg-transparent border-b border-gray-700 text-white text-sm px-0 py-2 focus:outline-none focus:border-gold placeholder-gray-600 resize-none">{{ $guest->comment }}</textarea>
-                            </div>
-                            <button type="submit" class="w-full bg-gold text-onyx font-semibold text-xs tracking-[0.2em] uppercase py-4 mt-4 hover:bg-gold-light transition">
-                                Send Message
-                            </button>
-                        </form>
-                    @else
-                        <div class="text-center p-4 border border-gold/20 bg-gold/5">
-                            <p class="text-xs text-gold mb-2 uppercase tracking-widest">Tamu Khusus</p>
-                            <p class="text-sm text-gray-400 italic">Maaf, RSVP hanya tersedia bagi tamu yang menerima tautan undangan khusus.</p>
+                                <input type="hidden" name="name" value="{{ $guest->name }}">
+                            @else
+                                <input type="text" name="name" placeholder="Nama Anda" required class="w-full bg-transparent border-b border-gray-700 text-white text-sm px-0 py-2 focus:outline-none focus:border-gold placeholder-gray-600">
+                            @endif
                         </div>
-                    @endif
+                        <div>
+                            <select name="rsvp_status" required class="w-full bg-transparent border-b border-gray-700 text-white text-sm px-0 py-2 focus:outline-none focus:border-gold appearance-none">
+                                <option value="" class="bg-onyx text-gray-400">Konfirmasi Kehadiran...</option>
+                                <option value="hadir" class="bg-onyx" {{ ($guest && $guest->rsvp_status == 'hadir') ? 'selected' : '' }}>Saya Akan Hadir</option>
+                                <option value="tidak_hadir" class="bg-onyx" {{ ($guest && $guest->rsvp_status == 'tidak_hadir') ? 'selected' : '' }}>Maaf, Tidak Bisa Hadir</option>
+                                <option value="ragu" class="bg-onyx" {{ ($guest && $guest->rsvp_status == 'ragu') ? 'selected' : '' }}>Masih Ragu</option>
+                            </select>
+                        </div>
+                        <div>
+                            <textarea name="comment" rows="3" placeholder="Tuliskan ucapan & doa..." required class="w-full bg-transparent border-b border-gray-700 text-white text-sm px-0 py-2 focus:outline-none focus:border-gold placeholder-gray-600 resize-none">{{ $guest ? $guest->comment : '' }}</textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gold text-onyx font-semibold text-xs tracking-[0.2em] uppercase py-4 mt-4 hover:bg-gold-light transition">
+                            Kirim Ucapan & RSVP
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Wishes Feed -->
