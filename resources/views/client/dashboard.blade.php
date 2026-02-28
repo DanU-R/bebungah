@@ -357,7 +357,20 @@
                                             </button>
                                             {{-- Kirim WA (fixed URL encoding) --}}
                                             @php
-                                                $waText = urlencode("Halo {$guest->name}, kami mengundangmu ke pernikahan kami. Buka link ini: " . route('invitation.show', ['slug'=>$invitation->slug,'to'=>$guest->slug]));
+                                                $pPria = $invitation->content['mempelai']['pria']['panggilan'] ?? 'Mempelai Pria';
+                                                $pWanita = $invitation->content['mempelai']['wanita']['panggilan'] ?? 'Mempelai Wanita';
+                                                
+                                                $pesanWa = "Assalamu'alaikum Warahmatullahi Wabarakatuh / Selamat Sejahtera,\n\n"
+                                                         . "Kepada Yth. *{$guest->name}*,\n\n"
+                                                         . "Tanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i untuk hadir dan memberikan doa restu pada acara pernikahan kami:\n\n"
+                                                         . "👰🤵 *{$pPria} & {$pWanita}*\n\n"
+                                                         . "Informasi lengkap mengenai jadwal, lokasi, dan konfirmasi kehadiran (RSVP) dapat dilihat melalui tautan undangan digital berikut ini:\n\n"
+                                                         . route('invitation.show', ['slug'=>$invitation->slug,'to'=>$guest->slug]) . "\n\n"
+                                                         . "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir di hari istimewa kami.\n\n"
+                                                         . "Terima kasih,\n"
+                                                         . "Wassalamu'alaikum Warahmatullahi Wabarakatuh.";
+                                                         
+                                                $waText = urlencode($pesanWa);
                                             @endphp
                                             <a href="https://wa.me/?text={{ $waText }}" target="_blank" class="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-lg transition" title="Kirim WA">
                                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654z"/></svg>

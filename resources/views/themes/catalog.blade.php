@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22><rect width=%2248%22 height=%2248%22 rx=%2212%22 fill=%22%234F46E5%22/><path d=%22M15 13h18v6h-6v17h-6v-17h-6v-6z%22 fill=%22white%22/></svg>">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <style>
 
@@ -711,19 +711,12 @@
         <div class="max-w-7xl mx-auto px-6 lg:px-8 py-5 flex justify-between items-center">
 
             <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-11 h-11 group-hover:rotate-12 group-hover:scale-110 transition-all duration-300 drop-shadow-lg">
-                    <rect width="48" height="48" rx="12" fill="url(#gradient)" />
-                    <defs>
-                        <linearGradient id="gradient" x1="0" y1="0" x2="48" y2="48">
-                            <stop offset="0%" stop-color="#667eea"/>
-                            <stop offset="100%" stop-color="#764ba2"/>
-                        </linearGradient>
-                    </defs>
-                    <path d="M15 13h18v6h-6v17h-6v-17h-6v-6z" fill="white" />
-                </svg>
+                <div class="w-11 h-11 rounded-xl overflow-hidden shadow-md group-hover:rotate-12 group-hover:scale-110 transition-all duration-300 drop-shadow-lg">
+                    <img src="{{ asset('assets/mini-logo.jpg') }}" alt="Logo Temanten" class="w-full h-full object-cover">
+                </div>
                 <div class="flex flex-col">
                     <span class="font-extrabold text-xl text-gray-900 tracking-tight leading-none">TEMANTEN</span>
-                    <span class="text-[10px] text-indigo-600 font-semibold tracking-wider uppercase">Digital Invitation</span>
+                    <span class="text-[10px] text-gray-600 font-semibold tracking-wider uppercase">Digital Invitation</span>
                 </div>
             </a>
 
@@ -1124,17 +1117,16 @@
             }
         };
 
-        // Auto-open the invitation gate in iframe after the theme loads
         window.onFrameLoad = function () {
             window.hideLoader();
             setTimeout(() => {
                 try {
                     const doc = frame.contentWindow.document;
                     // Try to click the 'Buka Undangan' button automatically
-                    const openBtn = doc.querySelector('.btn-open, [onclick*="openInvitation"], [onclick*="buka"]');
+                    const openBtn = doc.querySelector('.btn-open, [onclick*="openInvitation"], [onclick*="buka"], [onclick*="openSurat"]');
                     if (openBtn) openBtn.click();
                 } catch (e) { /* cross-origin or missing — ignored */ }
-            }, 600);
+            }, 100);
         };
 
         window.openPreview = function (url, themeName) {
@@ -1167,7 +1159,7 @@
                 setTimeout(() => {
                     modal.classList.add('hidden');
                     if (frame) frame.src = '';
-                }, 300);
+                }, 150);
             }
         };
 

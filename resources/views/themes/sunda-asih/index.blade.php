@@ -9,43 +9,63 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-    --hijau:#2D5A27;--hijau2:#3D7A35;--sage:#7A9E7E;--sage-l:#A8C5A0;--sage-xl:#D4EAD4;
-    --bambu:#E8D5A3;--krem:#FAF5E8;--krem2:#F2EAD0;--emas:#C4973C;--emas-l:#DEB96C;--emas-xl:#F0D898;
-    --kayu:#8B5E3C;--border:rgba(124,158,126,0.28);
+    --hijau:#4A6B46;--hijau2:#3A5437;--sage:#809671;--sage-l:#B5C5AA;--sage-xl:#E1E9DD;
+    --bambu:#C9B793;--krem:#FDFBF7;--krem2:#F6F4EB;--emas:#B89352;--emas-l:#D6BC87;--emas-xl:#F3EAD3;
+    --kayu:#4A3C31;--border:rgba(184,147,82,0.2);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 
 /* ── WHOLE PAGE IS A SCROLL ─────────────────────────── */
 html{scroll-behavior:smooth}
-body{width:100%;overflow-x:hidden;background:var(--krem);font-family:'Plus Jakarta Sans',sans-serif;color:var(--kayu)}
-.app-scroll{max-width:480px;margin:0 auto;position:relative}
+/* Handmade paper texture pattern */
+body{width:100%;overflow-x:hidden;background-color:var(--krem);
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    font-family:'Plus Jakarta Sans',sans-serif;color:var(--kayu)}
+.app-scroll{max-width:480px;margin:0 auto;position:relative;background-color:var(--krem);
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    box-shadow: 0 0 40px rgba(0,0,0,0.05);
+}
 
 /* ── COVER GATE ─────────────────────────────────────── */
-.gate{position:fixed;inset:0;z-index:999;display:flex;align-items:stretch;max-width:480px;margin:0 auto;left:0;right:0;background:var(--krem)}
-.tirai{position:absolute;top:0;bottom:0;width:50%;transition:transform 1.3s cubic-bezier(0.77,0,0.18,1);overflow:hidden;background-color:var(--krem);}
-.tirai-left{left:0;transform-origin:left;border-right:1px solid rgba(45,90,39,0.05)}
-.tirai-right{right:0;transform-origin:right;border-left:1px solid rgba(45,90,39,0.05)}
-/* Megamendung pattern overlay on top part */
-.tirai::before{content:'';position:absolute;inset:0;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Cellipse cx='60' cy='20' rx='50' ry='25' fill='none' stroke='%237A9E7E' stroke-width='0.6' opacity='0.15'/%3E%3Cellipse cx='60' cy='20' rx='35' ry='18' fill='none' stroke='%237A9E7E' stroke-width='0.5' opacity='0.12'/%3E%3Cellipse cx='60' cy='20' rx='20' ry='10' fill='none' stroke='%237A9E7E' stroke-width='0.4' opacity='0.08'/%3E%3C/svg%3E");
-    background-size:120px 80px;background-repeat:repeat-x;background-position:top;}
+.gate{position:fixed;inset:0;z-index:999;display:flex;align-items:stretch;max-width:480px;margin:0 auto;left:0;right:0;background:var(--krem);
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+}
+.tirai{position:absolute;top:0;bottom:0;width:50%;transition:transform 1.3s cubic-bezier(0.77,0,0.18,1);overflow:hidden;background-color:var(--krem2);}
+.tirai-left{left:0;transform-origin:left;border-right:1px solid var(--border)}
+.tirai-right{right:0;transform-origin:right;border-left:1px solid var(--border)}
+
+/* Pressed leaf corner decorations */
+.leaf-corner {
+    position:absolute; width:180px; height:180px; background-size:contain; background-repeat:no-repeat; pointer-events:none; opacity:0.8; mix-blend-mode:multiply;
+    background-image:url('https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+}
+.leaf-tl { top:-30px; left:-30px; transform:rotate(-15deg); }
+.leaf-br { bottom:-30px; right:-30px; transform:rotate(165deg); }
+
 .gate.open .tirai-left{transform:translateX(-100%)}
 .gate.open .tirai-right{transform:translateX(100%)}
 .gate-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;padding:0 28px;text-align:center}
 .gate-content.fade-out{opacity:0;transition:opacity 0.3s}
-.rumah-svg{margin:0 auto 25px;display:block;opacity:0.9;transform:scale(1.15)}
-.gate-eyebrow{font-size:11px;letter-spacing:3px;color:var(--emas);margin-bottom:12px;font-weight:500}
-.gate-names{font-family:'Cormorant Garamond',serif;font-size:3.6rem;font-weight:600;font-style:italic;color:var(--hijau);line-height:1.1;margin:15px 0 8px}
-.gate-amp{color:var(--hijau);font-style:normal;font-weight:300}
-.gate-subtitle{font-size:12px;letter-spacing:1px;color:rgba(196,151,60,0.85);margin-bottom:24px;font-style:normal}
-.gate-guest-box{background:white;border:1px solid rgba(222,185,108,0.25);border-radius:50px;padding:8px 24px;margin-bottom:28px;display:inline-block;box-shadow:0 4px 15px rgba(0,0,0,0.03)}
-.gate-guest-lbl{font-size:8px;letter-spacing:2px;color:var(--sage);text-transform:uppercase}
-.gate-guest-nm{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:var(--hijau)}
-.btn-buka{background:linear-gradient(135deg,#B8860B, #E4B857, #B8860B);color:white;border:none;padding:15px 44px;font-weight:700;font-size:13px;letter-spacing:1px;cursor:pointer;transition:0.4s;border-radius:50px 4px 50px 4px;box-shadow:0 10px 25px rgba(184,134,11,0.2)}
-.btn-buka:hover{box-shadow:0 12px 30px rgba(184,134,11,0.4);transform:translateY(-3px);filter:brightness(1.05)}
+.cloud-tl { position:absolute; top:-20px; left:-30px; width:160px; transform:rotate(15deg); opacity:0.9; color:var(--emas); filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.05)); z-index:1; }
+.cloud-tr { position:absolute; top:30px; right:-20px; width:120px; transform:rotate(-15deg) scaleX(-1); opacity:0.85; color:var(--sage); filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.05)); z-index:1; }
+.cloud-bl { position:absolute; bottom:70px; left:-30px; width:140px; transform:rotate(10deg); opacity:0.8; color:var(--emas-l); filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.05)); z-index:1; }
+.cloud-br { position:absolute; bottom:-10px; right:-10px; width:180px; transform:rotate(-10deg) scaleX(-1); opacity:0.95; color:var(--emas); filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.05)); z-index:1; }
+
+.gate-leaves { position:absolute; top:48%; left:50%; transform:translate(-50%, -50%); width:460px; height:460px; z-index:1; pointer-events:none; }
+.gate-frame-container { position:relative; z-index:5; width:280px; min-height:260px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px 20px; text-align:center; margin-top:10px; }
+
+.gate-eyebrow{font-size:12px;letter-spacing:4px;color:var(--emas);margin-bottom:8px;font-weight:600;text-transform:uppercase}
+.gate-names{font-family:'Cormorant Garamond',serif;font-size:3.1rem;font-weight:600;font-style:italic;color:var(--kayu);line-height:0.9;margin:5px 0 10px;text-shadow: 1px 1px 0 rgba(255,255,255,0.5)}
+.gate-amp{color:var(--emas);font-style:normal;font-weight:400;font-size:2.2rem;display:inline-block;margin:6px 0;}
+.gate-subtitle{font-size:11px;letter-spacing:3px;color:var(--kayu);margin-bottom:0;font-weight:600;text-transform:uppercase}
+.gate-guest-box{background:white;border:1px solid var(--border);border-radius:2px 14px 2px 14px;padding:12px 28px;margin-bottom:24px;display:inline-block;box-shadow:0 8px 24px rgba(184,147,82,0.1);position:relative;z-index:10;}
+.gate-guest-lbl{font-size:8px;letter-spacing:3px;color:var(--sage);text-transform:uppercase;font-weight:700}
+.gate-guest-nm{font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;font-size:1.4rem;color:var(--kayu);margin-top:2px}
+.btn-buka{position:relative;z-index:50;pointer-events:auto;background:var(--emas);color:var(--krem);border:none;padding:14px 40px;font-weight:600;font-size:11px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:0.4s;border-radius:50px;box-shadow:0 10px 20px rgba(184,147,82,0.25)}
+.btn-buka:hover{box-shadow:0 12px 25px rgba(184,147,82,0.4);transform:translateY(-2px);background:var(--kayu)}
 
 /* ── MEGA MENDUNG BG ───────────────────────────────── */
-.mendung{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Cellipse cx='60' cy='80' rx='50' ry='40' fill='none' stroke='%237A9E7E' stroke-width='0.8' opacity='0.12'/%3E%3Cellipse cx='60' cy='80' rx='38' ry='30' fill='none' stroke='%237A9E7E' stroke-width='0.7' opacity='0.1'/%3E%3Cellipse cx='60' cy='80' rx='26' ry='20' fill='none' stroke='%237A9E7E' stroke-width='0.6' opacity='0.08'/%3E%3C/svg%3E");background-size:120px 80px;}
+.mendung{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Cellipse cx='60' cy='80' rx='50' ry='40' fill='none' stroke='%23B89352' stroke-width='0.8' opacity='0.15'/%3E%3Cellipse cx='60' cy='80' rx='38' ry='30' fill='none' stroke='%23B89352' stroke-width='0.7' opacity='0.1'/%3E%3Cellipse cx='60' cy='80' rx='26' ry='20' fill='none' stroke='%23B89352' stroke-width='0.6' opacity='0.08'/%3E%3C/svg%3E");background-size:120px 80px;}
 
 /* ── SCROLL SPY DOTS ──────────────────────────────── */
 .scroll-spy{position:fixed;right:12px;top:50%;transform:translateY(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;opacity:0;transition:opacity 0.5s;pointer-events:none}
@@ -227,59 +247,106 @@ $target=\Carbon\Carbon::parse($akad['waktu']??now()->addDays(90));
 
 {{-- ═══ GATE (fixed overlay) ═══ --}}
 <div class="gate" id="gate">
-    <div class="tirai tirai-left"></div>
-    <div class="tirai tirai-right"></div>
+    <div class="tirai tirai-left"><div class="leaf-corner leaf-tl"></div></div>
+    <div class="tirai tirai-right"><div class="leaf-corner leaf-br"></div></div>
     <div class="gate-content" id="gateContent">
-        {{-- Detailed Rumah Panggung SVG --}}
-        <svg class="rumah-svg" width="120" height="100" viewBox="0 0 120 100" fill="none">
-            <!-- Roof -->
-            <path d="M60,5 L115,45 L105,45 L105,48 L15,48 L15,45 L5,45 Z" fill="none" stroke="var(--hijau)" stroke-width="1.2"/>
-            <path d="M60,12 L100,42 L20,42 Z" fill="rgba(122,158,126,0.1)"/>
-            <path d="M60,8 L60,48 M45,21 L45,48 M75,21 L75,48" stroke="var(--hijau)" stroke-width="0.6" opacity="0.4"/>
-            <!-- Main Body -->
-            <rect x="22" y="48" width="76" height="30" fill="none" stroke="var(--hijau)" stroke-width="1.2"/>
-            <line x1="22" y1="58" x2="98" y2="58" stroke="var(--hijau)" stroke-width="0.8" opacity="0.4"/>
-            <!-- Railing -->
-            <rect x="22" y="58" width="76" height="8" fill="rgba(61,122,53,0.05)" stroke="var(--hijau)" stroke-width="0.8"/>
-            @for($i=0; $i<12; $i++)
-            <line x1="{{ 26 + ($i*6) }}" y1="58" x2="{{ 26 + ($i*6) }}" y2="66" stroke="var(--hijau)" stroke-width="0.5"/>
-            @endfor
-            <!-- Door -->
-            <rect x="52" y="66" width="16" height="12" fill="none" stroke="var(--hijau)" stroke-width="1"/>
-            <!-- Pillars -->
-            <line x1="28" y1="78" x2="28" y2="95" stroke="var(--hijau)" stroke-width="1.5"/>
-            <line x1="45" y1="78" x2="45" y2="95" stroke="var(--hijau)" stroke-width="1.5"/>
-            <line x1="75" y1="78" x2="75" y2="95" stroke="var(--hijau)" stroke-width="1.5"/>
-            <line x1="92" y1="78" x2="92" y2="95" stroke="var(--hijau)" stroke-width="1.5"/>
-            <!-- Stairs -->
-            <path d="M52,78 L52,95 L68,95 L68,78" stroke="var(--hijau)" stroke-width="1"/>
-            <line x1="52" y1="84" x2="68" y2="84" stroke="var(--hijau)" stroke-width="0.6"/>
-            <line x1="52" y1="90" x2="68" y2="90" stroke="var(--hijau)" stroke-width="0.6"/>
+
+        <!-- Background Mega Mendung Clouds -->
+        <!-- Top Left -->
+        <svg class="cloud-tl" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50,15 C30,15 15,30 20,45 C10,40 5,50 15,55 C25,60 40,50 50,55 C60,50 75,60 85,55 C95,50 90,40 80,45 C85,30 70,15 50,15 Z" fill="currentColor" opacity="0.9"/>
+            <path d="M50,22 C35,22 25,32 28,42 C20,38 18,45 25,48 C32,51 42,44 50,48 C58,44 68,51 75,48 C82,45 80,38 72,42 C75,32 65,22 50,22 Z" fill="var(--krem)"/>
+            <path d="M50,28 C40,28 32,35 34,40 C28,38 27,42 32,44 C38,46 44,40 50,44 C56,40 62,46 68,44 C73,42 72,38 66,40 C68,35 60,28 50,28 Z" fill="currentColor" opacity="0.7"/>
         </svg>
 
-        <div style="position:relative; display:inline-block;">
-            <!-- Floral Accents (Top) -->
-            <svg style="position:absolute; top:-40px; left:0; width:100%; height:80px; transform:translateY(-20px);" viewBox="0 0 200 80">
-                <path d="M100,60 Q80,40 40,50 Q60,30 20,40 M100,60 Q120,40 160,50 Q140,30 180,40" fill="none" stroke="var(--sage)" stroke-width="1.5" opacity="0.6"/>
-            </svg>
-            
-            <h1 class="gate-names">{{ $pria['panggilan'] ?? 'Dian' }} <span class="gate-amp">&amp;</span> {{ $wanita['panggilan'] ?? 'Sari' }}</h1>
-            
-            <!-- Floral Accents (Bottom) -->
-            <svg style="position:absolute; bottom:-60px; left:0; width:100%; height:100px; transform:translateY(20px);" viewBox="0 0 200 100">
-                <path d="M100,10 Q80,40 40,30 Q60,60 20,50 M100,10 Q120,40 160,30 Q140,60 180,50" fill="none" stroke="var(--sage)" stroke-width="1.5" opacity="0.6"/>
-            </svg>
-        </div>
+        <!-- Top Right -->
+        <svg class="cloud-tr" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50,15 C30,15 15,30 20,45 C10,40 5,50 15,55 C25,60 40,50 50,55 C60,50 75,60 85,55 C95,50 90,40 80,45 C85,30 70,15 50,15 Z" fill="currentColor" opacity="0.85"/>
+            <path d="M50,22 C35,22 25,32 28,42 C20,38 18,45 25,48 C32,51 42,44 50,48 C58,44 68,51 75,48 C82,45 80,38 72,42 C75,32 65,22 50,22 Z" fill="var(--krem)"/>
+            <path d="M50,28 C40,28 32,35 34,40 C28,38 27,42 32,44 C38,46 44,40 50,44 C56,40 62,46 68,44 C73,42 72,38 66,40 C68,35 60,28 50,28 Z" fill="currentColor" opacity="0.6"/>
+        </svg>
 
-        <p class="gate-subtitle">Sunda Asih · Undangan Pernikahan</p>
+        <!-- Bottom Left -->
+        <svg class="cloud-bl" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50,15 C30,15 15,30 20,45 C10,40 5,50 15,55 C25,60 40,50 50,55 C60,50 75,60 85,55 C95,50 90,40 80,45 C85,30 70,15 50,15 Z" fill="currentColor" opacity="0.8"/>
+            <path d="M50,22 C35,22 25,32 28,42 C20,38 18,45 25,48 C32,51 42,44 50,48 C58,44 68,51 75,48 C82,45 80,38 72,42 C75,32 65,22 50,22 Z" fill="var(--krem)"/>
+            <path d="M50,28 C40,28 32,35 34,40 C28,38 27,42 32,44 C38,46 44,40 50,44 C56,40 62,46 68,44 C73,42 72,38 66,40 C68,35 60,28 50,28 Z" fill="currentColor" opacity="0.75"/>
+        </svg>
+
+        <!-- Bottom Right -->
+        <svg class="cloud-br" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50,15 C30,15 15,30 20,45 C10,40 5,50 15,55 C25,60 40,50 50,55 C60,50 75,60 85,55 C95,50 90,40 80,45 C85,30 70,15 50,15 Z" fill="currentColor" opacity="0.9"/>
+            <path d="M50,22 C35,22 25,32 28,42 C20,38 18,45 25,48 C32,51 42,44 50,48 C58,44 68,51 75,48 C82,45 80,38 72,42 C75,32 65,22 50,22 Z" fill="var(--krem)"/>
+            <path d="M50,28 C40,28 32,35 34,40 C28,38 27,42 32,44 C38,46 44,40 50,44 C56,40 62,46 68,44 C73,42 72,38 66,40 C68,35 60,28 50,28 Z" fill="currentColor" opacity="0.7"/>
+        </svg>
+
+        <!-- Center Leaves Radiating -->
+        <svg class="gate-leaves" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- upward pointing branch -->
+                <g id="fern" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M0,0 Q10,-50 0,-110" fill="none" stroke="var(--sage)" stroke-width="2"/>
+                    <path d="M2,-20 Q20,-30 25,-20 Q15,-10 2,-20" fill="var(--sage)"/>
+                    <path d="M-2,-25 Q-20,-35 -25,-25 Q-15,-15 -2,-25" fill="var(--sage-l)"/>
+                    
+                    <path d="M3,-45 Q25,-55 30,-45 Q20,-35 3,-45" fill="var(--sage-l)"/>
+                    <path d="M-3,-50 Q-25,-60 -30,-50 Q-20,-40 -3,-50" fill="var(--sage)"/>
+                    
+                    <path d="M2,-70 Q20,-80 25,-70 Q15,-60 2,-70" fill="var(--sage)"/>
+                    <path d="M-2,-75 Q-20,-85 -25,-75 Q-15,-65 -2,-75" fill="var(--sage-l)"/>
+                    
+                    <path d="M1,-90 Q15,-100 20,-90 Q10,-80 1,-90" fill="var(--sage-l)"/>
+                    <path d="M-1,-95 Q-15,-105 -20,-95 Q-10,-85 -1,-95" fill="var(--sage)"/>
+                </g>
+                <g id="round-leaf">
+                    <path d="M0,0 Q-10,-40 0,-90" fill="none" stroke="var(--hijau)" stroke-width="1.5"/>
+                    <circle cx="-5" cy="-25" r="5" fill="var(--hijau)"/>
+                    <circle cx="8" cy="-45" r="6" fill="var(--hijau)"/>
+                    <circle cx="-6" cy="-65" r="5" fill="var(--hijau)"/>
+                    <circle cx="4" cy="-85" r="4" fill="var(--hijau)"/>
+                </g>
+            </defs>
+            <g transform="translate(200, 200)">
+                <use href="#fern" transform="rotate(30) translate(0, -60) scale(1.5)" opacity="0.8" />
+                <use href="#round-leaf" transform="rotate(75) translate(0, -50) scale(1.4)" opacity="0.7" />
+                <use href="#fern" transform="rotate(120) translate(0, -70) scale(1.3)" opacity="0.9" />
+                <use href="#round-leaf" transform="rotate(165) translate(0, -60) scale(1.5)" opacity="0.6" />
+                <use href="#fern" transform="rotate(210) translate(0, -60) scale(1.6)" opacity="0.8" />
+                <use href="#round-leaf" transform="rotate(255) translate(0, -50) scale(1.4)" opacity="0.7" />
+                <use href="#fern" transform="rotate(300) translate(0, -70) scale(1.4)" opacity="0.9" />
+                <use href="#round-leaf" transform="rotate(345) translate(0, -60) scale(1.5)" opacity="0.6" />
+            </g>
+        </svg>
+
+        <div class="gate-frame-container">
+            <!-- Scalloped/Lobed Frame -->
+            <svg style="position:absolute; inset:0; width:100%; height:100%; z-index:-1; filter: drop-shadow(0 15px 30px rgba(74,60,49,0.15));" viewBox="0 0 280 260" preserveAspectRatio="none">
+                <!-- Solid Fill -->
+                <path d="M 40 10 Q 50 10 50 0 L 230 0 Q 230 10 240 10 L 270 10 L 270 40 Q 270 50 280 50 L 280 210 Q 270 210 270 220 L 270 250 L 240 250 Q 230 250 230 260 L 50 260 Q 50 250 40 250 L 10 250 L 10 220 Q 10 210 0 210 L 0 50 Q 10 50 10 40 L 10 10 Z" fill="var(--krem)"/>
+                <!-- Outer Gold Border -->
+                <path d="M 40 10 Q 50 10 50 0 L 230 0 Q 230 10 240 10 L 270 10 L 270 40 Q 270 50 280 50 L 280 210 Q 270 210 270 220 L 270 250 L 240 250 Q 230 250 230 260 L 50 260 Q 50 250 40 250 L 10 250 L 10 220 Q 10 210 0 210 L 0 50 Q 10 50 10 40 L 10 10 Z" fill="none" stroke="var(--emas)" stroke-width="2"/>
+                <!-- Inner Gold Line -->
+                <path d="M 43 14 Q 53 14 53 4 L 227 4 Q 227 14 237 14 L 266 14 L 266 43 Q 266 53 276 53 L 276 207 Q 266 207 266 217 L 266 246 L 237 246 Q 227 246 227 256 L 53 256 Q 53 246 43 246 L 14 246 L 14 217 Q 14 207 4 207 L 4 53 Q 14 53 14 43 L 14 14 Z" fill="none" stroke="var(--emas)" stroke-width="0.5"/>
+            </svg>
+            
+            <p class="gate-eyebrow">Pangulem Nikah</p>
+            <h1 class="gate-names">{{ $pria['panggilan'] ?? 'Dian' }} <br><span class="gate-amp">&amp;</span><br> {{ $wanita['panggilan'] ?? 'Sari' }}</h1>
+            <p class="gate-subtitle">{{ \Carbon\Carbon::parse($target)->translatedFormat('d - m - Y') }}</p>
+        </div>
+        
+        <div style="height:35px;"></div>
         
         @if(isset($guest))
         <div class="gate-guest-box">
             <div class="gate-guest-lbl">Kanggo Yth.</div>
             <div class="gate-guest-nm">{{ $guest->name }}</div>
-        </div><br>
+        </div>
+        @else
+        <div style="height:20px;"></div>
         @endif
-        <button class="btn-buka" onclick="openSurat()">Buka Surat Undangan</button>
+        
+        <!-- Button is outside bounding boxes and pointer-events:none makes the SVGs ignore clicks -->
+        <button class="btn-buka" onclick="openSurat()">Buka Undangan</button>
     </div>
 </div>
 
@@ -308,8 +375,8 @@ $target=\Carbon\Carbon::parse($akad['waktu']??now()->addDays(90));
     {{-- WAVE DIVIDER --}}
     <div class="leaf-divider">
         <svg viewBox="0 0 480 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0,20 Q60,0 120,20 Q180,40 240,20 Q300,0 360,20 Q420,40 480,20 L480,40 L0,40 Z" fill="#F2EAD0"/>
-            <path d="M0,28 Q60,8 120,28 Q180,48 240,28 Q300,8 360,28 Q420,48 480,28" fill="none" stroke="rgba(122,158,126,0.25)" stroke-width="1"/>
+            <path d="M0,20 Q60,0 120,20 Q180,40 240,20 Q300,0 360,20 Q420,40 480,20 L480,40 L0,40 Z" fill="#F6F4EB"/>
+            <path d="M0,28 Q60,8 120,28 Q180,48 240,28 Q300,8 360,28 Q420,48 480,28" fill="none" stroke="rgba(128,150,113,0.2)" stroke-width="1"/>
         </svg>
     </div>
 
@@ -346,8 +413,8 @@ $target=\Carbon\Carbon::parse($akad['waktu']??now()->addDays(90));
     {{-- WAVE DIVIDER 2 --}}
     <div class="leaf-divider" style="background:var(--krem2)">
         <svg viewBox="0 0 480 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0,20 Q60,40 120,20 Q180,0 240,20 Q300,40 360,20 Q420,0 480,20 L480,40 L0,40 Z" fill="#FAF5E8"/>
-            <path d="M0,14 Q60,34 120,14 Q180,-6 240,14 Q300,34 360,14 Q420,-6 480,14" fill="none" stroke="rgba(122,158,126,0.25)" stroke-width="1"/>
+            <path d="M0,20 Q60,40 120,20 Q180,0 240,20 Q300,40 360,20 Q420,0 480,20 L480,40 L0,40 Z" fill="#FDFBF7"/>
+            <path d="M0,14 Q60,34 120,14 Q180,-6 240,14 Q300,34 360,14 Q420,-6 480,14" fill="none" stroke="rgba(128,150,113,0.2)" stroke-width="1"/>
         </svg>
     </div>
 
@@ -380,8 +447,8 @@ $target=\Carbon\Carbon::parse($akad['waktu']??now()->addDays(90));
     {{-- VINE DIVIDER --}}
     <div class="leaf-divider" style="background:var(--krem)">
         <svg viewBox="0 0 480 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0,10 Q120,50 240,10 Q360,-30 480,10 L480,50 L0,50 Z" fill="#FAF5E8"/>
-            <path d="M0,10 Q120,50 240,10 Q360,-30 480,10" fill="none" stroke="rgba(196,151,60,0.2)" stroke-width="1"/>
+            <path d="M0,10 Q120,50 240,10 Q360,-30 480,10 L480,50 L0,50 Z" fill="#FDFBF7"/>
+            <path d="M0,10 Q120,50 240,10 Q360,-30 480,10" fill="none" stroke="rgba(184,147,82,0.25)" stroke-width="1"/>
         </svg>
     </div>
 
@@ -422,7 +489,7 @@ $target=\Carbon\Carbon::parse($akad['waktu']??now()->addDays(90));
     {{-- WAVE DOWN --}}
     <div class="leaf-divider" style="background:var(--krem)">
         <svg viewBox="0 0 480 36" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0,0 L480,0 L480,18 Q360,36 240,18 Q120,0 0,18 Z" fill="#F2EAD0"/>
+            <path d="M0,0 L480,0 L480,18 Q360,36 240,18 Q120,0 0,18 Z" fill="#F6F4EB"/>
         </svg>
     </div>
 
@@ -449,7 +516,7 @@ $target=\Carbon\Carbon::parse($akad['waktu']??now()->addDays(90));
     {{-- WAVE UP --}}
     <div class="leaf-divider" style="background:var(--krem2)">
         <svg viewBox="0 0 480 36" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0,18 Q120,0 240,18 Q360,36 480,18 L480,36 L0,36 Z" fill="#FAF5E8"/>
+            <path d="M0,18 Q120,0 240,18 Q360,36 480,18 L480,36 L0,36 Z" fill="#FDFBF7"/>
         </svg>
     </div>
 

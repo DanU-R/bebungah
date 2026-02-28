@@ -206,4 +206,59 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Harga default berhasil diperbarui menjadi Rp ' . number_format($newPrice, 0, ',', '.'));
     }
+
+    // ─── ADMIN MANAGEMENT ──────────────────────────────────────────────────
+
+    public function admins()
+    {
+        // Fetch all admins excluding current active session if needed, but for now fetch all
+        $admins = User::where('role', 'admin')->orderBy('created_at', 'desc')->get();
+        return view('admin.admins', compact('admins'));
+    }
+
+    public function storeAdmin(Request $request)
+    {
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $admin = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'role'     => 'admin',
+        ]);
+
+        ActivityLog::record('admin_action', 'admin.created', $admin, [
+            'created_admin' => $admin->email,
+            'created_by'    => auth()->user()->email,
+        ]);
+
+        return redirect()->back()->with('success', "Akun admin baru ({$admin->name}) berhasil ditambahkan.");
+    }
+
+    public function destroyAdmin($id)
+    {
+        $admin = User::findOrFail($id);
+
+        if ($admin->id === auth()->id()) {
+            return redirect()->back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri secara langsung.');
+        }
+
+        if ($admin->role !== 'admin') {
+            return redirect()->back()->with('error', 'Akun yang dipilih bukan akun admin.');
+        }
+
+        $email = $admin->email;
+        $admin->delete();
+
+        ActivityLog::record('admin_action', 'admin.deleted', null, [
+            'deleted_admin' => $email,
+            'deleted_by'    => auth()->user()->email,
+        ]);
+
+        return redirect()->back()->with('success', "Akun admin {$email} berhasil dihapus permanen.");
+    }
 }

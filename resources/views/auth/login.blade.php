@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Masuk — {{ config('app.name', 'Temanten') }}</title>
+    <title>Login - Temanten</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -64,9 +65,9 @@
             animation: slowSpin 40s linear infinite;
         }
 
-        @keyframes slowSpin {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
         }
 
         /* Petal particles */
@@ -395,6 +396,41 @@
             left: 1.5rem;
             opacity: 0.12;
         }
+        .pl-t {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+        .pl__ring {
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 4;
+            stroke-linecap: round;
+        }
+        .pl__worm {
+            stroke: #4F46E5;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 40 140;
+            animation: worm-t 2s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+        }
+        @keyframes worm-t {
+            0% { stroke-dashoffset: 40; }
+            100% { stroke-dashoffset: -140; }
+        }
+
+        #loadingOverlay.hidden { display: none; }
+        #loadingOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 12, 41, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -414,48 +450,22 @@
         "></div>
         @endforeach
 
-        {{-- Rotating mandala ornament --}}
+        {{-- Subtle glow behind logo --}}
         <div class="ring-ornament">
-            <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="100" cy="100" r="95" stroke="#818cf8" stroke-width="0.8" stroke-dasharray="4 6"/>
-                <circle cx="100" cy="100" r="80" stroke="#818cf8" stroke-width="0.5"/>
-                <circle cx="100" cy="100" r="65" stroke="#818cf8" stroke-width="0.8" stroke-dasharray="2 4"/>
-                <circle cx="100" cy="100" r="50" stroke="#818cf8" stroke-width="0.5"/>
-                <!-- 8-point star ornament -->
-                <g fill="#a5b4fc" opacity="0.8">
-                    <polygon points="100,10 103,95 100,98 97,95" />
-                    <polygon points="100,190 103,105 100,102 97,105" />
-                    <polygon points="10,100 95,103 98,100 95,97" />
-                    <polygon points="190,100 105,103 102,100 105,97" />
-                    <polygon points="29,29 102,97 99,100 96,97" />
-                    <polygon points="171,171 98,103 101,100 104,103" />
-                    <polygon points="171,29 103,97 100,94 103,97" />
-                    <polygon points="29,171 97,103 100,106 97,103" />
-                </g>
-                <!-- Center diamond -->
-                <polygon points="100,92 108,100 100,108 92,100" fill="#a5b4fc" opacity="0.9"/>
-            </svg>
+            <div style="width: 250px; height: 250px; border-radius: 50%; background: radial-gradient(circle, rgba(165,180,252,0.4) 0%, transparent 70%); animation: pulseGlow 4s ease-in-out infinite;"></div>
         </div>
+
 
         {{-- Couple illustration area --}}
         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; padding-bottom: 10rem;">
             <div style="text-align: center; position: relative; z-index: 5;">
-                {{-- Heart / ring icon --}}
-                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 1.5rem;">
-                    <circle cx="40" cy="40" r="38" stroke="rgba(102,126,234,0.35)" stroke-width="1.5"/>
-                    <path d="M40 55 C40 55 18 42 18 28 C18 21 24 16 31 18 C35 19 38 22 40 25 C42 22 45 19 49 18 C56 16 62 21 62 28 C62 42 40 55 40 55Z" fill="rgba(102,126,234,0.45)" stroke="rgba(165,180,252,0.8)" stroke-width="1.5"/>
-                </svg>
-                <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: rgba(200,210,255,0.55); letter-spacing: 0.15em; text-transform: uppercase;">Wedding Invitation</p>
+                {{-- Logo Illustration --}}
+                <img src="{{ asset('assets/logo.jpg') }}" alt="Logo Temanten" style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; margin: 0 auto 1.5rem; border: 6px solid rgba(165,180,252,0.5); box-shadow: 0 12px 40px rgba(0,0,0,0.5);">
             </div>
         </div>
 
         {{-- Bottom text --}}
         <div class="panel-left-content">
-            <div class="panel-divider">
-                <span></span>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                <span></span>
-            </div>
             <p class="panel-tagline">
                 Setiap momen<br>adalah <em>kenangan</em><br>yang abadi.
             </p>
@@ -488,12 +498,7 @@
             {{-- Brand Header --}}
             <div class="brand">
                 <div class="brand-logo">
-                    {{-- Wedding rings icon — indigo/purple to match landing --}}
-                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="10" cy="14" r="7" stroke="#4F46E5" stroke-width="2" fill="none"/>
-                        <circle cx="18" cy="14" r="7" stroke="#764ba2" stroke-width="2" fill="none"/>
-                        <path d="M14 10.5 C14 10.5 12 12 12 14 C12 16 14 17.5 14 17.5 C14 17.5 16 16 16 14 C16 12 14 10.5 14 10.5Z" fill="rgba(79,70,229,0.3)"/>
-                    </svg>
+                    <img src="{{ asset('assets/logo.jpg') }}" alt="Logo Temanten" style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
                     <span class="brand-name">Temanten<span>.</span></span>
                 </div>
                 <p class="brand-sub">Portal Klien</p>
@@ -509,7 +514,7 @@
             @endif
 
             {{-- Login Form --}}
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('login') }}" onsubmit="return showLoading(this);">
                 @csrf
 
                 {{-- Email --}}
@@ -596,5 +601,28 @@
         </div>
     </div>
 
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden">
+        <div class="space-y-6">
+            <div class="relative">
+                <svg class="pl-t" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <path class="pl__ring" d="M15,16 L33,16 M24,16 L24,36" fill="none" />
+                    <path class="pl__worm" d="M15,16 L33,16 L24,16 L24,36" fill="none" />
+                </svg>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-serif text-2xl text-white">Menyipkan Dashboard...</h3>
+                <p style="color: rgba(200,210,255,0.6); font-size: 0.9rem;">Mohon tunggu sebentar.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showLoading(form) {
+            if (!form.checkValidity()) return true;
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            return true;
+        }
+    </script>
 </body>
 </html>

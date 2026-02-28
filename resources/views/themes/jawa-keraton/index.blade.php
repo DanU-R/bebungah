@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Undangan Pernikahan {{ $invitation->content['mempelai']['pria']['panggilan'] ?? 'Raka' }} & {{ $invitation->content['mempelai']['wanita']['panggilan'] ?? 'Sari' }}</title>
+<meta property="og:title" content="{{ $invitation->title ?? 'Undangan Pernikahan' }}">
+<meta property="og:description" content="{{ \Illuminate\Support\Str::limit($invitation->content['quote'] ?? 'Bismillah, izinkan kami mengundang Bapak/Ibu/Saudara/i ke acara pernikahan kami.', 100) }}">
+<meta property="og:image" content="{{ $invitation->og_image }}">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -215,7 +220,7 @@ $target = \Carbon\Carbon::parse($akad['waktu'] ?? now()->addDays(90));
 
     {{-- Music --}}
     <audio id="bgAudio" loop>
-        <source src="{{ asset($invitation->content['media']['music'] ?? 'assets/music/jawa-keraton.mp3') }}" type="audio/mpeg">
+        <source src="{{ asset($invitation->content['media']['music'] ?? 'assets/music/sekar-jagad.mp3') }}" type="audio/mpeg">
     </audio>
     <div class="music-fab" id="musicFab" onclick="toggleMusic()">♪</div>
 
@@ -427,6 +432,12 @@ $target = \Carbon\Carbon::parse($akad['waktu'] ?? now()->addDays(90));
             <p class="gift-num" id="giftNum">{{ $amplop['account_number'] ?? '000 000 0000' }}</p>
             <p class="gift-holder">a/n {{ $amplop['account_holder'] ?? 'Nama Penerima' }}</p>
             <button class="btn-copy-jawa" onclick="copyGift()">◈ &nbsp; Salin Nomor</button>
+            @if(isset($amplop['qris_image']))
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed rgba(184,134,26,0.5);">
+                <p style="font-family:'Cinzel',serif;font-size:9px;color:var(--gold);margin-bottom:10px;letter-spacing:1px;">ATAU PINDAI QRIS</p>
+                <img src="{{ asset($amplop['qris_image']) }}" alt="QRIS" style="width: 140px; height: 140px; object-fit: contain; border-radius: 4px; border: 2px solid var(--gold); padding: 4px; background: white; margin: 0 auto;">
+            </div>
+            @endif
         </div>
         @endif
 

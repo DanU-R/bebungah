@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sekar Jagad — {{ $invitation->content['mempelai']['pria']['panggilan'] ?? 'Aryo' }} & {{ $invitation->content['mempelai']['wanita']['panggilan'] ?? 'Kirana' }}</title>
+<meta property="og:title" content="{{ $invitation->title ?? 'Undangan Pernikahan' }}">
+<meta property="og:description" content="{{ \Illuminate\Support\Str::limit($invitation->content['quote'] ?? 'Bismillah, izinkan kami mengundang Bapak/Ibu/Saudara/i ke acara pernikahan kami.', 100) }}">
+<meta property="og:image" content="{{ $invitation->og_image }}">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -218,7 +223,7 @@ html,body{overflow:hidden;height:100vh;background:var(--bg);font-family:'Plus Ja
 .env-flap{height:70px;background:linear-gradient(to bottom,#243870,var(--navy));display:flex;align-items:center;justify-content:center;font-size:22px;transition:0.4s}
 .env-flap.open{transform:scaleY(-1);transform-origin:top}
 .env-body{padding:20px;max-height:0;overflow:hidden;transition:max-height 0.6s ease}
-.env-body.open{max-height:200px}
+.env-body.open{max-height:360px}
 .env-bank{font-size:9px;letter-spacing:3px;color:var(--gold-l);font-weight:600;margin-bottom:4px}
 .env-num{font-size:1.4rem;font-weight:700;letter-spacing:3px;color:var(--warm);margin-bottom:2px}
 .env-holder{font-size:10px;color:rgba(212,234,212,0.65)}
@@ -463,6 +468,12 @@ $sections=[
                     <p class="env-num" id="numRek">{{ $amplop['account_number'] ?? '000 000 0000' }}</p>
                     <p class="env-holder">a/n {{ $amplop['account_holder'] ?? 'Nama Penerima' }}</p>
                     <button class="btn-copy" onclick="copyNum();event.stopPropagation()">✦ &nbsp; Salin Nomor</button>
+                    @if(isset($amplop['qris_image']))
+                    <div style="margin-top: 15px; border-top: 1px dashed rgba(212,137,139,0.4); padding-top: 15px;">
+                        <p style="font-size: 10px; color: var(--navy); margin-bottom: 8px; letter-spacing: 1px;">Atau Scan QRIS Berikut:</p>
+                        <img src="{{ asset($amplop['qris_image']) }}" alt="QRIS" style="width: 120px; height: 120px; object-fit: contain; border-radius: 8px; border: 2px solid rgba(245,237,224,1); background: white;">
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

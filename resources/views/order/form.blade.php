@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buat Undangan - TEMANTEN</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22><rect width=%2248%22 height=%2248%22 rx=%2212%22 fill=%22%234F46E5%22/><path d=%22M15 13h18v6h-6v17h-6v-17h-6v-6z%22 fill=%22white%22/></svg>">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -38,9 +38,28 @@
             to { opacity: 1; transform: scale(1); }
         }
         
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
+        /* T-Spinner Animation */
+        .pl-t {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+        .pl__ring {
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 4;
+            stroke-linecap: round;
+        }
+        .pl__worm {
+            stroke: #4F46E5;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 40 140;
+            animation: worm-t 2s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+        }
+        @keyframes worm-t {
+            0% { stroke-dashoffset: 40; }
+            100% { stroke-dashoffset: -140; }
         }
         
         .animate-fadeInUp { animation: fadeInUp 0.6s ease-out; }
@@ -99,19 +118,12 @@
     <nav class="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 group-hover:rotate-12 transition-all duration-300">
-                    <rect width="48" height="48" rx="12" fill="url(#logoGradient)" />
-                    <defs>
-                        <linearGradient id="logoGradient" x1="0" y1="0" x2="48" y2="48">
-                            <stop offset="0%" stop-color="#667eea"/>
-                            <stop offset="100%" stop-color="#764ba2"/>
-                        </linearGradient>
-                    </defs>
-                    <path d="M15 13h18v6h-6v17h-6v-17h-6v-6z" fill="white" /> 
-                </svg>
+                <div class="w-10 h-10 rounded-xl overflow-hidden shadow-md group-hover:rotate-12 transition-all duration-300">
+                    <img src="{{ asset('assets/mini-logo.jpg') }}" alt="Logo Temanten" class="w-full h-full object-cover">
+                </div>
                 <div class="flex flex-col">
                     <span class="font-extrabold text-lg text-gray-900 leading-none">TEMANTEN</span>
-                    <span class="text-[9px] text-indigo-600 font-semibold tracking-wider uppercase">Digital Invitation</span>
+                    <span class="text-[9px] text-gray-600 font-semibold tracking-wider uppercase">Digital Invitation</span>
                 </div>
             </a>
             
@@ -435,14 +447,12 @@
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="hidden fixed inset-0 bg-gray-900/95 backdrop-blur-sm z-50 flex items-center justify-center">
         <div class="text-center space-y-6 max-w-md px-6">
-            <div class="relative">
-                <div class="w-24 h-24 mx-auto">
-                    <svg class="animate-spin" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" class="text-indigo-600"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" class="text-white"></path>
+                <div class="relative">
+                    <svg class="pl-t" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path class="pl__ring" d="M15,16 L33,16 M24,16 L24,36" fill="none" />
+                        <path class="pl__worm" d="M15,16 L33,16 L24,16 L24,36" fill="none" />
                     </svg>
                 </div>
-            </div>
             <div class="space-y-3">
                 <h3 class="text-2xl font-bold text-white">Memproses Pesanan Anda...</h3>
                 <p class="text-gray-300">Mohon tunggu sebentar, jangan tutup halaman ini.</p>
@@ -452,16 +462,14 @@
 
     <script>
         function showLoading(form) {
-            // Validate form first
             if (!form.checkValidity()) {
-                return true; // Let browser show validation messages
+                return true; 
             }
 
             const btn = document.getElementById('btnSubmit'); 
             const overlay = document.getElementById('loadingOverlay');
             
             if(btn) {
-                // Disable button
                 btn.innerHTML = `
                     <svg class="animate-spin h-6 w-6 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -473,30 +481,25 @@
                 btn.disabled = true;
             }
 
-            // Show overlay
             if(overlay) {
                 overlay.classList.remove('hidden');
             }
 
-            return true; // Continue with form submission
+            return true; 
         }
 
-        // Auto-format WhatsApp input
         const waInput = document.querySelector('input[name="client_whatsapp"]');
         if(waInput) {
             waInput.addEventListener('input', function(e) {
-                // Remove leading 0 if exists
                 if(e.target.value.startsWith('0')) {
                     e.target.value = e.target.value.substring(1);
                 }
             });
         }
 
-        // Auto-format slug input
         const slugInput = document.querySelector('input[name="slug"]');
         if(slugInput) {
             slugInput.addEventListener('input', function(e) {
-                // Convert to lowercase and replace invalid characters
                 e.target.value = e.target.value
                     .toLowerCase()
                     .replace(/[^a-z0-9-]/g, '-')
@@ -505,7 +508,6 @@
             });
         }
 
-        // Smooth scroll to errors
         window.addEventListener('load', function() {
             const errorElement = document.querySelector('.bg-red-50');
             if(errorElement) {
@@ -513,7 +515,6 @@
             }
         });
 
-        // ── Theme card selection & price update ─────────────────────────────
         const themePrices = {
             @foreach($themes as $theme)
             {{ $theme->id }}: {{ $theme->effective_price }},
@@ -525,7 +526,6 @@
         }
 
         function selectTheme(radio) {
-            // Reset semua kartu
             document.querySelectorAll('.theme-card-label').forEach(function(lbl) {
                 lbl.classList.remove('border-indigo-600', 'bg-indigo-50', 'ring-4', 'ring-indigo-100');
                 lbl.classList.add('border-gray-200');
@@ -534,7 +534,6 @@
                 if (ind) { ind.classList.remove('bg-indigo-600', 'border-indigo-600'); ind.classList.add('border-gray-300'); }
                 if (chk) { chk.classList.add('hidden'); }
             });
-            // Aktifkan kartu yang dipilih
             const label = document.querySelector('label[for="' + radio.id + '"]');
             if (label) {
                 label.classList.add('border-indigo-600', 'bg-indigo-50', 'ring-4', 'ring-indigo-100');
@@ -544,7 +543,6 @@
                 if (ind) { ind.classList.add('bg-indigo-600', 'border-indigo-600'); ind.classList.remove('border-gray-300'); }
                 if (chk) { chk.classList.remove('hidden'); }
             }
-            // Update total harga
             const el = document.getElementById('totalHarga');
             const price = themePrices[radio.value];
             if (el && price) {
@@ -558,7 +556,6 @@
             radio.addEventListener('change', function() { selectTheme(this); });
         });
 
-        // Trigger on load untuk radio yang sudah checked
         document.addEventListener('DOMContentLoaded', function() {
             const checked = document.querySelector('.theme-radio:checked');
             if (checked) selectTheme(checked);

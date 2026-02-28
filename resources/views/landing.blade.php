@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEMANTEN - Undangan Digital Elegan untuk Momen Istimewa Anda</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22><rect width=%2248%22 height=%2248%22 rx=%2212%22 fill=%22%234F46E5%22/><path d=%22M15 13h18v6h-6v17h-6v-17h-6v-6z%22 fill=%22white%22/></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #4F46E5;
@@ -188,13 +187,12 @@
             
             <!-- Logo - Enhanced -->
             <a href="#" class="flex items-center gap-3 group">
-                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-11 h-11 group-hover:rotate-12 group-hover:scale-110 transition-all duration-300 drop-shadow-lg">
-                    <rect width="48" height="48" rx="12" fill="#4F46E5" />
-                    <path d="M15 13h18v6h-6v17h-6v-17h-6v-6z" fill="white" /> 
-                </svg>
+                <div class="w-11 h-11 rounded-xl overflow-hidden shadow-md group-hover:rotate-12 group-hover:scale-110 transition-all duration-300 drop-shadow-lg">
+                    <img src="{{ asset('assets/mini-logo.jpg') }}" alt="Logo Temanten" class="w-full h-full object-cover">
+                </div>
                 <div class="flex flex-col">
                     <span class="font-extrabold text-xl text-gray-900 tracking-tight leading-none">TEMANTEN</span>
-                    <span class="text-[10px] text-indigo-600 font-semibold tracking-wider uppercase">Digital Invitation</span>
+                    <span class="text-[10px] text-gray-600 font-semibold tracking-wider uppercase">Digital Invitation</span>
                 </div>
             </a>
 
@@ -615,13 +613,12 @@
                 <!-- Brand Column -->
                 <div class="space-y-6 md:col-span-2">
                     <div class="flex items-center gap-3">
-                        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-12 h-12">
-                            <rect width="48" height="48" rx="12" fill="#4F46E5" />
-                            <path d="M15 13h18v6h-6v17h-6v-17h-6v-6z" fill="white" /> 
-                        </svg>
+                        <div class="w-12 h-12 rounded-xl overflow-hidden shadow-lg border border-white/10">
+                            <img src="{{ asset('assets/mini-logo.jpg') }}" alt="Logo Temanten" class="w-full h-full object-cover">
+                        </div>
                         <div>
                             <h2 class="font-extrabold text-2xl tracking-tight">TEMANTEN</h2>
-                            <p class="text-[0.65rem] text-indigo-300 font-bold tracking-[0.2em] uppercase">Digital Invitation</p>
+                            <p class="text-[0.65rem] text-gray-400 font-bold tracking-[0.2em] uppercase">Digital Invitation</p>
                         </div>
                     </div>
                     <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
@@ -705,9 +702,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript - Enhanced -->
     <script>
-    // Cache DOM elements
     const modal = document.getElementById('previewModal');
     const frame = document.getElementById('previewFrame');
     const loader = document.getElementById('loader');
@@ -718,7 +713,6 @@
     const btnOrder = document.getElementById('btnOrderTheme');
     const mainNav = document.getElementById('mainNav');
 
-    // Navbar scroll effect
     let lastScroll = 0;
     window.addEventListener('scroll', () => {
         const currentScroll = window.pageYOffset;
@@ -734,15 +728,13 @@
         lastScroll = currentScroll;
     });
 
-    // Hide loader function
     window.hideLoader = function () {
         if (loader) {
             loader.classList.add('opacity-0');
-            setTimeout(() => loader.classList.add('hidden'), 300);
+            setTimeout(() => loader.classList.add('hidden'), 150); // Dipercepat dari 300 ke 150ms
         }
     };
 
-    // Open preview modal
     window.openPreview = function (url) {
         if (loader) {
             loader.classList.remove('hidden', 'opacity-0');
@@ -769,7 +761,6 @@
         setDevice('mobile');
     };
 
-    // Close preview modal
     window.closePreview = function () {
         if (modal) {
             modal.classList.add('opacity-0');
@@ -781,7 +772,6 @@
         }
     };
 
-    // Set device preview mode
     window.setDevice = function (type) {
         if (!frameWrapper || !frame) return;
 

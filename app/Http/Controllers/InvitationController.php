@@ -134,6 +134,7 @@ class InvitationController extends Controller
 
         $invitation->content = $content;
         $invitation->comments = collect([]);
+        $invitation->og_image = asset('favicon.ico');
 
         return view($theme->view_path, compact('invitation'));
     }

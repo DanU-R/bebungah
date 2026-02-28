@@ -146,6 +146,24 @@ class Invitation extends Model
         return $this->content['media']['cover'] ?? null;
     }
 
+    public function getOgImageAttribute()
+    {
+        $clientOg = $this->content['media']['og_image'] ?? null;
+
+        if ($clientOg && Storage::disk('public')->exists($clientOg)) {
+            return asset('storage/' . $clientOg);
+        }
+
+        // Fallback to Cover Image (which might be handled by theme or specific path)
+        $cover = $this->cover_image;
+        if ($cover) {
+            // Check if cover is a placeholder (http) or a local storage path
+            return \Illuminate\Support\Str::startsWith($cover, 'http') ? $cover : asset('storage/' . $cover);
+        }
+
+        return asset('favicon.ico');
+    }
+
     public function getMusicFileAttribute()
     {
         $clientMusic = $this->content['media']['music'] ?? null;

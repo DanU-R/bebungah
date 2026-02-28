@@ -102,6 +102,9 @@ class ClientController extends Controller
         $content['amplop']['account_holder'] = $request->bank_holder;
         $content['amplop']['alamat_kado'] = $request->gift_address;
         $content['amplop']['maps_kado'] = $request->gift_map_link;
+        if (isset($invitation->content['amplop']['qris_image'])) {
+            $content['amplop']['qris_image'] = $invitation->content['amplop']['qris_image'];
+        }
 
         if ($path = $uploadFile('groom_photo', $folderName)) {
             $content['mempelai']['pria']['foto'] = $path;
@@ -112,8 +115,14 @@ class ClientController extends Controller
         if ($path = $uploadFile('cover_image', $folderName)) {
             $content['media']['cover'] = $path;
         }
+        if ($path = $uploadFile('og_image', $folderName)) {
+            $content['media']['og_image'] = $path;
+        }
         if ($path = $uploadFile('music_file', $folderName)) {
             $content['media']['music'] = $path;
+        }
+        if ($path = $uploadFile('qris_image', $folderName)) {
+            $content['amplop']['qris_image'] = $path;
         }
 
         if ($request->hasFile('gallery_photos')) {

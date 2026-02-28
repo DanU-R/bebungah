@@ -276,6 +276,17 @@
                             </div>
                             <div class="upload-card">
                                 <div class="upload-icon">
+                                    <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101M10 14a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                                </div>
+                                <h5 class="font-semibold text-gray-800 dark:text-white mb-1">Thumbnail WhatsApp</h5>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Opsional (Rasio 1:1)</p>
+                                <input type="file" name="og_image" accept="image/png, image/jpeg, image/jpg" class="file-input">
+                                @if(isset($invitation->content['media']['og_image']))
+                                    <span class="inline-flex items-center gap-1 text-xs text-emerald-600 mt-2"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> Thumbnail khusus aktif</span>
+                                @endif
+                            </div>
+                            <div class="upload-card">
+                                <div class="upload-icon">
                                     <svg class="w-8 h-8 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
                                 </div>
                                 <h5 class="font-semibold text-gray-800 dark:text-white mb-1">Background Musik</h5>
@@ -380,6 +391,26 @@
                             <div class="input-group">
                                 <label class="input-label">Atas Nama</label>
                                 <input type="text" name="bank_holder" value="{{ $invitation->content['amplop']['account_holder'] ?? '' }}" class="input-field" placeholder="Nama Pemilik">
+                            </div>
+                        </div>
+
+                        <div class="upload-card relative group" style="border-color: rgba(16, 185, 129, 0.5); padding: 1.5rem;">
+                            <div class="flex items-center gap-4">
+                                <div class="w-20 h-20 rounded-2xl overflow-hidden ring-4 ring-emerald-500/30 shadow-xl bg-white flex items-center justify-center flex-shrink-0 relative">
+                                    <img id="prev-qris" src="{{ isset($invitation->content['amplop']['qris_image']) ? asset($invitation->content['amplop']['qris_image']) : 'https://via.placeholder.com/150?text=QRIS' }}" class="w-full h-full object-contain p-2">
+                                    <label class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-opacity">
+                                        <svg class="w-6 h-6 text-white mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                        <input type="file" name="qris_image" accept="image/png, image/jpeg, image/jpg" onchange="previewImage(this, 'prev-qris')" class="hidden">
+                                        <span class="text-[10px] text-white font-semibold">Ubah QR</span>
+                                    </label>
+                                </div>
+                                <div class="text-left flex-1">
+                                    <h5 class="font-bold text-gray-800 dark:text-white mb-1">Barcode QRIS <span class="text-xs font-normal text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-md ml-2 inline-block">Opsional</span></h5>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Unggah barcode untuk mempermudah tamu dalam memberikan amplop digital.</p>
+                                    @if(isset($invitation->content['amplop']['qris_image']))
+                                        <p class="text-[10px] font-medium text-emerald-600 mt-2">QRIS aktif &akan ditampilkan di undangan.</p>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

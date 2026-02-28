@@ -213,16 +213,22 @@
             <h2 class="section-title">Tanda Kasih</h2>
 
             <div class="water-card p-6 mt-6 bg-gradient-to-br from-white to-[#F0F8FF] border border-[#5D8AA8]/20">
-                <i class="ph-duotone ph-credit-card text-3xl text-[#5D8AA8] mb-2"></i>
-                <p class="text-xs uppercase tracking-widest text-gray-400 mb-1">Bank {{ $invitation->content['amplop']['bank_name'] ?? 'BCA' }}</p>
-                <p id="rek1" class="font-serif text-2xl text-[#2C3E50] font-bold tracking-widest mb-1">{{ $invitation->content['amplop']['account_number'] ?? '88889999' }}</p>
-                <p class="text-sm text-gray-600 mb-4">a.n {{ $invitation->content['amplop']['account_holder'] ?? 'Arta Wiguna' }}</p>
-
-                <button onclick="copyText('rek1')" class="text-xs border border-[#5D8AA8] text-[#5D8AA8] px-4 py-1.5 rounded-full hover:bg-[#5D8AA8] hover:text-white transition">
-                    <i class="ph-bold ph-copy inline mr-1"></i> Salin
-                </button>
+                @php $amplop = $invitation->content['amplop'] ?? []; @endphp
+                <div class="mt-4 p-4 bg-gray-50 rounded-xl">
+                    <p class="font-serif text-xl sm:text-2xl text-gray-800 mb-2">{{ $amplop['bank_name'] ?? 'Bank BCA' }}</p>
+                    <p class="font-sans text-xl sm:text-2xl font-bold tracking-wider text-pink-600 mb-2" id="rekNum">{{ $amplop['account_number'] ?? '8888-9999-0000' }}</p>
+                    <p class="text-sm text-gray-600 mb-4">a.n {{ $amplop['account_holder'] ?? 'Watercolor Putra' }}</p>
+                    <button onclick="copyText('rekNum')" class="w-full py-2 bg-pink-100 hover:bg-pink-200 text-pink-700 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <i class="ph-bold ph-copy"></i> Salin Nomor Rekening
+                    </button>
+                </div>
+                @if(isset($amplop['qris_image']))
+                <div class="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Atau Scan QRIS Berikut</p>
+                    <img src="{{ asset($amplop['qris_image']) }}" alt="QRIS" class="w-40 h-40 object-contain mx-auto bg-white p-2 border-2 border-pink-100 rounded-xl shadow-sm">
+                </div>
+                @endif
             </div>
-
             @if(!empty($invitation->content['amplop']['alamat_kado']))
             <div class="mt-6 water-card p-6 border-dashed border-2 border-gray-300">
                 <i class="ph-duotone ph-gift text-3xl text-[#D65A78] mb-2"></i>

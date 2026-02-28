@@ -234,14 +234,26 @@
                 </p>
 
                 <div class="gift-card-emerald p-8 rounded-2xl text-center mb-10 reveal-on-scroll transform hover:scale-105 transition duration-500">
-                    <p class="text-xs font-bold uppercase tracking-widest mb-1 opacity-70">Transfer Bank</p>
-                    <h3 class="font-bold text-xl mb-6">Bank {{ $invitation->content['amplop']['bank_name'] ?? 'BCA' }}</h3>
-                    <p class="font-royal text-4xl font-bold tracking-widest mb-2" id="rekNum">{{ $invitation->content['amplop']['account_number'] ?? '8888-9999-0000' }}</p>
-                    <p class="text-sm mb-6">a.n {{ $invitation->content['amplop']['account_holder'] ?? 'Emerald Garden Putra' }}</p>
-
-                    <button onclick="copyText('rekNum')" class="bg-[#0B201A] text-[#D4AF37] px-6 py-2 rounded-full text-xs font-bold uppercase hover:bg-white transition flex items-center gap-2 mx-auto">
-                        <i class="ph-bold ph-copy"></i> Salin Nomor
+                    @php
+                        $amplop = $invitation->content['amplop'] ?? [];
+                    @endphp
+                    <div class="flex items-center justify-center gap-2 mb-2">
+                        <svg class="w-4 h-4 text-[#D4AF37]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                        <p class="text-[10px] font-bold text-white uppercase tracking-widest">Transfer Bank</p>
+                    </div>
+                    <p class="font-royal text-xl sm:text-2xl text-white mb-4">{{ $amplop['bank_name'] ?? 'BCA' }}</p>
+                    <p class="font-royal text-2xl sm:text-3xl font-bold text-[#D4AF37] tracking-wider mb-2" id="rekNum">{{ $amplop['account_number'] ?? '8888-9999-0000' }}</p>
+                    <p class="text-sm text-gray-300">a.n {{ $amplop['account_holder'] ?? 'Emerald Garden Putra' }}</p>
+                    <button onclick="copyText('rekNum')" class="mt-6 w-full sm:w-auto px-8 py-3 bg-[#0B201A] hover:bg-white text-[#D4AF37] text-xs font-bold uppercase tracking-widest rounded-xl transition-all border border-[#D4AF37]/50 flex items-center justify-center gap-2 mx-auto">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                        Salin Nomor
                     </button>
+                    @if(isset($amplop['qris_image']))
+                    <div class="mt-6 pt-6 border-t border-[#D4AF37]/50">
+                        <p class="text-[10px] font-bold text-[#D4AF37] uppercase tracking-widest mb-4">Atau Scan QRIS Berikut</p>
+                        <img src="{{ asset($amplop['qris_image']) }}" alt="QRIS" class="w-40 h-40 object-contain mx-auto bg-white p-2 border-2 border-[#D4AF37] rounded-xl shadow-lg">
+                    </div>
+                    @endif
                 </div>
 
                 @if(!empty($invitation->content['amplop']['alamat_kado']) || !isset($invitation->content['amplop']))

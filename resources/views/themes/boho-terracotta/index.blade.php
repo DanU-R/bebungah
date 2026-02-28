@@ -181,14 +181,20 @@
             <div class="gift-card-boho">
                 <p class="text-[10px] uppercase tracking-[0.2em] opacity-60 mb-3">Digital Envelope</p>
                 <div class="w-8 h-px bg-terra mx-auto mb-4"></div>
-                <p class="font-bold text-lg mb-1">{{ $invitation->content['amplop']['bank_name'] }}</p>
-                <h2 class="text-3xl mb-4 text-terra">{{ $invitation->content['amplop']['account_number'] ?? '0000' }}</h2>
-                <p class="text-sm mb-8 opacity-80">a.n {{ $invitation->content['amplop']['account_holder'] ?? '' }}</p>
-
-                <button onclick="copyText('rekNum')" class="bg-white border border-terra text-terra px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-terra hover:text-white transition">
-                    Salin Nomor
+                <p class="font-serif text-2xl text-sand-800 mb-6">{{ $invitation->content['amplop']['bank_name'] ?? 'Bank Mandiri' }}</p>
+                <div class="bg-white/50 backdrop-blur-sm shadow-inner rounded-xl p-4 sm:p-6 mb-6">
+                    <p class="font-serif text-2xl sm:text-3xl font-bold tracking-wider text-sand-900 mb-2" id="rekNum">{{ $invitation->content['amplop']['account_number'] ?? '1234-5678-9000' }}</p>
+                    <p class="text-sm text-sand-700">a.n {{ $invitation->content['amplop']['account_holder'] ?? 'Boho Putra' }}</p>
+                </div>
+                <button onclick="copyText('rekNum')" class="bg-terra hover:bg-sand-900 text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2 mx-auto">
+                    <i class="ph-bold ph-copy"></i> Salin Nomor Rekening
                 </button>
-                <div id="rekNum" style="display:none">{{ $invitation->content['amplop']['account_number'] ?? '' }}</div>
+                @if(isset($invitation->content['amplop']['qris_image']))
+                <div class="mt-8 pt-6 border-t border-sand-400 border-dashed">
+                    <p class="text-[10px] font-bold text-terra uppercase tracking-widest mb-4">Atau Scan QRIS</p>
+                    <img src="{{ asset($invitation->content['amplop']['qris_image']) }}" alt="QRIS" class="w-40 h-40 object-contain mx-auto bg-white p-2 border border-sand-400 rounded-xl shadow-sm">
+                </div>
+                @endif
             </div>
             @endif
 

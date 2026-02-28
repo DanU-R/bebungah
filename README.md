@@ -33,11 +33,13 @@
 | **Boho Terracotta** | Bohemian hangat & artistik | ✅ |
 
 ### 🛠️ Fitur Admin & Monetisasi
+- 👥 **Manajemen Kelola Admin** 🆕 — Super Admin dapat menambah, melihat, dan menghapus akun staf atau admin lain secara langsung dari dashboard tanpa harus membuka database.
 - 💰 **Manajemen Harga Per-Tema & Promo Spesial** 🆕 — Admin dapat mengatur harga dasar dan harga promo ("Harga Coret") untuk setiap tema melalui dashboard. Harga otomatis terupdate di katalog dan checkout form.
 - 🏗️ **Katalog Dinamis & Filter Harga** — Katalog tema dilengkapi filter harga kustom dan dropdown premium untuk memudahkan navigasi.
 - 🔐 **Persetujuan Undangan** — Kontrol penuh admin untuk mengaktifkan atau menonaktifkan undangan user.
 
 ### 👥 Dashboard Client
+- 💳 **Amplop Digital Berbasis QRIS** 🆕 — Memungkinkan klien untuk mengunggah gambar Barcode QRIS guna mempermudah tamu dalam memberikan kado digital secara *cashless* yang langsung terintegrasi dengan beragam pilihan tema.
 - 📊 **Statistik RSVP real-time** — Total, Hadir, Tidak Hadir, Pending + progress bar.
 - 💍 **Kustomisasi Konten & Musik** — Diedit langsung melalui dashboard settings.
 - 🔍 **Manajemen Tamu (CRM)** — Search, filter status, import Excel/CSV, dan template siap pakai.

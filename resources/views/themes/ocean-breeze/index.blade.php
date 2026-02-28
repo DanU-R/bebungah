@@ -191,22 +191,29 @@
         <h2 class="font-serif text-3xl text-deep-blue text-center mb-6">Wedding Gift</h2>
 
         <div class="gift-card-cc">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-xs uppercase tracking-widest opacity-80">Bank Transfer</span>
-                <i class="ph-fill ph-bank text-xl"></i>
-            </div>
-            <p class="text-sm uppercase opacity-90 mb-1">{{ $invitation->content['amplop']['bank_name'] ?? 'BCA' }}</p>
-            <h2 class="font-mono text-2xl tracking-widest mb-6" id="rekNum">{{ $invitation->content['amplop']['account_number'] ?? '1234567890' }}</h2>
-            <div class="flex justify-between items-end">
-                <div>
-                    <p class="text-[9px] uppercase opacity-70">Atas Nama</p>
-                    <p class="font-bold text-sm tracking-wide">{{ $invitation->content['amplop']['account_holder'] ?? 'Ocean Putra' }}</p>
+                <div class="ocean-card p-6 sm:p-8 rounded-[2rem] text-center mb-8 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-white/40 to-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                    <div class="relative z-10">
+                        <i class="ph-duotone ph-credit-card text-4xl text-deep-blue mb-4"></i>
+                        <p class="text-xs font-bold uppercase tracking-widest text-[#5F9EA0] mb-2">Transfer Bank</p>
+                        <h3 class="font-serif text-2xl text-deep-blue mb-4">{{ $invitation->content['amplop']['bank_name'] ?? 'Bank Mandiri' }}</h3>
+                        
+                        <div class="bg-white/60 p-4 rounded-xl mb-4 border border-white/50 shadow-[0_4px_15px_-5px_rgba(0,0,0,0.05)]">
+                            <p class="font-sans text-2xl sm:text-3xl font-bold tracking-[0.15em] text-deep-blue mb-1" id="rekNum">{{ $invitation->content['amplop']['account_number'] ?? '1234-5678-9000' }}</p>
+                            <p class="text-sm text-[#5F9EA0]">a.n {{ $invitation->content['amplop']['account_holder'] ?? 'Ocean Putra' }}</p>
+                        </div>
+
+                        <button onclick="copyText('rekNum')" class="w-full sm:w-auto px-8 py-3 bg-deep-blue hover:bg-[#1A3A5A] text-white text-xs font-bold uppercase tracking-widest rounded-full transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 mx-auto">
+                            <i class="ph-bold ph-copy"></i> Salin Nomor 
+                        </button>
+                        @if(isset($invitation->content['amplop']['qris_image']))
+                        <div class="mt-6 pt-6 border-t border-[#5F9EA0]/20">
+                            <p class="text-[10px] font-bold text-[#5F9EA0] uppercase tracking-widest mb-4">Atau Scan QRIS Berikut</p>
+                            <img src="{{ asset($invitation->content['amplop']['qris_image']) }}" alt="QRIS" class="w-40 h-40 object-contain mx-auto bg-white p-2 border-2 border-[#5F9EA0]/30 rounded-xl shadow-md">
+                        </div>
+                        @endif
+                    </div>
                 </div>
-                <button onclick="copyText('rekNum')" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded text-[10px] backdrop-blur-sm transition">
-                    <i class="ph-bold ph-copy inline mr-1"></i> Salin
-                </button>
-            </div>
-        </div>
 
         @if(!empty($invitation->content['amplop']['alamat_kado']))
         <div class="ocean-card text-center border-dashed border-2 mb-10">
